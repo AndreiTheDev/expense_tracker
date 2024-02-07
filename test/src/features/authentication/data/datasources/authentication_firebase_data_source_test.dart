@@ -12,7 +12,7 @@ import 'authentication_firebase_data_source_test.mocks.dart';
 )
 void main() {
   group('Authentication Firebase Data Source tests', () {
-    late AuthenticationFirestoreDataSourceImpl sut;
+    late AuthenticationFirebaseDataSourceImpl sut;
     late MockFirebaseAuth mockFirebaseAuth;
     late MockUser mockUser;
     late MockUserCredential mockCredential;
@@ -21,7 +21,7 @@ void main() {
       mockUser = MockUser();
       mockCredential = MockUserCredential();
       mockFirebaseAuth = MockFirebaseAuth();
-      sut = AuthenticationFirestoreDataSourceImpl(mockFirebaseAuth);
+      sut = AuthenticationFirebaseDataSourceImpl(mockFirebaseAuth);
     });
 
     test('Deleting current user is successful', () async {
@@ -163,6 +163,21 @@ void main() {
           password: 'testpassword',
         ),
       ).called(1);
+      verifyNoMoreInteractions(mockFirebaseAuth);
+    });
+
+    test('User signs out', () async {
+      when(mockFirebaseAuth.currentUser).thenReturn(mockUser);
+      expect(mockFirebaseAuth.currentUser, mockUser);
+
+      when(mockFirebaseAuth.signOut())
+          .thenAnswer((realInvocation) => Future(() => null));
+      when(mockFirebaseAuth.currentUser).thenReturn(null);
+      await sut.signOutUser();
+
+      expect(mockFirebaseAuth.currentUser, null);
+      verify(mockFirebaseAuth.signOut()).called(1);
+      verify(mockFirebaseAuth.currentUser).called(2);
       verifyNoMoreInteractions(mockFirebaseAuth);
     });
   });

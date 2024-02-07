@@ -8,13 +8,14 @@ abstract interface class AuthenticationFirebaseDataSource {
   User? isSignedIn();
   Future<void> deleteUser();
   Future<void> recoverPassword(final String email);
+  Future<void> signOutUser();
 }
 
-class AuthenticationFirestoreDataSourceImpl
+class AuthenticationFirebaseDataSourceImpl
     implements AuthenticationFirebaseDataSource {
   final FirebaseAuth _authInstance;
 
-  AuthenticationFirestoreDataSourceImpl(this._authInstance);
+  AuthenticationFirebaseDataSourceImpl(this._authInstance);
 
   @override
   Future<void> deleteUser() async {
@@ -68,5 +69,10 @@ class AuthenticationFirestoreDataSourceImpl
         message: 'Unable to create an account.',
       );
     }
+  }
+
+  @override
+  Future<void> signOutUser() async {
+    await _authInstance.signOut();
   }
 }
