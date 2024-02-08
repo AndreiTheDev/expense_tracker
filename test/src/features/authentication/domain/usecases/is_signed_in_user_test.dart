@@ -21,6 +21,7 @@ void main() {
 
   const userEntity = UserEntity(
     uid: 'test',
+    email: 'test@email.com',
     fcmToken: 'test',
     completeName: 'test',
     photoUrl: 'test',
