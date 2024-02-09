@@ -3,6 +3,7 @@ import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/error/failures.dart';
 import '../entities/user.dart';
+import '../entities/user_details.dart';
 import '../repositories/authentication_repository.dart';
 
 class SignUpUser {
@@ -11,9 +12,8 @@ class SignUpUser {
   SignUpUser(this._repository);
 
   Future<Either<Failure, UserEntity>> call(
-    final String email,
-    final String password,
+    final UserDetailsEntity userDetails,
   ) async {
-    return _repository.signUpUser(email, password);
+    return _repository.signUpUser(userDetails);
   }
 }

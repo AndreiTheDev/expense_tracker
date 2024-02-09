@@ -10,7 +10,7 @@ class IsSignedInUser {
 
   IsSignedInUser(this._repository);
 
-  Future<Either<Failure, UserEntity>> call() async {
+  Future<Either<Failure, UserEntity?>> call() async {
     return _repository.isSignedIn();
   }
 }
