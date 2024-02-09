@@ -15,7 +15,7 @@ dependencies:
   # firebase_auth_mocks: ^0.13.0
   firebase_core: ^2.25.3
   firebase_messaging: ^14.7.14
-  firebase_storage: ^11.6.4
+  firebase_storage: ^11.6.5
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.3
