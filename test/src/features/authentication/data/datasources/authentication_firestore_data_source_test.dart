@@ -1,16 +1,13 @@
 import 'package:expense_tracker_app_bloc/src/core/error/exceptions.dart';
 import 'package:expense_tracker_app_bloc/src/features/authentication/data/datasources/authentication_firestore_data_source.dart';
 import 'package:expense_tracker_app_bloc/src/features/authentication/data/dto/user.dart';
-import 'package:expense_tracker_app_bloc/src/features/authentication/data/dto/user_details.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   late AuthenticationFirestoreDataSourceImpl sut;
   late UserDto userDto;
-  late UserDetailsDto userDetailsDto;
   late Map<String, dynamic> json;
-  late Map<String, dynamic> userDetailsJson;
   late FakeFirebaseFirestore fakeFirestore;
 
   setUp(() {
@@ -28,16 +25,6 @@ void main() {
       'fcmToken': 'testfcm',
       'completeName': 'test test',
       'photoUrl': 'testPhoto',
-    };
-    userDetailsDto = const UserDetailsDto(
-      email: 'test@email.com',
-      completeName: 'test test',
-      fcmToken: 'fcmToken',
-    );
-    userDetailsJson = {
-      'email': 'test@email.com',
-      'completeName': 'test test',
-      'fcmToken': 'fcmToken',
     };
     sut = AuthenticationFirestoreDataSourceImpl(fakeFirestore);
   });
@@ -75,11 +62,13 @@ void main() {
     expect(userInDb.data(), json);
   });
 
-  test('Post User details is success', () async {
-    await sut.postUserDetails('testUid', userDetailsDto);
+  test('Post User data is success', () async {
+    await sut.postUserPhoto('testUid', 'photoUrl');
 
     final userInDb =
         await fakeFirestore.collection('users').doc('testUid').get();
-    expect(userInDb.data(), userDetailsJson);
+
+    expect(userInDb.data()!.containsKey('photoUrl'), true);
+    expect(userInDb.data()!.containsValue('photoUrl'), true);
   });
 }

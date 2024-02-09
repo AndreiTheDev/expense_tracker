@@ -2,12 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../dto/user.dart';
-import '../dto/user_details.dart';
 
 abstract interface class AuthenticationFirestoreDataSource {
+  Future<void> postUserPhoto(final String uid, final String photoUrl);
   Future<void> postUserData(final UserDto userData);
-  Future<void> postUserDetails(
-      final String uid, final UserDetailsDto userDetails);
   Future<UserDto?> fetchUserData(final String uid);
 }
 
@@ -44,13 +42,10 @@ class AuthenticationFirestoreDataSourceImpl
   }
 
   @override
-  Future<void> postUserDetails(
-    final String uid,
-    final UserDetailsDto userDetails,
-  ) async {
+  Future<void> postUserPhoto(final String uid, final String photoUrl) async {
     await _firestoreInstance
         .collection('users')
         .doc(uid)
-        .set(userDetails.toJson(), SetOptions(merge: true));
+        .set({'photoUrl': photoUrl}, SetOptions(merge: true));
   }
 }
