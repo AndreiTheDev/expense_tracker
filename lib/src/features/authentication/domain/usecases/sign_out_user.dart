@@ -8,10 +8,7 @@ class SignOutUser {
 
   SignOutUser(this._repository);
 
-  Future<Either<Failure, void>> call(
-    final String email,
-    final String password,
-  ) async {
+  Future<Either<Failure, void>> call() async {
     return _repository.signOutUser();
   }
 }
