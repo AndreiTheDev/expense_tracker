@@ -10,24 +10,43 @@ import 'delete_user_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<AuthenticationRepository>()])
 void main() {
-  late DeleteUser usecase;
+  late DeleteUser sut;
   late MockAuthenticationRepository mockAuthenticationRepository;
 
   setUp(() {
     mockAuthenticationRepository = MockAuthenticationRepository();
-    usecase = DeleteUser(mockAuthenticationRepository);
+    sut = DeleteUser(mockAuthenticationRepository);
   });
 
-  test('Should delete the current user', () async {
+  test('Deletes the current user successfully', () async {
     provideDummy<Either<Failure, void>>(const Right(null));
     when(mockAuthenticationRepository.deleteUser()).thenAnswer(
       (realInvocation) async => const Right(null),
     );
 
-    final result = await usecase();
+    final result = await sut();
 
     expect(result, const Right(null));
     verify(mockAuthenticationRepository.deleteUser()).called(1);
+    verifyNoMoreInteractions(mockAuthenticationRepository);
+  });
+
+  test('Deletes the current user fails', () async {
+    provideDummy<Either<Failure, void>>(
+      const Left(AuthFailure(message: 'test')),
+    );
+    when(
+      mockAuthenticationRepository.deleteUser(),
+    ).thenAnswer(
+      (realInvocation) async => const Left(AuthFailure(message: 'test')),
+    );
+
+    final result = await sut();
+
+    expect(result, const Left(AuthFailure(message: 'test')));
+    verify(
+      mockAuthenticationRepository.deleteUser(),
+    ).called(1);
     verifyNoMoreInteractions(mockAuthenticationRepository);
   });
 }

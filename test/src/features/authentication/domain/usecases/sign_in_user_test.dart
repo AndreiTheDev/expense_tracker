@@ -11,12 +11,12 @@ import 'sign_in_user_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<AuthenticationRepository>()])
 void main() {
-  late SignInUser usecase;
+  late SignInUser sut;
   late MockAuthenticationRepository mockAuthenticationRepository;
 
   setUp(() {
     mockAuthenticationRepository = MockAuthenticationRepository();
-    usecase = SignInUser(mockAuthenticationRepository);
+    sut = SignInUser(mockAuthenticationRepository);
   });
 
   const userEntity = UserEntity(
@@ -27,7 +27,7 @@ void main() {
     photoUrl: 'test',
   );
 
-  test('Should sign in user', () async {
+  test('Signs in user successfully', () async {
     provideDummy<Either<Failure, UserEntity>>(const Right(userEntity));
     when(
       mockAuthenticationRepository.signInUser('test@gmail.com', 'testpassword'),
@@ -37,9 +37,28 @@ void main() {
       ),
     );
 
-    final result = await usecase('test@gmail.com', 'testpassword');
+    final result = await sut('test@gmail.com', 'testpassword');
 
     expect(result, const Right(userEntity));
+    verify(
+      mockAuthenticationRepository.signInUser('test@gmail.com', 'testpassword'),
+    ).called(1);
+    verifyNoMoreInteractions(mockAuthenticationRepository);
+  });
+
+  test('Signs in user fails', () async {
+    provideDummy<Either<Failure, UserEntity>>(
+      const Left(AuthFailure(message: 'test')),
+    );
+    when(
+      mockAuthenticationRepository.signInUser('test@gmail.com', 'testpassword'),
+    ).thenAnswer(
+      (realInvocation) async => const Left(AuthFailure(message: 'test')),
+    );
+
+    final result = await sut('test@gmail.com', 'testpassword');
+
+    expect(result, const Left(AuthFailure(message: 'test')));
     verify(
       mockAuthenticationRepository.signInUser('test@gmail.com', 'testpassword'),
     ).called(1);

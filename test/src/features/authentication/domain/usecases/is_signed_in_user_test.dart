@@ -11,12 +11,12 @@ import 'is_signed_in_user_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<AuthenticationRepository>()])
 void main() {
-  late IsSignedInUser usecase;
+  late IsSignedInUser sut;
   late MockAuthenticationRepository mockAuthenticationRepository;
 
   setUp(() {
     mockAuthenticationRepository = MockAuthenticationRepository();
-    usecase = IsSignedInUser(mockAuthenticationRepository);
+    sut = IsSignedInUser(mockAuthenticationRepository);
   });
 
   const userEntity = UserEntity(
@@ -27,16 +27,35 @@ void main() {
     photoUrl: 'test',
   );
 
-  test('Should return the signed in user', () async {
+  test('Returns the signed in user successfully', () async {
     provideDummy<Either<Failure, UserEntity>>(const Right(userEntity));
     when(mockAuthenticationRepository.isSignedIn()).thenAnswer(
       (realInvocation) async => const Right(userEntity),
     );
 
-    final result = await usecase();
+    final result = await sut();
 
     expect(result, const Right(userEntity));
     verify(mockAuthenticationRepository.isSignedIn()).called(1);
+    verifyNoMoreInteractions(mockAuthenticationRepository);
+  });
+
+  test('Returns the signed in user fails', () async {
+    provideDummy<Either<Failure, UserEntity?>>(
+      const Left(AuthFailure(message: 'test')),
+    );
+    when(
+      mockAuthenticationRepository.isSignedIn(),
+    ).thenAnswer(
+      (realInvocation) async => const Left(AuthFailure(message: 'test')),
+    );
+
+    final result = await sut();
+
+    expect(result, const Left(AuthFailure(message: 'test')));
+    verify(
+      mockAuthenticationRepository.isSignedIn(),
+    ).called(1);
     verifyNoMoreInteractions(mockAuthenticationRepository);
   });
 }

@@ -10,15 +10,15 @@ import 'recover_password_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<AuthenticationRepository>()])
 void main() {
-  late RecoverPassword usecase;
+  late RecoverPassword sut;
   late MockAuthenticationRepository mockAuthenticationRepository;
 
   setUp(() {
     mockAuthenticationRepository = MockAuthenticationRepository();
-    usecase = RecoverPassword(mockAuthenticationRepository);
+    sut = RecoverPassword(mockAuthenticationRepository);
   });
 
-  test('Should sent recovery email to the provided email', () async {
+  test('Sends recovery email to the provided email successfully', () async {
     provideDummy<Either<Failure, void>>(const Right(null));
     when(
       mockAuthenticationRepository.recoverPassword('test@email.com'),
@@ -26,9 +26,30 @@ void main() {
       (realInvocation) async => const Right(null),
     );
 
-    final result = await usecase('test@gmail.com');
+    final result = await sut('test@gmail.com');
 
     expect(result, const Right(null));
+    verify(
+      mockAuthenticationRepository.recoverPassword('test@gmail.com'),
+    ).called(1);
+    verifyNoMoreInteractions(mockAuthenticationRepository);
+  });
+
+  test('Sends recovery email to the provided email fails', () async {
+    provideDummy<Either<Failure, void>>(
+      const Left(AuthFailure(message: 'test')),
+    );
+    when(
+      mockAuthenticationRepository.recoverPassword(
+        'test@gmail.com',
+      ),
+    ).thenAnswer(
+      (realInvocation) async => const Left(AuthFailure(message: 'test')),
+    );
+
+    final result = await sut('test@gmail.com');
+
+    expect(result, const Left(AuthFailure(message: 'test')));
     verify(
       mockAuthenticationRepository.recoverPassword('test@gmail.com'),
     ).called(1);

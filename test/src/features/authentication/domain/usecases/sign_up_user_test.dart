@@ -16,13 +16,13 @@ import 'sign_up_user_test.mocks.dart';
 ])
 void main() {
   late MockUserDetailsEntity mockUserDetails;
-  late SignUpUser usecase;
+  late SignUpUser sut;
   late MockAuthenticationRepository mockAuthenticationRepository;
 
   setUp(() {
     mockUserDetails = MockUserDetailsEntity();
     mockAuthenticationRepository = MockAuthenticationRepository();
-    usecase = SignUpUser(mockAuthenticationRepository);
+    sut = SignUpUser(mockAuthenticationRepository);
   });
 
   const userEntity = UserEntity(
@@ -33,7 +33,7 @@ void main() {
     photoUrl: 'test',
   );
 
-  test('Should sign up user', () async {
+  test('Sign up user successfully', () async {
     provideDummy<Either<Failure, UserEntity>>(const Right(userEntity));
     when(
       mockAuthenticationRepository.signUpUser(mockUserDetails),
@@ -41,9 +41,28 @@ void main() {
       (realInvocation) async => const Right(userEntity),
     );
 
-    final result = await usecase(mockUserDetails);
+    final result = await sut(mockUserDetails);
 
     expect(result, const Right(userEntity));
+    verify(
+      mockAuthenticationRepository.signUpUser(mockUserDetails),
+    ).called(1);
+    verifyNoMoreInteractions(mockAuthenticationRepository);
+  });
+
+  test('Signs Up user fails', () async {
+    provideDummy<Either<Failure, UserEntity>>(
+      const Left(AuthFailure(message: 'test')),
+    );
+    when(
+      mockAuthenticationRepository.signUpUser(mockUserDetails),
+    ).thenAnswer(
+      (realInvocation) async => const Left(AuthFailure(message: 'test')),
+    );
+
+    final result = await sut(mockUserDetails);
+
+    expect(result, const Left(AuthFailure(message: 'test')));
     verify(
       mockAuthenticationRepository.signUpUser(mockUserDetails),
     ).called(1);
