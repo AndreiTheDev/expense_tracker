@@ -28,7 +28,7 @@ void main() {
   );
 
   test('Returns the signed in user successfully', () async {
-    provideDummy<Either<Failure, UserEntity>>(const Right(userEntity));
+    provideDummy<Either<Failure, UserEntity?>>(const Right(userEntity));
     when(mockAuthenticationRepository.isSignedIn()).thenAnswer(
       (realInvocation) async => const Right(userEntity),
     );
