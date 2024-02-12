@@ -1,12 +1,11 @@
-import 'package:control_style/control_style.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/common_widgets/gradient_elevated_button.dart';
 import '../../../../core/common_widgets/gradient_text_button.dart';
 import '../../../../core/utils/utils.dart';
 
-class SignInView extends StatelessWidget {
-  const SignInView({super.key});
+class RecoverPasswordView extends StatelessWidget {
+  const RecoverPasswordView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +15,7 @@ class SignInView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text(
-            'Sign In',
+            'Recover your password',
             style: TextStyle(
               color: textDark,
               fontSize: textXl,
@@ -30,43 +29,22 @@ class SignInView extends StatelessWidget {
             ),
           ),
           mediumSeparator,
-          TextField(
-            decoration: InputDecoration(
-              hintText: 'Enter your password...',
-              border: DecoratedInputBorder(
-                shadow: const [
-                  GradientShadow(
-                    gradient: buttonsGradientReversed,
-                    blurRadius: 14,
-                    spreadRadius: -4,
-                  ),
-                ],
-                child: const OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(50),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          mediumSeparator,
           GradientElevatedButton(
             onTap: () {},
             displayWidget: const Text(
-              'Sign In',
+              'Send email',
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w600,
               ),
               textAlign: TextAlign.center,
             ),
+            gradient: buttonsGradientReversed,
           ),
           mediumSeparator,
           GradientTextButton(
             onTap: () {},
-            text: 'Recover your password.',
-            gradient: buttonsGradientReversed,
+            text: 'Sign in your account.',
           ),
           xsSeparator,
           const Text('OR'),
@@ -74,6 +52,7 @@ class SignInView extends StatelessWidget {
           GradientTextButton(
             onTap: () {},
             text: 'Create a new account.',
+            gradient: buttonsGradientReversed,
           ),
         ],
       ),

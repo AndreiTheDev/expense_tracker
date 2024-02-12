@@ -5,8 +5,8 @@ import '../../../../core/common_widgets/gradient_elevated_button.dart';
 import '../../../../core/common_widgets/gradient_text_button.dart';
 import '../../../../core/utils/utils.dart';
 
-class SignInView extends StatelessWidget {
-  const SignInView({super.key});
+class SignUpView extends StatelessWidget {
+  const SignUpView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +16,10 @@ class SignInView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text(
-            'Sign In',
+            'Sign Up',
             style: TextStyle(
-              color: textDark,
               fontSize: textXl,
+              color: textDark,
             ),
             textAlign: TextAlign.center,
           ),
@@ -54,18 +54,18 @@ class SignInView extends StatelessWidget {
           GradientElevatedButton(
             onTap: () {},
             displayWidget: const Text(
-              'Sign In',
+              'Sign Up',
+              textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w600,
               ),
-              textAlign: TextAlign.center,
             ),
           ),
           mediumSeparator,
           GradientTextButton(
             onTap: () {},
-            text: 'Recover your password.',
+            text: 'Sign in your account.',
             gradient: buttonsGradientReversed,
           ),
           xsSeparator,
@@ -73,7 +73,7 @@ class SignInView extends StatelessWidget {
           xsSeparator,
           GradientTextButton(
             onTap: () {},
-            text: 'Create a new account.',
+            text: 'Recover your password.',
           ),
         ],
       ),
