@@ -22,7 +22,7 @@ final ThemeData lightTheme = ThemeData(
       horizontal: mediumSize,
     ),
     filled: true,
-    fillColor: Colors.transparent,
+    fillColor: Colors.white,
     border: DecoratedInputBorder(
       shadow: const [
         GradientShadow(
