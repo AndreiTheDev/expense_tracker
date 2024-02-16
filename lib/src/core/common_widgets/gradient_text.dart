@@ -6,12 +6,14 @@ class GradientText extends StatelessWidget {
   const GradientText({
     required this.text,
     this.gradient = buttonsGradient,
+    this.alignment = TextAlign.center,
     this.fontSize,
     super.key,
   });
 
   final String text;
   final LinearGradient gradient;
+  final TextAlign alignment;
   final double? fontSize;
 
   @override
@@ -26,6 +28,7 @@ class GradientText extends StatelessWidget {
         style: TextStyle(
           fontSize: fontSize,
         ),
+        textAlign: alignment,
       ),
     );
   }
