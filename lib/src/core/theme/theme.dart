@@ -39,4 +39,11 @@ final ThemeData lightTheme = ThemeData(
       ),
     ),
   ),
+  bottomSheetTheme: const BottomSheetThemeData(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(mediumSize),
+      ),
+    ),
+  ),
 );
