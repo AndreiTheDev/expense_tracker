@@ -1,10 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../features/authentication/presentation/bloc/user_bloc.dart';
+import '../../features/authentication/presentation/blocs/user_bloc/user_bloc.dart';
 import '../../features/authentication/presentation/views/recover_password_view.dart';
 import '../../features/authentication/presentation/views/sign_in_view.dart';
-import '../../features/authentication/presentation/views/sign_up_details_view.dart';
 import '../../features/authentication/presentation/views/sign_up_view.dart';
 import '../../features/home/presentation/views/home_view.dart';
 import '../common_views/splash_view.dart';
@@ -35,14 +34,6 @@ final appRouter = GoRouter(
       name: AppRoutes.signup.name,
       pageBuilder: (context, state) =>
           const NoTransitionPage(child: SignUpView()),
-      routes: [
-        GoRoute(
-          path: AppRoutes.signupDetails.path,
-          name: AppRoutes.signupDetails.name,
-          pageBuilder: (context, state) =>
-              const NoTransitionPage(child: SignUpDetailsView()),
-        ),
-      ],
     ),
     GoRoute(
       path: AppRoutes.recoverPassword.path,
