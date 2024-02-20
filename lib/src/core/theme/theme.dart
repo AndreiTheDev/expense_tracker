@@ -17,6 +17,7 @@ final ThemeData lightTheme = ThemeData(
     bodyColor: textDark,
   ),
   inputDecorationTheme: InputDecorationTheme(
+    errorMaxLines: 2,
     contentPadding: const EdgeInsets.symmetric(
       vertical: smallSize,
       horizontal: mediumSize,
