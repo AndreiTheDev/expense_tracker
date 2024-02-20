@@ -85,10 +85,10 @@ class _SignUpUserDetailsState extends State<SignUpUserDetails> {
                     builder: (context, state) {
                       return CircleAvatar(
                         backgroundColor: Colors.grey,
-                        backgroundImage: state.photoUrl.isNotEmpty
-                            ? NetworkImage(state.photoUrl)
+                        backgroundImage: state.photoUrl.value.isNotEmpty
+                            ? NetworkImage(state.photoUrl.value)
                             : null,
-                        child: state.photoUrl.isEmpty
+                        child: state.photoUrl.value.isEmpty
                             ? const Icon(Icons.photo_camera)
                             : null,
                       );
@@ -109,7 +109,6 @@ class _SignUpUserDetailsState extends State<SignUpUserDetails> {
               decoration: InputDecoration(
                 hintText: 'Enter your complete name...',
                 errorText: state.completeName.displayError?.errorMessage,
-                errorMaxLines: 2,
               ),
               onChanged: (final String value) =>
                   context.read<SignUpFormCubit>().onCompleteNameChanged(value),
