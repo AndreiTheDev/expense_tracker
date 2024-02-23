@@ -18,6 +18,7 @@ final ThemeData lightTheme = ThemeData(
   ),
   inputDecorationTheme: InputDecorationTheme(
     errorMaxLines: 2,
+    errorStyle: const TextStyle(color: errorColor),
     contentPadding: const EdgeInsets.symmetric(
       vertical: smallSize,
       horizontal: mediumSize,
