@@ -1,7 +1,7 @@
 import 'package:formz/formz.dart';
 
 enum ProfilePhotoUrlValidationErrors {
-  empty(errorMessage: 'Your must chose a profile picture.');
+  empty(errorMessage: 'You must chose a profile picture.');
 
   const ProfilePhotoUrlValidationErrors({required this.errorMessage});
 
