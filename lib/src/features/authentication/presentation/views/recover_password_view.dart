@@ -43,7 +43,7 @@ class RecoverPasswordView extends StatelessWidget {
                       'Recover your password',
                       style: TextStyle(
                         color: textDark,
-                        fontSize: textXl,
+                        fontSize: xlText,
                       ),
                       textAlign: TextAlign.center,
                     ),

@@ -45,7 +45,7 @@ class _SignInViewState extends State<SignInView> {
                       'Sign In',
                       style: TextStyle(
                         color: textDark,
-                        fontSize: textXl,
+                        fontSize: xlText,
                       ),
                       textAlign: TextAlign.center,
                     ),
