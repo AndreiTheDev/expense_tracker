@@ -1,6 +1,6 @@
 import 'package:expense_tracker_app_bloc/src/core/error/failures.dart';
 import 'package:expense_tracker_app_bloc/src/features/authentication/domain/entities/user.dart';
-import 'package:expense_tracker_app_bloc/src/features/authentication/domain/entities/user_details.dart';
+import 'package:expense_tracker_app_bloc/src/features/authentication/domain/entities/user_signup_details.dart';
 import 'package:expense_tracker_app_bloc/src/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:expense_tracker_app_bloc/src/features/authentication/domain/usecases/sign_up_user.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,15 +12,15 @@ import 'sign_up_user_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<AuthenticationRepository>(),
-  MockSpec<UserDetailsEntity>(),
+  MockSpec<UserSignUpDetailsEntity>(),
 ])
 void main() {
-  late MockUserDetailsEntity mockUserDetails;
+  late MockUserSignUpDetailsEntity mockUserDetails;
   late SignUpUser sut;
   late MockAuthenticationRepository mockAuthenticationRepository;
 
   setUp(() {
-    mockUserDetails = MockUserDetailsEntity();
+    mockUserDetails = MockUserSignUpDetailsEntity();
     mockAuthenticationRepository = MockAuthenticationRepository();
     sut = SignUpUser(mockAuthenticationRepository);
   });
