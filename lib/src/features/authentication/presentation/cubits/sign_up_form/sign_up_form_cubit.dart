@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
+import '../../../domain/entities/user_signup_details.dart';
 import '../../models/complete_name.dart';
 import '../../models/email.dart';
 import '../../models/password.dart';

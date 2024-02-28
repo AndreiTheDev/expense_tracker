@@ -1,3 +1,4 @@
+import 'package:expense_tracker_app_bloc/src/features/authentication/domain/entities/user_signup_details.dart';
 import 'package:expense_tracker_app_bloc/src/features/authentication/presentation/cubits/sign_up_form/sign_up_form_cubit.dart';
 import 'package:expense_tracker_app_bloc/src/features/authentication/presentation/models/complete_name.dart';
 import 'package:expense_tracker_app_bloc/src/features/authentication/presentation/models/email.dart';
@@ -32,6 +33,29 @@ void main() {
     expect(
       response,
       sut,
+    );
+  });
+
+  test(
+      'SignUpFormState toUserSignUpDetailsEntity return UserSignUpDetailsEntity',
+      () {
+    const sut = SignUpFormState(
+      email: Email.dirty(value: 'test'),
+      password: Password.dirty(value: 'test'),
+      photoUrl: ProfilePhotoUrl.dirty(value: 'test'),
+      completeName: CompleteName.dirty(value: 'test'),
+    );
+
+    final response = sut.toUserSignUpDetailsEntity();
+
+    expect(
+      response,
+      const UserSignUpDetailsEntity(
+        email: 'test',
+        password: 'test',
+        completeName: 'test',
+        photoUrl: 'test',
+      ),
     );
   });
 }

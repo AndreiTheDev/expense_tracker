@@ -35,6 +35,15 @@ class SignUpFormState extends Equatable {
     );
   }
 
+  UserSignUpDetailsEntity toUserSignUpDetailsEntity() {
+    return UserSignUpDetailsEntity(
+      email: email.value,
+      password: password.value,
+      completeName: completeName.value,
+      photoUrl: photoUrl.value,
+    );
+  }
+
   @override
   List<Object> get props =>
       [email, password, isValidFirstStep, photoUrl, completeName, isValid];
