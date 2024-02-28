@@ -2,7 +2,7 @@ import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/error/failures.dart';
 import '../entities/user.dart';
-import '../entities/user_details.dart';
+import '../entities/user_signup_details.dart';
 
 abstract interface class AuthenticationRepository {
   Future<Either<Failure, UserEntity>> signInUser(
@@ -11,7 +11,7 @@ abstract interface class AuthenticationRepository {
   );
 
   Future<Either<Failure, UserEntity>> signUpUser(
-    final UserDetailsEntity userDetails,
+    final UserSignUpDetailsEntity userDetails,
   );
 
   Future<Either<Failure, void>> signOutUser();
