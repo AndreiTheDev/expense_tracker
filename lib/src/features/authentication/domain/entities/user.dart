@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 class UserEntity extends Equatable {
   final String uid;
   final String email;
-  final String fcmToken;
+  final String? fcmToken;
   final String completeName;
   final String photoUrl;
 
