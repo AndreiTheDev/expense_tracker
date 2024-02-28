@@ -1,16 +1,14 @@
-import 'dart:io';
-
 import 'package:expense_tracker_app_bloc/src/core/error/exceptions.dart';
 import 'package:expense_tracker_app_bloc/src/core/error/failures.dart';
 import 'package:expense_tracker_app_bloc/src/features/authentication/data/datasources/authentication_firebase_data_source.dart';
 import 'package:expense_tracker_app_bloc/src/features/authentication/data/datasources/authentication_firestore_data_source.dart';
-import 'package:expense_tracker_app_bloc/src/features/authentication/data/datasources/authentication_functions_data_source.dart';
+import 'package:expense_tracker_app_bloc/src/features/authentication/data/datasources/authentication_messaging_data_source.dart';
 import 'package:expense_tracker_app_bloc/src/features/authentication/data/datasources/authentication_storage_data_source.dart';
 import 'package:expense_tracker_app_bloc/src/features/authentication/data/dto/user.dart';
-import 'package:expense_tracker_app_bloc/src/features/authentication/data/dto/user_details.dart';
+import 'package:expense_tracker_app_bloc/src/features/authentication/data/dto/user_signup_details.dart';
 import 'package:expense_tracker_app_bloc/src/features/authentication/data/repositories/authentication_repository_impl.dart';
 import 'package:expense_tracker_app_bloc/src/features/authentication/domain/entities/user.dart';
-import 'package:expense_tracker_app_bloc/src/features/authentication/domain/entities/user_details.dart';
+import 'package:expense_tracker_app_bloc/src/features/authentication/domain/entities/user_signup_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
@@ -23,11 +21,10 @@ import 'authentication_repository_impl_test.mocks.dart';
   [
     MockSpec<AuthenticationFirebaseDataSourceImpl>(),
     MockSpec<AuthenticationFirestoreDataSourceImpl>(),
-    MockSpec<AuthenticationFunctionsDataSourceImpl>(),
     MockSpec<AuthenticationStorageDataSourceImpl>(),
-    MockSpec<File>(),
-    MockSpec<UserDetailsDto>(),
-    MockSpec<UserDetailsEntity>(),
+    MockSpec<AuthenticationMessagingDataSourceImpl>(),
+    MockSpec<UserSignUpDetailsDto>(),
+    MockSpec<UserSignUpDetailsEntity>(),
     MockSpec<User>(),
   ],
 )
@@ -38,8 +35,8 @@ void main() {
     late MockUser mockUser;
     late MockAuthenticationFirebaseDataSourceImpl mockFirebaseDataSource;
     late MockAuthenticationFirestoreDataSourceImpl mockFirestoreDataSource;
-    late MockAuthenticationFunctionsDataSourceImpl mockFunctionsDataSource;
     late MockAuthenticationStorageDataSourceImpl mockStorageDataSource;
+    late MockAuthenticationMessagingDataSourceImpl mockMessagingDataSource;
     late AuthenticationRepositoryImpl sut;
 
     setUp(() {
@@ -54,13 +51,13 @@ void main() {
       mockUser = MockUser();
       mockFirebaseDataSource = MockAuthenticationFirebaseDataSourceImpl();
       mockFirestoreDataSource = MockAuthenticationFirestoreDataSourceImpl();
-      mockFunctionsDataSource = MockAuthenticationFunctionsDataSourceImpl();
       mockStorageDataSource = MockAuthenticationStorageDataSourceImpl();
+      mockMessagingDataSource = MockAuthenticationMessagingDataSourceImpl();
       sut = AuthenticationRepositoryImpl(
         firebaseDataSource: mockFirebaseDataSource,
         firestoreDataSource: mockFirestoreDataSource,
-        functionsDataSource: mockFunctionsDataSource,
         storageDataSource: mockStorageDataSource,
+        messagingDataSource: mockMessagingDataSource,
       );
     });
 
@@ -241,6 +238,25 @@ void main() {
       );
     });
 
+    test('Sign in user fails with FirebaseException', () async {
+      when(mockFirebaseDataSource.signInUser('test@email.com', 'testpassword'))
+          .thenAnswer((realInvocation) async => mockUser);
+      when(mockUser.uid).thenReturn('testUid');
+      when(mockFirestoreDataSource.fetchUserData('testUid')).thenThrow(
+        FirebaseException(plugin: '', message: 'test error'),
+      );
+
+      final response = await sut.signInUser('test@email.com', 'testpassword');
+      expect(
+        response,
+        equals(
+          const Left(
+            AuthFailure(message: 'test error'),
+          ),
+        ),
+      );
+    });
+
     test('Sign in user fails with unknownerror', () async {
       when(mockFirebaseDataSource.signInUser('test@email.com', 'testpassword'))
           .thenThrow(Exception());
@@ -258,28 +274,16 @@ void main() {
 
     test('Sign up user successfully', () async {
       provideDummy<Either<Failure, UserDto>>(Right(userDto));
-      final mockFile = MockFile();
-      final userDetailsEntity = UserDetailsEntity(
+      const userDetailsEntity = UserSignUpDetailsEntity(
         email: 'test@email.com',
         password: 'testpassword',
         completeName: 'test test',
-        fcmToken: 'testFcm',
-        photo: mockFile,
+        photoUrl: 'test',
       );
 
       when(mockFirebaseDataSource.signUpUser('test@email.com', 'testpassword'))
           .thenAnswer((realInvocation) async => mockUser);
       when(mockUser.uid).thenReturn('testUid');
-      when(
-        mockFunctionsDataSource.addUserDetailsToDb(
-          'testUid',
-          UserDetailsDto.fromEntity(userDetailsEntity),
-        ),
-      ).thenAnswer((realInvocation) async => true);
-      when(mockStorageDataSource.addPhotoToStorage(mockFile))
-          .thenAnswer((realInvocation) async => 'photoUrl');
-      when(mockFirestoreDataSource.postUserPhoto('testUid', 'photoUrl'))
-          .thenAnswer((realInvocation) => Future(() => null));
       when(mockFirestoreDataSource.fetchUserData('testUid'))
           .thenAnswer((realInvocation) async => userDto);
 
@@ -289,13 +293,11 @@ void main() {
 
     test('Sign up user fails', () async {
       provideDummy<Either<Failure, UserDto>>(Right(userDto));
-      final mockFile = MockFile();
-      final userDetailsEntity = UserDetailsEntity(
+      const userDetailsEntity = UserSignUpDetailsEntity(
         email: 'test@email.com',
         password: 'testpassword',
         completeName: 'test test',
-        fcmToken: 'testFcm',
-        photo: mockFile,
+        photoUrl: 'test',
       );
 
       when(mockFirebaseDataSource.signUpUser('test@email.com', 'testpassword'))
@@ -319,13 +321,11 @@ void main() {
 
     test('Sign up user fails', () async {
       provideDummy<Either<Failure, UserDto>>(Right(userDto));
-      final mockFile = MockFile();
-      final userDetailsEntity = UserDetailsEntity(
+      const userDetailsEntity = UserSignUpDetailsEntity(
         email: 'test@email.com',
         password: 'testpassword',
         completeName: 'test test',
-        fcmToken: 'testFcm',
-        photo: mockFile,
+        photoUrl: 'test',
       );
 
       when(mockFirebaseDataSource.signUpUser('test@email.com', 'testpassword'))

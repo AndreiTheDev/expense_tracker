@@ -1,29 +1,29 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
 import '../../domain/entities/user.dart';
-import '../../domain/entities/user_details.dart';
+import '../../domain/entities/user_signup_details.dart';
 import '../../domain/repositories/authentication_repository.dart';
 import '../datasources/authentication_firebase_data_source.dart';
 import '../datasources/authentication_firestore_data_source.dart';
-import '../datasources/authentication_functions_data_source.dart';
+import '../datasources/authentication_messaging_data_source.dart';
 import '../datasources/authentication_storage_data_source.dart';
-import '../dto/user.dart';
-import '../dto/user_details.dart';
+import '../dto/user_signup_details.dart';
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
   final AuthenticationFirebaseDataSource firebaseDataSource;
   final AuthenticationFirestoreDataSource firestoreDataSource;
-  final AuthenticationFunctionsDataSource functionsDataSource;
   final AuthenticationStorageDataSource storageDataSource;
+  final AuthenticationMessagingDataSource messagingDataSource;
 
   AuthenticationRepositoryImpl({
     required this.firebaseDataSource,
     required this.firestoreDataSource,
-    required this.functionsDataSource,
     required this.storageDataSource,
+    required this.messagingDataSource,
   });
 
   @override
@@ -76,7 +76,12 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   ) async {
     try {
       final userResponse = await firebaseDataSource.signInUser(email, password);
+
+      final token = await messagingDataSource.getFcmToken();
+      await firestoreDataSource.postUserFcmToken(userResponse.uid, token);
+
       final userDto = await firestoreDataSource.fetchUserData(userResponse.uid);
+
       if (userDto != null) {
         return Right(userDto);
       }
@@ -85,6 +90,10 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return Left(AuthFailure(message: e.message));
     } on FirestoreException catch (e) {
       return Left(AuthFailure(message: e.message));
+    } on FirebaseException catch (e) {
+      return Left(
+        AuthFailure(message: e.message ?? 'An unknown error happened.'),
+      );
     } on Exception {
       return const Left(AuthFailure(message: 'An unknown error happened.'));
     }
@@ -92,20 +101,24 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
   @override
   Future<Either<Failure, UserEntity>> signUpUser(
-    final UserDetailsEntity userDetails,
+    final UserSignUpDetailsEntity userDetailsEntity,
   ) async {
     try {
-      final userDetailsDto = UserDetailsDto.fromEntity(userDetails);
-      final firebaseUser = await firebaseDataSource.signUpUser(
+      final UserSignUpDetailsDto userDetailsDto =
+          UserSignUpDetailsDto.fromEntity(userDetailsEntity);
+      final userResponse = await firebaseDataSource.signUpUser(
         userDetailsDto.email,
         userDetailsDto.password,
       );
-      final bool isSuccess =
-          await _sendUserData(firebaseUser.uid, userDetailsDto);
-      UserDto? userDto;
-      if (isSuccess) {
-        userDto = await firestoreDataSource.fetchUserData(firebaseUser.uid);
-      }
+      final fcmToken = await messagingDataSource.getFcmToken();
+
+      await firestoreDataSource.postUserSignUpDataAndFcm(
+        userResponse.uid,
+        userDetailsDto,
+        fcmToken,
+      );
+
+      final userDto = await firestoreDataSource.fetchUserData(userResponse.uid);
       if (userDto != null) {
         return Right(userDto);
       }
@@ -125,21 +138,5 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     } on Exception {
       return const Left(AuthFailure(message: 'An unknown error occured'));
     }
-  }
-
-  //adding user photo to storage location
-  //calling backend function to create user db document and hydrate it with data
-  Future<bool> _sendUserData(
-    final String uid,
-    final UserDetailsDto userDetailsDto,
-  ) async {
-    final photoUrl =
-        await storageDataSource.addPhotoToStorage(userDetailsDto.photo);
-    await firestoreDataSource.postUserPhoto(uid, photoUrl);
-    final isSuccess = await functionsDataSource.addUserDetailsToDb(
-      uid,
-      userDetailsDto,
-    );
-    return isSuccess;
   }
 }
