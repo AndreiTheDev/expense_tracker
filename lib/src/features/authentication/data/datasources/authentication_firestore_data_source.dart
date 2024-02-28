@@ -2,10 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../dto/user.dart';
+import '../dto/user_signup_details.dart';
 
 abstract interface class AuthenticationFirestoreDataSource {
-  Future<void> postUserPhoto(final String uid, final String photoUrl);
-  Future<void> postUserData(final UserDto userData);
+  Future<void> postUserSignUpDataAndFcm(
+    final String uid,
+    final UserSignUpDetailsDto userData,
+    final String? fcmToken,
+  );
+  Future<void> postUserFcmToken(final String uid, final String? fcmToken);
   Future<UserDto?> fetchUserData(final String uid);
 }
 
@@ -34,18 +39,29 @@ class AuthenticationFirestoreDataSourceImpl
   }
 
   @override
-  Future<void> postUserData(final UserDto userData) async {
-    await _firestoreInstance
-        .collection('users')
-        .doc(userData.uid)
-        .set(userData.toJson(), SetOptions(merge: true));
+  Future<void> postUserSignUpDataAndFcm(
+    final String uid,
+    final UserSignUpDetailsDto userData,
+    final String? fcmToken,
+  ) async {
+    await _firestoreInstance.collection('users').doc(uid).set(
+      {
+        ...userData.toJson(),
+        'fcmToken': fcmToken,
+        'uid': uid,
+      },
+      SetOptions(merge: true),
+    );
   }
 
   @override
-  Future<void> postUserPhoto(final String uid, final String photoUrl) async {
-    await _firestoreInstance
-        .collection('users')
-        .doc(uid)
-        .set({'photoUrl': photoUrl}, SetOptions(merge: true));
+  Future<void> postUserFcmToken(
+    final String uid,
+    final String? fcmToken,
+  ) async {
+    await _firestoreInstance.collection('users').doc(uid).set(
+      {'fcmToken': fcmToken ?? ''},
+      SetOptions(merge: true),
+    );
   }
 }
