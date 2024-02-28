@@ -1,20 +1,16 @@
-import 'dart:io';
-
 import 'package:equatable/equatable.dart';
 
-class UserDetailsEntity extends Equatable {
+class UserSignUpDetailsEntity extends Equatable {
   final String email;
   final String password;
   final String completeName;
-  final String fcmToken;
-  final File photo;
+  final String photoUrl;
 
-  const UserDetailsEntity({
+  const UserSignUpDetailsEntity({
     required this.email,
     required this.password,
     required this.completeName,
-    required this.fcmToken,
-    required this.photo,
+    required this.photoUrl,
   });
 
   @override
@@ -22,7 +18,6 @@ class UserDetailsEntity extends Equatable {
         email,
         password,
         completeName,
-        fcmToken,
-        photo,
+        photoUrl,
       ];
 }
