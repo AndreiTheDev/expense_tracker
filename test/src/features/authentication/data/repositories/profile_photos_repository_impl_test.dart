@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_tracker_app_bloc/src/core/error/failures.dart';
 import 'package:expense_tracker_app_bloc/src/features/authentication/data/datasources/authentication_storage_data_source.dart';
 import 'package:expense_tracker_app_bloc/src/features/authentication/data/repositories/profile_photos_repository_impl.dart';
@@ -48,6 +49,20 @@ void main() {
     expect(
       response,
       const Left(AuthFailure(message: 'An unknown error occured.')),
+    );
+    verify(mockStorageDataSource.fetchProfilePhotosUrls()).called(1);
+    verifyNoMoreInteractions(mockStorageDataSource);
+  });
+
+  test('Fetch profile photos urls with FirebaseException', () async {
+    when(mockStorageDataSource.fetchProfilePhotosUrls())
+        .thenThrow(FirebaseException(plugin: '', message: 'test error'));
+
+    final response = await sut.fetchProfilePhotosUrls();
+
+    expect(
+      response,
+      const Left(AuthFailure(message: 'test error')),
     );
     verify(mockStorageDataSource.fetchProfilePhotosUrls()).called(1);
     verifyNoMoreInteractions(mockStorageDataSource);
