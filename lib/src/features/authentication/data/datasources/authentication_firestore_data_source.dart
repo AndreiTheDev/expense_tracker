@@ -31,7 +31,7 @@ class AuthenticationFirestoreDataSourceImpl
     if (json != null) {
       return UserDto.fromJson(json);
     } else {
-      throw FirestoreException(
+      throw AuthException(
         code: 'user-fetch',
         message: 'Unable to get user data.',
       );

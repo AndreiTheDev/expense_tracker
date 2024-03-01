@@ -88,8 +88,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return const Left(AuthFailure(message: 'Unable to sign in user.'));
     } on AuthException catch (e) {
       return Left(AuthFailure(message: e.message));
-    } on FirestoreException catch (e) {
-      return Left(AuthFailure(message: e.message));
     } on FirebaseException catch (e) {
       return Left(
         AuthFailure(message: e.message ?? 'An unknown error happened.'),
