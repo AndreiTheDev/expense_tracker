@@ -216,28 +216,6 @@ void main() {
       );
     });
 
-    test('Sign in user fails with FirestoreException', () async {
-      when(mockFirebaseDataSource.signInUser('test@email.com', 'testpassword'))
-          .thenAnswer((realInvocation) async => mockUser);
-      when(mockUser.uid).thenReturn('testUid');
-      when(mockFirestoreDataSource.fetchUserData('testUid')).thenThrow(
-        FirestoreException(
-          code: 'user-fetch',
-          message: 'Unable to get user data.',
-        ),
-      );
-
-      final response = await sut.signInUser('test@email.com', 'testpassword');
-      expect(
-        response,
-        equals(
-          const Left(
-            AuthFailure(message: 'Unable to get user data.'),
-          ),
-        ),
-      );
-    });
-
     test('Sign in user fails with FirebaseException', () async {
       when(mockFirebaseDataSource.signInUser('test@email.com', 'testpassword'))
           .thenAnswer((realInvocation) async => mockUser);

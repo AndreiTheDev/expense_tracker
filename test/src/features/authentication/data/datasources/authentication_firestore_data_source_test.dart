@@ -58,7 +58,7 @@ void main() {
 
     expect(
       () => sut.fetchUserData('testuid'),
-      throwsA(isA<FirestoreException>()),
+      throwsA(isA<AuthException>()),
     );
   });
 
