@@ -1,9 +1,7 @@
-import 'dart:io';
-
 import 'package:bloc_test/bloc_test.dart';
 import 'package:expense_tracker_app_bloc/src/core/error/failures.dart';
 import 'package:expense_tracker_app_bloc/src/features/authentication/domain/entities/user.dart';
-import 'package:expense_tracker_app_bloc/src/features/authentication/domain/entities/user_details.dart';
+import 'package:expense_tracker_app_bloc/src/features/authentication/domain/entities/user_signup_details.dart';
 import 'package:expense_tracker_app_bloc/src/features/authentication/domain/usecases/delete_user.dart';
 import 'package:expense_tracker_app_bloc/src/features/authentication/domain/usecases/is_signed_in_user.dart';
 import 'package:expense_tracker_app_bloc/src/features/authentication/domain/usecases/recover_password.dart';
@@ -29,7 +27,7 @@ import 'user_bloc_test.mocks.dart';
 void main() {
   group('UserBloc tests', () {
     late UserEntity user;
-    late UserDetailsEntity userDetailsEntity;
+    late UserSignUpDetailsEntity userDetailsEntity;
     late MockIsSignedInUser mockIsSignedInUser;
     late MockSignInUser mockSignInUser;
     late MockSignUpUser mockSignUpUser;
@@ -45,12 +43,11 @@ void main() {
         completeName: 'test test',
         photoUrl: 'test',
       );
-      userDetailsEntity = UserDetailsEntity(
+      userDetailsEntity = const UserSignUpDetailsEntity(
         email: 'test@gmail.com',
         password: 'testpass',
         completeName: 'test test',
-        fcmToken: 'testFcm',
-        photo: File(''),
+        photoUrl: 'test',
       );
       mockIsSignedInUser = MockIsSignedInUser();
       mockSignInUser = MockSignInUser();
@@ -111,7 +108,7 @@ void main() {
         );
       },
       act: (bloc) => bloc.add(UserStarted()),
-      expect: () => [UserLoading(), const UserError('test')],
+      expect: () => [UserLoading(), UserUnauthenticated()],
     );
 
     blocTest(
@@ -145,7 +142,7 @@ void main() {
       act: (bloc) => bloc.add(
         const UserSignInEvent(email: 'test@gmail.com', password: 'testpass'),
       ),
-      expect: () => [UserLoading(), const UserError('test')],
+      expect: () => [UserLoading(), UserUnauthenticated()],
     );
 
     blocTest(
@@ -179,7 +176,7 @@ void main() {
       act: (bloc) => bloc.add(
         UserSignUpEvent(userDetailsEntity: userDetailsEntity),
       ),
-      expect: () => [UserLoading(), const UserError('test')],
+      expect: () => [UserLoading(), UserUnauthenticated()],
     );
 
     blocTest(
@@ -213,7 +210,7 @@ void main() {
       act: (bloc) => bloc.add(
         UserSignOutEvent(),
       ),
-      expect: () => [const UserError('test')],
+      expect: () => [],
     );
 
     blocTest(
@@ -247,7 +244,7 @@ void main() {
       act: (bloc) => bloc.add(
         const UserRecoverPasswordEvent(email: 'test@gmail.com'),
       ),
-      expect: () => [UserLoading(), const UserError('test')],
+      expect: () => [UserLoading(), UserUnauthenticated()],
     );
 
     blocTest(
@@ -281,7 +278,7 @@ void main() {
       act: (bloc) => bloc.add(
         UserDeleteUserEvent(),
       ),
-      expect: () => [UserLoading(), const UserError('test')],
+      expect: () => [UserLoading()],
     );
   });
 }

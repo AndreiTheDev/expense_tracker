@@ -1,8 +1,9 @@
+import 'package:bloc_presentation/bloc_presentation.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../domain/entities/user.dart';
-import '../../../domain/entities/user_details.dart';
+import '../../../domain/entities/user_signup_details.dart';
 import '../../../domain/usecases/delete_user.dart';
 import '../../../domain/usecases/is_signed_in_user.dart';
 import '../../../domain/usecases/recover_password.dart';
@@ -13,7 +14,8 @@ import '../../../domain/usecases/sign_up_user.dart';
 part 'user_event.dart';
 part 'user_state.dart';
 
-class UserBloc extends Bloc<UserEvent, UserState> {
+class UserBloc extends Bloc<UserEvent, UserState>
+    with BlocPresentationMixin<UserState, UserEvent> {
   final IsSignedInUser _isSignedInUser;
   final SignInUser _signInUser;
   final SignUpUser _signUpUser;
@@ -48,7 +50,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   ) async {
     emit(UserLoading());
     final response = await _isSignedInUser();
-    response.fold((left) => emit(UserError(left.message)), (right) {
+    response.fold((left) {
+      emitPresentation(UserErrorEvent(message: left.message));
+      emit(UserUnauthenticated());
+    }, (right) {
       if (right != null) {
         emit(UserAuthenticated(right));
       } else {
@@ -61,7 +66,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       final UserSignInEvent event, final Emitter<UserState> emit) async {
     emit(UserLoading());
     final response = await _signInUser(event.email, event.password);
-    response.fold((l) => emit(UserError(l.message)), (right) {
+    response.fold((left) {
+      emitPresentation(UserErrorEvent(message: left.message));
+      emit(UserUnauthenticated());
+    }, (right) {
       emit(UserAuthenticated(right));
     });
   }
@@ -73,7 +81,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     emit(UserLoading());
     final response = await _signUpUser(event.userDetailsEntity);
     response.fold(
-      (left) => emit(UserError(left.message)),
+      (left) {
+        emitPresentation(UserErrorEvent(message: left.message));
+        emit(UserUnauthenticated());
+      },
       (right) => emit(UserAuthenticated(right)),
     );
   }
@@ -84,8 +95,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   ) async {
     final response = await _signOutUser();
     response.fold(
-      (l) => emit(UserError(l.message)),
-      (r) => emit(UserUnauthenticated()),
+      (left) => emitPresentation(UserErrorEvent(message: left.message)),
+      (right) => emit(UserUnauthenticated()),
     );
   }
 
@@ -96,8 +107,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     emit(UserLoading());
     final response = await _recoverPassword(event.email);
     response.fold(
-      (l) => emit(UserError(l.message)),
-      (r) => emit(UserUnauthenticated()),
+      (left) {
+        emitPresentation(UserErrorEvent(message: left.message));
+        emit(UserUnauthenticated());
+      },
+      (right) => emit(UserUnauthenticated()),
     );
   }
 
@@ -108,7 +122,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     emit(UserLoading());
     final response = await _deleteUser();
     response.fold(
-      (left) => emit(UserError(left.message)),
+      (left) => emitPresentation(UserErrorEvent(message: left.message)),
       (right) => emit(UserUnauthenticated()),
     );
   }

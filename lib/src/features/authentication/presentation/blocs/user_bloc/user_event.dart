@@ -2,12 +2,12 @@ part of 'user_bloc.dart';
 
 sealed class UserEvent extends Equatable {
   const UserEvent();
+}
 
+final class UserStarted extends UserEvent {
   @override
   List<Object> get props => [];
 }
-
-final class UserStarted extends UserEvent {}
 
 final class UserSignInEvent extends UserEvent {
   final String email;
@@ -20,7 +20,7 @@ final class UserSignInEvent extends UserEvent {
 }
 
 final class UserSignUpEvent extends UserEvent {
-  final UserDetailsEntity userDetailsEntity;
+  final UserSignUpDetailsEntity userDetailsEntity;
 
   const UserSignUpEvent({required this.userDetailsEntity});
 
@@ -28,7 +28,10 @@ final class UserSignUpEvent extends UserEvent {
   List<Object> get props => [userDetailsEntity];
 }
 
-final class UserSignOutEvent extends UserEvent {}
+final class UserSignOutEvent extends UserEvent {
+  @override
+  List<Object> get props => [];
+}
 
 final class UserRecoverPasswordEvent extends UserEvent {
   final String email;
@@ -39,4 +42,14 @@ final class UserRecoverPasswordEvent extends UserEvent {
   List<Object> get props => [email];
 }
 
-final class UserDeleteUserEvent extends UserEvent {}
+final class UserDeleteUserEvent extends UserEvent {
+  @override
+  List<Object> get props => [];
+}
+
+final class UserErrorEvent extends UserEvent {
+  final String message;
+  const UserErrorEvent({required this.message});
+  @override
+  List<Object?> get props => [message];
+}
