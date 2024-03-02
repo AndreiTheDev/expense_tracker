@@ -92,6 +92,26 @@ void main() {
       verifyNoMoreInteractions(mockFirebaseDataSource);
     });
 
+    test('Delete user returns authfailure from FirebaseAuthException',
+        () async {
+      when(mockFirebaseDataSource.deleteUser()).thenThrow(
+        FirebaseAuthException(code: 'test'),
+      );
+
+      final response = await sut.deleteUser();
+
+      expect(
+        response,
+        equals(
+          const Left(
+            AuthFailure(message: 'An unknown error occured.'),
+          ),
+        ),
+      );
+      verify(mockFirebaseDataSource.deleteUser()).called(1);
+      verifyNoMoreInteractions(mockFirebaseDataSource);
+    });
+
     test('Delete user returns unknownfailure', () async {
       when(mockFirebaseDataSource.deleteUser()).thenThrow(
         Exception(),
@@ -103,7 +123,7 @@ void main() {
         response,
         equals(
           const Left(
-            AuthFailure(message: 'An unknown error occured'),
+            AuthFailure(message: 'An unknown error occured.'),
           ),
         ),
       );
@@ -145,6 +165,20 @@ void main() {
       verifyNoMoreInteractions(mockFirebaseDataSource);
     });
 
+    test('Is signed it returns authfailure from FirebaseException', () async {
+      when(mockFirebaseDataSource.isSignedIn())
+          .thenThrow(FirebaseException(plugin: '', code: 'test'));
+
+      final response = await sut.isSignedIn();
+
+      expect(
+        response,
+        const Left(AuthFailure(message: 'An unknown error occured.')),
+      );
+      verify(mockFirebaseDataSource.isSignedIn()).called(1);
+      verifyNoMoreInteractions(mockFirebaseDataSource);
+    });
+
     test('Is signed it returns unknownerror', () async {
       when(mockFirebaseDataSource.isSignedIn()).thenThrow(Exception());
 
@@ -170,9 +204,25 @@ void main() {
       verifyNoMoreInteractions(mockFirebaseDataSource);
     });
 
-    test('Recover password throws error', () async {
+    test('Recover password returns authfailure', () async {
       when(mockFirebaseDataSource.recoverPassword('test@gmail.com'))
           .thenThrow(Exception());
+
+      final response = await sut.recoverPassword('test@gmail.com');
+
+      expect(
+        response,
+        const Left(AuthFailure(message: 'An unknown error occured.')),
+      );
+      verify(mockFirebaseDataSource.recoverPassword('test@gmail.com'))
+          .called(1);
+      verifyNoMoreInteractions(mockFirebaseDataSource);
+    });
+
+    test('Recover password returns authfailure from FirebaseAuthException',
+        () async {
+      when(mockFirebaseDataSource.recoverPassword('test@gmail.com'))
+          .thenThrow(FirebaseAuthException(code: 'test'));
 
       final response = await sut.recoverPassword('test@gmail.com');
 
@@ -229,7 +279,26 @@ void main() {
         response,
         equals(
           const Left(
-            AuthFailure(message: 'test error'),
+            AuthFailure(message: 'An unknown error occured.'),
+          ),
+        ),
+      );
+    });
+
+    test('Sign in user fails with FirebaseAuthException', () async {
+      when(mockFirebaseDataSource.signInUser('test@email.com', 'testpassword'))
+          .thenAnswer((realInvocation) async => mockUser);
+      when(mockUser.uid).thenReturn('testUid');
+      when(mockFirestoreDataSource.fetchUserData('testUid')).thenThrow(
+        FirebaseAuthException(code: 'test', message: 'test error'),
+      );
+
+      final response = await sut.signInUser('test@email.com', 'testpassword');
+      expect(
+        response,
+        equals(
+          const Left(
+            AuthFailure(message: 'An unknown error occured.'),
           ),
         ),
       );
@@ -244,7 +313,7 @@ void main() {
         response,
         equals(
           const Left(
-            AuthFailure(message: 'An unknown error happened.'),
+            AuthFailure(message: 'An unknown error occured.'),
           ),
         ),
       );
@@ -269,7 +338,7 @@ void main() {
       expect(response, equals(Right(userDto)));
     });
 
-    test('Sign up user fails', () async {
+    test('Sign up user fails from AuthException', () async {
       provideDummy<Either<Failure, UserDto>>(Right(userDto));
       const userDetailsEntity = UserSignUpDetailsEntity(
         email: 'test@email.com',
@@ -297,7 +366,54 @@ void main() {
       );
     });
 
-    test('Sign up user fails', () async {
+    test('Sign up user returns authfailure from FirebaseAuthException',
+        () async {
+      provideDummy<Either<Failure, UserDto>>(Right(userDto));
+      const userDetailsEntity = UserSignUpDetailsEntity(
+        email: 'test@email.com',
+        password: 'testpassword',
+        completeName: 'test test',
+        photoUrl: 'test',
+      );
+
+      when(mockFirebaseDataSource.signUpUser('test@email.com', 'testpassword'))
+          .thenThrow(FirebaseAuthException(code: 'test'));
+
+      final response = await sut.signUpUser(userDetailsEntity);
+      expect(
+        response,
+        equals(
+          const Left(
+            AuthFailure(message: 'An unknown error occured.'),
+          ),
+        ),
+      );
+    });
+
+    test('Sign up user returns authfailure from FirebaseException', () async {
+      provideDummy<Either<Failure, UserDto>>(Right(userDto));
+      const userDetailsEntity = UserSignUpDetailsEntity(
+        email: 'test@email.com',
+        password: 'testpassword',
+        completeName: 'test test',
+        photoUrl: 'test',
+      );
+
+      when(mockFirebaseDataSource.signUpUser('test@email.com', 'testpassword'))
+          .thenThrow(FirebaseException(plugin: '', code: 'test'));
+
+      final response = await sut.signUpUser(userDetailsEntity);
+      expect(
+        response,
+        equals(
+          const Left(
+            AuthFailure(message: 'An unknown error occured.'),
+          ),
+        ),
+      );
+    });
+
+    test('Sign up user returns authfailure from Exception', () async {
       provideDummy<Either<Failure, UserDto>>(Right(userDto));
       const userDetailsEntity = UserSignUpDetailsEntity(
         email: 'test@email.com',
@@ -314,7 +430,7 @@ void main() {
         response,
         equals(
           const Left(
-            AuthFailure(message: 'An unknown error happened.'),
+            AuthFailure(message: 'An unknown error occured.'),
           ),
         ),
       );
@@ -330,13 +446,27 @@ void main() {
       verifyNoMoreInteractions(mockFirebaseDataSource);
     });
 
-    test('Sign out user returns error', () async {
+    test('Sign out user fails with authfailure from exception', () async {
       when(mockFirebaseDataSource.signOutUser()).thenThrow(Exception());
 
       final response = await sut.signOutUser();
       expect(
         response,
         const Left(AuthFailure(message: 'An unknown error occured')),
+      );
+      verify(mockFirebaseDataSource.signOutUser()).called(1);
+      verifyNoMoreInteractions(mockFirebaseDataSource);
+    });
+
+    test('Sign out user fails with authfailure from FirebaseAuthException',
+        () async {
+      when(mockFirebaseDataSource.signOutUser())
+          .thenThrow(FirebaseAuthException(code: 'test'));
+
+      final response = await sut.signOutUser();
+      expect(
+        response,
+        const Left(AuthFailure(message: 'An unknown error occured.')),
       );
       verify(mockFirebaseDataSource.signOutUser()).called(1);
       verifyNoMoreInteractions(mockFirebaseDataSource);

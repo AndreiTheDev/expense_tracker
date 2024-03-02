@@ -1,5 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/error/exceptions.dart';
@@ -33,8 +33,10 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return const Right(null);
     } on AuthException catch (e) {
       return Left(AuthFailure(message: e.message));
+    } on FirebaseAuthException catch (e) {
+      return Left(AuthFailure.fromFirebaseException(e.code));
     } on Exception {
-      return const Left(AuthFailure(message: 'An unknown error occured'));
+      return const Left(AuthFailure(message: 'An unknown error occured.'));
     }
   }
 
@@ -54,6 +56,8 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       );
     } on AuthException catch (e) {
       return Left(AuthFailure(message: e.message));
+    } on FirebaseException catch (e) {
+      return Left(AuthFailure.fromFirestoreException(e.code));
     } on Exception {
       return const Left(AuthFailure(message: 'An unknown error occured.'));
     }
@@ -64,6 +68,8 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     try {
       await firebaseDataSource.recoverPassword(email);
       return const Right(null);
+    } on FirebaseAuthException catch (e) {
+      return Left(AuthFailure.fromFirebaseException(e.code));
     } on Exception {
       return const Left(AuthFailure(message: 'An unknown error occured.'));
     }
@@ -88,12 +94,14 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return const Left(AuthFailure(message: 'Unable to sign in user.'));
     } on AuthException catch (e) {
       return Left(AuthFailure(message: e.message));
+    } on FirebaseAuthException catch (e) {
+      return Left(AuthFailure.fromFirebaseException(e.code));
     } on FirebaseException catch (e) {
       return Left(
-        AuthFailure(message: e.message ?? 'An unknown error happened.'),
+        AuthFailure.fromFirestoreException(e.code),
       );
     } on Exception {
-      return const Left(AuthFailure(message: 'An unknown error happened.'));
+      return const Left(AuthFailure(message: 'An unknown error occured.'));
     }
   }
 
@@ -123,8 +131,14 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return const Left(AuthFailure(message: 'Unable to sign up user.'));
     } on AuthException catch (e) {
       return Left(AuthFailure(message: e.message));
+    } on FirebaseAuthException catch (e) {
+      return Left(AuthFailure.fromFirebaseException(e.code));
+    } on FirebaseException catch (e) {
+      return Left(
+        AuthFailure.fromFirestoreException(e.code),
+      );
     } on Exception {
-      return const Left(AuthFailure(message: 'An unknown error happened.'));
+      return const Left(AuthFailure(message: 'An unknown error occured.'));
     }
   }
 
@@ -133,6 +147,8 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     try {
       await firebaseDataSource.signOutUser();
       return const Right(null);
+    } on FirebaseAuthException catch (e) {
+      return Left(AuthFailure.fromFirebaseException(e.code));
     } on Exception {
       return const Left(AuthFailure(message: 'An unknown error occured'));
     }
