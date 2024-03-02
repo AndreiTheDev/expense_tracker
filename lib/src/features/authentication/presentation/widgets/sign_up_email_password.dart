@@ -44,7 +44,7 @@ class _SignUpEmailPasswordState extends State<SignUpEmailPassword> {
         const Text(
           'Sign Up',
           style: TextStyle(
-            fontSize: textXl,
+            fontSize: xlText,
             color: textDark,
           ),
           textAlign: TextAlign.center,
@@ -122,7 +122,7 @@ class _SignUpEmailPasswordState extends State<SignUpEmailPassword> {
         mediumSeparator,
         GradientElevatedButton(
           onTap: () async {
-            context.read<SignUpFormCubit>().isValidFirstStep();
+            context.read<SignUpFormCubit>().validateFirstStep();
           },
           displayWidget: const Text(
             'Sign Up',

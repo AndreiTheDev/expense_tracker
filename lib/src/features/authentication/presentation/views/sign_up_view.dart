@@ -1,8 +1,10 @@
+import 'package:bloc_presentation/bloc_presentation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../injection_container.dart';
 import '../../../../core/utils/utils.dart';
+import '../blocs/user_bloc/user_bloc.dart';
 import '../cubits/sign_up_form/sign_up_form_cubit.dart';
 import '../widgets/sign_up_email_password.dart';
 import '../widgets/sign_up_user_details.dart';
@@ -20,9 +22,25 @@ class SignUpView extends StatelessWidget {
           child: BlocBuilder<SignUpFormCubit, SignUpFormState>(
             builder: (context, state) {
               if (!state.isValidFirstStep) {
-                return const SignUpEmailPassword();
+                return BlocPresentationListener<UserBloc, UserEvent>(
+                  listener: (context, event) {
+                    if (event is UserErrorEvent) {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(displayErrorSnackbar(event.message));
+                    }
+                  },
+                  child: const SignUpEmailPassword(),
+                );
               }
-              return const SignUpUserDetails();
+              return BlocPresentationListener<UserBloc, UserEvent>(
+                listener: (context, event) {
+                  if (event is UserErrorEvent) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(displayErrorSnackbar(event.message));
+                  }
+                },
+                child: const SignUpUserDetails(),
+              );
             },
           ),
         ),

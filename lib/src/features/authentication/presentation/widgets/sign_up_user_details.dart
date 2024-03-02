@@ -7,6 +7,8 @@ import '../../../../core/common_widgets/custom_appbar_button.dart';
 import '../../../../core/common_widgets/gradient_elevated_button.dart';
 import '../../../../core/common_widgets/gradient_text.dart';
 import '../../../../core/utils/utils.dart';
+// import '../blocs/user_bloc/user_bloc.dart';
+import '../blocs/user_bloc/user_bloc.dart';
 import '../cubits/profile_photos_urls/profile_photos_urls_cubit.dart';
 import '../cubits/sign_up_form/sign_up_form_cubit.dart';
 
@@ -41,7 +43,7 @@ class _SignUpUserDetailsState extends State<SignUpUserDetails> {
           alignment: Alignment.centerLeft,
           child: CustomAppbarButton(
             onTap: () {
-              context.read<SignUpFormCubit>().invalidateFirstStep();
+              context.read<SignUpFormCubit>().goToFirstStep();
             },
             icon: Icons.arrow_back,
           ),
@@ -49,58 +51,75 @@ class _SignUpUserDetailsState extends State<SignUpUserDetails> {
         mediumSeparator,
         const GradientText(
           text: "Let's setup your profile",
-          fontSize: textMedium,
+          fontSize: mediumText,
         ),
         mediumSeparator,
-        BlocProvider(
-          create: (context) => sl<ProfilePhotosUrlsCubit>(),
-          child: Builder(
-            builder: (context) {
-              return GestureDetector(
-                onTap: () async {
-                  await showModalBottomSheet(
-                    context: context,
-                    builder: (final BuildContext innerContext) {
-                      return MultiBlocProvider(
-                        providers: [
-                          BlocProvider.value(
-                            value: context.read<ProfilePhotosUrlsCubit>()
-                              ..fetchProfilePhotosUrls(),
-                          ),
-                          BlocProvider.value(
-                            value: context.read<SignUpFormCubit>(),
-                          ),
-                        ],
-                        child: const ProfilePhotosBottomSheet(),
-                      );
-                    },
-                  );
-                },
-                child: SizedBox(
-                  height: 128,
-                  width: 128,
-                  child: BlocBuilder<SignUpFormCubit, SignUpFormState>(
-                    buildWhen: (previous, current) =>
-                        previous.photoUrl != current.photoUrl,
-                    builder: (context, state) {
-                      return CircleAvatar(
-                        backgroundColor: Colors.grey,
-                        backgroundImage: state.photoUrl.value.isNotEmpty
-                            ? NetworkImage(state.photoUrl.value)
-                            : null,
-                        child: state.photoUrl.value.isEmpty
-                            ? const Icon(Icons.photo_camera)
-                            : null,
-                      );
-                    },
-                  ),
-                ),
+        GestureDetector(
+          onTap: () async {
+            await showModalBottomSheet(
+              context: context,
+              builder: (final BuildContext innerContext) {
+                return MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (final BuildContext context) =>
+                          sl<ProfilePhotosUrlsCubit>()
+                            ..fetchProfilePhotosUrls(),
+                    ),
+                    BlocProvider.value(
+                      value: context.read<SignUpFormCubit>(),
+                    ),
+                  ],
+                  child: const ProfilePhotosBottomSheet(),
+                );
+              },
+            );
+          },
+          child: BlocBuilder<SignUpFormCubit, SignUpFormState>(
+            buildWhen: (previous, current) =>
+                previous.photoUrl != current.photoUrl,
+            builder: (context, state) {
+              if (state.photoUrl.displayError != null) {
+                return Column(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Colors.grey,
+                      backgroundImage: state.photoUrl.value.isNotEmpty
+                          ? NetworkImage(state.photoUrl.value)
+                          : null,
+                      radius: xxlSize,
+                      child: state.photoUrl.value.isEmpty
+                          ? const Icon(Icons.photo_camera)
+                          : null,
+                    ),
+                    smallSeparator,
+                    Text(
+                      state.photoUrl.displayError!.errorMessage,
+                      style: const TextStyle(
+                        color: errorColor,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                );
+              }
+              return CircleAvatar(
+                backgroundColor: Colors.grey,
+                backgroundImage: state.photoUrl.value.isNotEmpty
+                    ? NetworkImage(state.photoUrl.value)
+                    : null,
+                radius: xxlSize,
+                child: state.photoUrl.value.isEmpty
+                    ? const Icon(Icons.photo_camera)
+                    : null,
               );
             },
           ),
         ),
         mediumSeparator,
         BlocBuilder<SignUpFormCubit, SignUpFormState>(
+          buildWhen: (previous, current) =>
+              previous.completeName != current.completeName,
           builder: (context, state) {
             _completeNameController.value = _completeNameController.value
                 .copyWith(text: state.completeName.value);
@@ -116,15 +135,41 @@ class _SignUpUserDetailsState extends State<SignUpUserDetails> {
           },
         ),
         mediumSeparator,
-        GradientElevatedButton(
-          onTap: () {
-            context.read<SignUpFormCubit>().isFormValid();
+        BlocBuilder<SignUpFormCubit, SignUpFormState>(
+          builder: (context, state) {
+            return GradientElevatedButton(
+              onTap: () {
+                final bool isFormValid =
+                    context.read<SignUpFormCubit>().validateForm();
+                if (isFormValid) {
+                  context.read<UserBloc>().add(
+                        UserSignUpEvent(
+                          userDetailsEntity: state.toUserSignUpDetailsEntity(),
+                        ),
+                      );
+                }
+              },
+              displayWidget: BlocBuilder<UserBloc, UserState>(
+                builder: (context, state) {
+                  if (state is UserLoading) {
+                    return const SizedBox(
+                      height: mediumSize,
+                      width: mediumSize,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
+                    );
+                  }
+                  return const Text(
+                    'Create Profile',
+                    style: TextStyle(color: Colors.white),
+                  );
+                },
+              ),
+              gradient: buttonsGradientReversed,
+            );
           },
-          displayWidget: const Text(
-            'Create Profile',
-            style: TextStyle(color: Colors.white),
-          ),
-          gradient: buttonsGradientReversed,
         ),
       ],
     );
@@ -184,11 +229,15 @@ class ProfilePhotosBottomSheet extends StatelessWidget {
             );
           }
           return Center(
-            child: Text(
-              state is ProfilePhotosUrlsError
-                  ? state.message
-                  : 'An unknown error occured.',
-              style: const TextStyle(color: Colors.white, fontSize: textMedium),
+            child: Padding(
+              padding: const EdgeInsets.all(smallSize),
+              child: Text(
+                state is ProfilePhotosUrlsError
+                    ? state.message
+                    : 'An unknown error occured.',
+                style:
+                    const TextStyle(color: Colors.white, fontSize: mediumText),
+              ),
             ),
           );
         },
