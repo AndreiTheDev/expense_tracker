@@ -20,7 +20,7 @@ class ProfilePhotosRepositoryImpl implements ProfilePhotosRepository {
       return Right(response);
     } on FirebaseException catch (e) {
       return Left(
-        AuthFailure(message: e.message ?? 'An unknown error occured.'),
+        AuthFailure.fromStorageException(e.code),
       );
     } on Exception {
       return const Left(AuthFailure(message: 'An unknown error occured.'));

@@ -56,13 +56,13 @@ void main() {
 
   test('Fetch profile photos urls with FirebaseException', () async {
     when(mockStorageDataSource.fetchProfilePhotosUrls())
-        .thenThrow(FirebaseException(plugin: '', message: 'test error'));
+        .thenThrow(FirebaseException(plugin: '', code: 'test'));
 
     final response = await sut.fetchProfilePhotosUrls();
 
     expect(
       response,
-      const Left(AuthFailure(message: 'test error')),
+      const Left(AuthFailure(message: 'An unknown error occured.')),
     );
     verify(mockStorageDataSource.fetchProfilePhotosUrls()).called(1);
     verifyNoMoreInteractions(mockStorageDataSource);
