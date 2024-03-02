@@ -1,3 +1,4 @@
+import 'package:bloc_presentation/bloc_presentation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -20,18 +21,11 @@ class RecoverPasswordView extends StatelessWidget {
         create: (context) => sl<RecoverPasswordFormCubit>(),
         child: Builder(
           builder: (context) {
-            return BlocListener<UserBloc, UserState>(
-              listenWhen: (previous, current) =>
-                  current is UserError || current is UserUnauthenticated,
-              listener: (context, state) {
-                if (state is UserError) {
+            return BlocPresentationListener<UserBloc, UserEvent>(
+              listener: (context, event) {
+                if (event is UserErrorEvent) {
                   ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(state.message)));
-                }
-                if (state is UserUnauthenticated) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Email has been sent')),
-                  );
+                      .showSnackBar(displayErrorSnackbar(event.message));
                 }
               },
               child: Padding(
