@@ -8,6 +8,8 @@ import 'dart:async' as _i3;
 import 'package:expense_tracker_app_bloc/src/core/error/failures.dart' as _i5;
 import 'package:expense_tracker_app_bloc/src/features/authentication/domain/entities/user.dart'
     as _i6;
+import 'package:expense_tracker_app_bloc/src/features/authentication/domain/entities/user_signup_details.dart'
+    as _i8;
 import 'package:expense_tracker_app_bloc/src/features/authentication/domain/repositories/authentication_repository.dart'
     as _i2;
 import 'package:fpdart/fpdart.dart' as _i4;
@@ -72,26 +74,18 @@ class MockAuthenticationRepository extends _i1.Mock
 
   @override
   _i3.Future<_i4.Either<_i5.Failure, _i6.UserEntity>> signUpUser(
-    String? email,
-    String? password,
-  ) =>
+          _i8.UserSignUpDetailsEntity? userDetails) =>
       (super.noSuchMethod(
         Invocation.method(
           #signUpUser,
-          [
-            email,
-            password,
-          ],
+          [userDetails],
         ),
         returnValue: _i3.Future<_i4.Either<_i5.Failure, _i6.UserEntity>>.value(
             _i7.dummyValue<_i4.Either<_i5.Failure, _i6.UserEntity>>(
           this,
           Invocation.method(
             #signUpUser,
-            [
-              email,
-              password,
-            ],
+            [userDetails],
           ),
         )),
         returnValueForMissingStub:
@@ -100,13 +94,36 @@ class MockAuthenticationRepository extends _i1.Mock
           this,
           Invocation.method(
             #signUpUser,
-            [
-              email,
-              password,
-            ],
+            [userDetails],
           ),
         )),
       ) as _i3.Future<_i4.Either<_i5.Failure, _i6.UserEntity>>);
+
+  @override
+  _i3.Future<_i4.Either<_i5.Failure, void>> signOutUser() =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #signOutUser,
+          [],
+        ),
+        returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
+            _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
+          this,
+          Invocation.method(
+            #signOutUser,
+            [],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i3.Future<_i4.Either<_i5.Failure, void>>.value(
+                _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
+          this,
+          Invocation.method(
+            #signOutUser,
+            [],
+          ),
+        )),
+      ) as _i3.Future<_i4.Either<_i5.Failure, void>>);
 
   @override
   _i3.Future<_i4.Either<_i5.Failure, void>> deleteUser() => (super.noSuchMethod(
@@ -134,14 +151,14 @@ class MockAuthenticationRepository extends _i1.Mock
       ) as _i3.Future<_i4.Either<_i5.Failure, void>>);
 
   @override
-  _i3.Future<_i4.Either<_i5.Failure, _i6.UserEntity>> isSignedIn() =>
+  _i3.Future<_i4.Either<_i5.Failure, _i6.UserEntity?>> isSignedIn() =>
       (super.noSuchMethod(
         Invocation.method(
           #isSignedIn,
           [],
         ),
-        returnValue: _i3.Future<_i4.Either<_i5.Failure, _i6.UserEntity>>.value(
-            _i7.dummyValue<_i4.Either<_i5.Failure, _i6.UserEntity>>(
+        returnValue: _i3.Future<_i4.Either<_i5.Failure, _i6.UserEntity?>>.value(
+            _i7.dummyValue<_i4.Either<_i5.Failure, _i6.UserEntity?>>(
           this,
           Invocation.method(
             #isSignedIn,
@@ -149,15 +166,15 @@ class MockAuthenticationRepository extends _i1.Mock
           ),
         )),
         returnValueForMissingStub:
-            _i3.Future<_i4.Either<_i5.Failure, _i6.UserEntity>>.value(
-                _i7.dummyValue<_i4.Either<_i5.Failure, _i6.UserEntity>>(
+            _i3.Future<_i4.Either<_i5.Failure, _i6.UserEntity?>>.value(
+                _i7.dummyValue<_i4.Either<_i5.Failure, _i6.UserEntity?>>(
           this,
           Invocation.method(
             #isSignedIn,
             [],
           ),
         )),
-      ) as _i3.Future<_i4.Either<_i5.Failure, _i6.UserEntity>>);
+      ) as _i3.Future<_i4.Either<_i5.Failure, _i6.UserEntity?>>);
 
   @override
   _i3.Future<_i4.Either<_i5.Failure, void>> recoverPassword(String? email) =>
