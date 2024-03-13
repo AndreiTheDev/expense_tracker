@@ -43,5 +43,6 @@ app.*.map.json
 /android/app/release
 
 # Custom ignores
-*.mocks.dart
+firebase_emulator_data
+# *.mocks.dart
 coverage
