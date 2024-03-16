@@ -1,12 +1,12 @@
 import '../../domain/entities/transaction.dart';
 
 class TransactionDto extends TransactionEntity {
-  const TransactionDto({
+  TransactionDto({
     required super.category,
     required super.description,
     required super.amount,
     required super.date,
-    required super.id,
+    super.id,
   });
 
   factory TransactionDto.fromJson(final Map<String, dynamic> json) {

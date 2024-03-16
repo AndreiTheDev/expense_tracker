@@ -1,12 +1,12 @@
 import '../../domain/entities/income.dart';
 
 class IncomeDto extends IncomeEntity {
-  const IncomeDto({
+  IncomeDto({
     required super.category,
     required super.description,
     required super.amount,
     required super.date,
-    required super.id,
+    super.id,
   });
 
   factory IncomeDto.fromJson(final Map<String, dynamic> json) {

@@ -8,6 +8,10 @@ import 'dart:async' as _i3;
 import 'package:expense_tracker_app_bloc/src/core/error/failures.dart' as _i5;
 import 'package:expense_tracker_app_bloc/src/features/home/domain/entities/account.dart'
     as _i6;
+import 'package:expense_tracker_app_bloc/src/features/home/domain/entities/expense.dart'
+    as _i9;
+import 'package:expense_tracker_app_bloc/src/features/home/domain/entities/income.dart'
+    as _i10;
 import 'package:expense_tracker_app_bloc/src/features/home/domain/entities/transaction.dart'
     as _i8;
 import 'package:expense_tracker_app_bloc/src/features/home/domain/repositories/account_repository.dart'
@@ -88,6 +92,66 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
           this,
           Invocation.method(
             #addTransaction,
+            [],
+            {#entity: entity},
+          ),
+        )),
+      ) as _i3.Future<_i4.Either<_i5.Failure, void>>);
+
+  @override
+  _i3.Future<_i4.Either<_i5.Failure, void>> addExpense(
+          {required _i9.ExpenseEntity? entity}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #addExpense,
+          [],
+          {#entity: entity},
+        ),
+        returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
+            _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
+          this,
+          Invocation.method(
+            #addExpense,
+            [],
+            {#entity: entity},
+          ),
+        )),
+        returnValueForMissingStub:
+            _i3.Future<_i4.Either<_i5.Failure, void>>.value(
+                _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
+          this,
+          Invocation.method(
+            #addExpense,
+            [],
+            {#entity: entity},
+          ),
+        )),
+      ) as _i3.Future<_i4.Either<_i5.Failure, void>>);
+
+  @override
+  _i3.Future<_i4.Either<_i5.Failure, void>> addIncome(
+          {required _i10.IncomeEntity? entity}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #addIncome,
+          [],
+          {#entity: entity},
+        ),
+        returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
+            _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
+          this,
+          Invocation.method(
+            #addIncome,
+            [],
+            {#entity: entity},
+          ),
+        )),
+        returnValueForMissingStub:
+            _i3.Future<_i4.Either<_i5.Failure, void>>.value(
+                _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
+          this,
+          Invocation.method(
+            #addIncome,
             [],
             {#entity: entity},
           ),

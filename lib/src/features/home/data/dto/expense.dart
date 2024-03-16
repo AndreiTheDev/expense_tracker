@@ -1,12 +1,12 @@
 import '../../domain/entities/expense.dart';
 
 class ExpenseDto extends ExpenseEntity {
-  const ExpenseDto({
+  ExpenseDto({
     required super.category,
     required super.description,
     required super.amount,
     required super.date,
-    required super.id,
+    super.id,
   });
 
   factory ExpenseDto.fromJson(final Map<String, dynamic> json) {
