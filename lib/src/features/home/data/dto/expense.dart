@@ -6,10 +6,12 @@ class ExpenseDto extends ExpenseEntity {
     required super.description,
     required super.amount,
     required super.date,
+    required super.id,
   });
 
   factory ExpenseDto.fromJson(final Map<String, dynamic> json) {
     return ExpenseDto(
+      id: json['id'],
       category: json['category'],
       description: json['description'],
       amount: json['amount'],
@@ -19,6 +21,7 @@ class ExpenseDto extends ExpenseEntity {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'category': category,
       'description': description,
       'amount': amount,

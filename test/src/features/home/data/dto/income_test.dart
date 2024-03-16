@@ -6,6 +6,7 @@ void main() {
 
   setUp(() {
     income = IncomeDto(
+      id: 'test',
       category: 'testCategory',
       description: 'testDescription',
       amount: 100,
@@ -14,6 +15,7 @@ void main() {
   });
 
   final json = {
+    'id': 'test',
     'category': 'testCategory',
     'description': 'testDescription',
     'amount': 100.0,

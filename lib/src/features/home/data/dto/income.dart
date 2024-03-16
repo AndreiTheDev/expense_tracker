@@ -6,10 +6,12 @@ class IncomeDto extends IncomeEntity {
     required super.description,
     required super.amount,
     required super.date,
+    required super.id,
   });
 
   factory IncomeDto.fromJson(final Map<String, dynamic> json) {
     return IncomeDto(
+      id: json['id'],
       category: json['category'],
       description: json['description'],
       amount: json['amount'],
@@ -19,6 +21,7 @@ class IncomeDto extends IncomeEntity {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'category': category,
       'description': description,
       'amount': amount,

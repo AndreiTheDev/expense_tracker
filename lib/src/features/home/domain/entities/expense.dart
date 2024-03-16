@@ -6,5 +6,6 @@ class ExpenseEntity extends TransactionEntity {
     required super.description,
     required super.amount,
     required super.date,
+    required super.id,
   });
 }

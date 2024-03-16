@@ -14,6 +14,7 @@ void main() {
   late AddTransaction sut;
   late MockAccountRepository mockAccountRepository;
   final TransactionEntity transaction = TransactionEntity(
+    id: 'test',
     category: 'test',
     description: 'test',
     amount: 100,

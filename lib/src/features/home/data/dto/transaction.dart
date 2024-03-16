@@ -6,10 +6,12 @@ class TransactionDto extends TransactionEntity {
     required super.description,
     required super.amount,
     required super.date,
+    required super.id,
   });
 
   factory TransactionDto.fromJson(final Map<String, dynamic> json) {
     return TransactionDto(
+      id: json['id'],
       category: json['category'],
       description: json['description'],
       amount: json['amount'],
@@ -19,6 +21,7 @@ class TransactionDto extends TransactionEntity {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'category': category,
       'description': description,
       'amount': amount,
