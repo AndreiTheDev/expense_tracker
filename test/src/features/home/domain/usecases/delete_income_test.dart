@@ -1,17 +1,17 @@
 import 'package:expense_tracker_app_bloc/src/core/error/failures.dart';
 import 'package:expense_tracker_app_bloc/src/features/home/domain/entities/account.dart';
 import 'package:expense_tracker_app_bloc/src/features/home/domain/repositories/account_repository.dart';
-import 'package:expense_tracker_app_bloc/src/features/home/domain/usecases/delete_transaction.dart';
+import 'package:expense_tracker_app_bloc/src/features/home/domain/usecases/delete_income.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'delete_transaction_test.mocks.dart';
+import 'delete_income_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<AccountRepository>()])
 void main() {
-  late DeleteTransaction sut;
+  late DeleteIncome sut;
   late MockAccountRepository mockAccountRepository;
   const AccountEntity account = AccountEntity(
     id: 'test',
@@ -24,15 +24,14 @@ void main() {
 
   setUp(() {
     mockAccountRepository = MockAccountRepository();
-    sut = DeleteTransaction(mockAccountRepository);
+    sut = DeleteIncome(mockAccountRepository);
   });
 
-  test(
-      'DeleteTransaction deletes the transaction and returns new account entity',
+  test('DeleteIncome deletes the income and returns new account entity',
       () async {
     provideDummy<Either<Failure, void>>(const Right(null));
     provideDummy<Either<Failure, AccountEntity>>(const Right(account));
-    when(mockAccountRepository.deleteTransaction(transactionId: 'test'))
+    when(mockAccountRepository.deleteIncome(incomeId: 'test'))
         .thenAnswer((realInvocation) async => const Right(null));
     when(mockAccountRepository.fetchAccount())
         .thenAnswer((realInvocation) async => const Right(account));
@@ -40,20 +39,19 @@ void main() {
     final result = await sut('test');
 
     expect(result, const Right(account));
-    verify(mockAccountRepository.deleteTransaction(transactionId: 'test'))
-        .called(1);
+    verify(mockAccountRepository.deleteIncome(incomeId: 'test')).called(1);
     verify(mockAccountRepository.fetchAccount()).called(1);
     verifyNoMoreInteractions(mockAccountRepository);
   });
 
   test(
-      'DeleteTransaction fails to delete transaction and returns failure for fetchaccount',
+      'DeleteIncome fails to delete income and returns failure for fetchaccount',
       () async {
     provideDummy<Either<Failure, void>>(const Right(null));
     provideDummy<Either<Failure, AccountEntity>>(
       const Left(HomeFailure(message: 'test')),
     );
-    when(mockAccountRepository.deleteTransaction(transactionId: 'test'))
+    when(mockAccountRepository.deleteIncome(incomeId: 'test'))
         .thenAnswer((realInvocation) async => const Right(null));
     when(mockAccountRepository.fetchAccount()).thenAnswer(
         (realInvocation) async => const Left(HomeFailure(message: 'test')));
@@ -61,8 +59,7 @@ void main() {
     final result = await sut('test');
 
     expect(result, const Left(HomeFailure(message: 'test')));
-    verify(mockAccountRepository.deleteTransaction(transactionId: 'test'))
-        .called(1);
+    verify(mockAccountRepository.deleteIncome(incomeId: 'test')).called(1);
     verify(mockAccountRepository.fetchAccount()).called(1);
     verifyNoMoreInteractions(mockAccountRepository);
   });

@@ -2,15 +2,16 @@ import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/error/failures.dart';
 import '../entities/account.dart';
+import '../entities/income.dart';
 import '../repositories/account_repository.dart';
 
-class DeleteTransaction {
+class AddIncome {
   final AccountRepository _repository;
 
-  DeleteTransaction(this._repository);
+  AddIncome(this._repository);
 
-  Future<Either<Failure, AccountEntity>> call(final String id) async {
-    final response = await _repository.deleteTransaction(transactionId: id);
+  Future<Either<Failure, AccountEntity>> call(final IncomeEntity entity) async {
+    final response = await _repository.addIncome(incomeEntity: entity);
     return response.fold(Left.new, (r) => _repository.fetchAccount());
   }
 }

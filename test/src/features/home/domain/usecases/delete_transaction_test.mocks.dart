@@ -9,11 +9,9 @@ import 'package:expense_tracker_app_bloc/src/core/error/failures.dart' as _i5;
 import 'package:expense_tracker_app_bloc/src/features/home/domain/entities/account.dart'
     as _i6;
 import 'package:expense_tracker_app_bloc/src/features/home/domain/entities/expense.dart'
-    as _i9;
-import 'package:expense_tracker_app_bloc/src/features/home/domain/entities/income.dart'
-    as _i10;
-import 'package:expense_tracker_app_bloc/src/features/home/domain/entities/transaction.dart'
     as _i8;
+import 'package:expense_tracker_app_bloc/src/features/home/domain/entities/income.dart'
+    as _i9;
 import 'package:expense_tracker_app_bloc/src/features/home/domain/repositories/account_repository.dart'
     as _i2;
 import 'package:fpdart/fpdart.dart' as _i4;
@@ -69,43 +67,13 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
       ) as _i3.Future<_i4.Either<_i5.Failure, _i6.AccountEntity>>);
 
   @override
-  _i3.Future<_i4.Either<_i5.Failure, void>> addTransaction(
-          {required _i8.TransactionEntity? entity}) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #addTransaction,
-          [],
-          {#entity: entity},
-        ),
-        returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
-            _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
-          this,
-          Invocation.method(
-            #addTransaction,
-            [],
-            {#entity: entity},
-          ),
-        )),
-        returnValueForMissingStub:
-            _i3.Future<_i4.Either<_i5.Failure, void>>.value(
-                _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
-          this,
-          Invocation.method(
-            #addTransaction,
-            [],
-            {#entity: entity},
-          ),
-        )),
-      ) as _i3.Future<_i4.Either<_i5.Failure, void>>);
-
-  @override
   _i3.Future<_i4.Either<_i5.Failure, void>> addExpense(
-          {required _i9.ExpenseEntity? entity}) =>
+          {required _i8.ExpenseEntity? expenseEntity}) =>
       (super.noSuchMethod(
         Invocation.method(
           #addExpense,
           [],
-          {#entity: entity},
+          {#expenseEntity: expenseEntity},
         ),
         returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
             _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
@@ -113,7 +81,7 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
           Invocation.method(
             #addExpense,
             [],
-            {#entity: entity},
+            {#expenseEntity: expenseEntity},
           ),
         )),
         returnValueForMissingStub:
@@ -123,19 +91,19 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
           Invocation.method(
             #addExpense,
             [],
-            {#entity: entity},
+            {#expenseEntity: expenseEntity},
           ),
         )),
       ) as _i3.Future<_i4.Either<_i5.Failure, void>>);
 
   @override
   _i3.Future<_i4.Either<_i5.Failure, void>> addIncome(
-          {required _i10.IncomeEntity? entity}) =>
+          {required _i9.IncomeEntity? incomeEntity}) =>
       (super.noSuchMethod(
         Invocation.method(
           #addIncome,
           [],
-          {#entity: entity},
+          {#incomeEntity: incomeEntity},
         ),
         returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
             _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
@@ -143,7 +111,7 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
           Invocation.method(
             #addIncome,
             [],
-            {#entity: entity},
+            {#incomeEntity: incomeEntity},
           ),
         )),
         returnValueForMissingStub:
@@ -153,19 +121,79 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
           Invocation.method(
             #addIncome,
             [],
-            {#entity: entity},
+            {#incomeEntity: incomeEntity},
+          ),
+        )),
+      ) as _i3.Future<_i4.Either<_i5.Failure, void>>);
+
+  @override
+  _i3.Future<_i4.Either<_i5.Failure, void>> deleteExpense(
+          {required String? expenseId}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #deleteExpense,
+          [],
+          {#expenseId: expenseId},
+        ),
+        returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
+            _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
+          this,
+          Invocation.method(
+            #deleteExpense,
+            [],
+            {#expenseId: expenseId},
+          ),
+        )),
+        returnValueForMissingStub:
+            _i3.Future<_i4.Either<_i5.Failure, void>>.value(
+                _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
+          this,
+          Invocation.method(
+            #deleteExpense,
+            [],
+            {#expenseId: expenseId},
+          ),
+        )),
+      ) as _i3.Future<_i4.Either<_i5.Failure, void>>);
+
+  @override
+  _i3.Future<_i4.Either<_i5.Failure, void>> deleteIncome(
+          {required String? incomeId}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #deleteIncome,
+          [],
+          {#incomeId: incomeId},
+        ),
+        returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
+            _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
+          this,
+          Invocation.method(
+            #deleteIncome,
+            [],
+            {#incomeId: incomeId},
+          ),
+        )),
+        returnValueForMissingStub:
+            _i3.Future<_i4.Either<_i5.Failure, void>>.value(
+                _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
+          this,
+          Invocation.method(
+            #deleteIncome,
+            [],
+            {#incomeId: incomeId},
           ),
         )),
       ) as _i3.Future<_i4.Either<_i5.Failure, void>>);
 
   @override
   _i3.Future<_i4.Either<_i5.Failure, void>> deleteTransaction(
-          {required String? id}) =>
+          {required String? transactionId}) =>
       (super.noSuchMethod(
         Invocation.method(
           #deleteTransaction,
           [],
-          {#id: id},
+          {#transactionId: transactionId},
         ),
         returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
             _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
@@ -173,7 +201,7 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
           Invocation.method(
             #deleteTransaction,
             [],
-            {#id: id},
+            {#transactionId: transactionId},
           ),
         )),
         returnValueForMissingStub:
@@ -183,7 +211,7 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
           Invocation.method(
             #deleteTransaction,
             [],
-            {#id: id},
+            {#transactionId: transactionId},
           ),
         )),
       ) as _i3.Future<_i4.Either<_i5.Failure, void>>);
