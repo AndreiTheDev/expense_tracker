@@ -38,16 +38,24 @@ void main() {
   test('AddExpense adds the expense and returns new account entity', () async {
     provideDummy<Either<Failure, void>>(const Right(null));
     provideDummy<Either<Failure, AccountEntity>>(const Right(account));
-    when(mockAccountRepository.addExpense(expenseEntity: expenseEntity))
-        .thenAnswer((realInvocation) async => const Right(null));
+    when(
+      mockAccountRepository.addExpense(
+        accountId: 'test',
+        expenseEntity: expenseEntity,
+      ),
+    ).thenAnswer((realInvocation) async => const Right(null));
     when(mockAccountRepository.fetchAccount())
         .thenAnswer((realInvocation) async => const Right(account));
 
-    final result = await sut(expenseEntity);
+    final result = await sut('test', expenseEntity);
 
     expect(result, const Right(account));
-    verify(mockAccountRepository.addExpense(expenseEntity: expenseEntity))
-        .called(1);
+    verify(
+      mockAccountRepository.addExpense(
+        accountId: 'test',
+        expenseEntity: expenseEntity,
+      ),
+    ).called(1);
     verify(mockAccountRepository.fetchAccount()).called(1);
     verifyNoMoreInteractions(mockAccountRepository);
   });
@@ -58,16 +66,25 @@ void main() {
     provideDummy<Either<Failure, AccountEntity>>(
       const Left(HomeFailure(message: 'test')),
     );
-    when(mockAccountRepository.addExpense(expenseEntity: expenseEntity))
-        .thenAnswer((realInvocation) async => const Right(null));
+    when(
+      mockAccountRepository.addExpense(
+        accountId: 'test',
+        expenseEntity: expenseEntity,
+      ),
+    ).thenAnswer((realInvocation) async => const Right(null));
     when(mockAccountRepository.fetchAccount()).thenAnswer(
-        (realInvocation) async => const Left(HomeFailure(message: 'test')));
+      (realInvocation) async => const Left(HomeFailure(message: 'test')),
+    );
 
-    final result = await sut(expenseEntity);
+    final result = await sut('test', expenseEntity);
 
     expect(result, const Left(HomeFailure(message: 'test')));
-    verify(mockAccountRepository.addExpense(expenseEntity: expenseEntity))
-        .called(1);
+    verify(
+      mockAccountRepository.addExpense(
+        accountId: 'test',
+        expenseEntity: expenseEntity,
+      ),
+    ).called(1);
     verify(mockAccountRepository.fetchAccount()).called(1);
     verifyNoMoreInteractions(mockAccountRepository);
   });

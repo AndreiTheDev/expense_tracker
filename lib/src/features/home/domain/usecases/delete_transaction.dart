@@ -9,8 +9,14 @@ class DeleteTransaction {
 
   DeleteTransaction(this._repository);
 
-  Future<Either<Failure, AccountEntity>> call(final String id) async {
-    final response = await _repository.deleteTransaction(transactionId: id);
+  Future<Either<Failure, AccountEntity>> call(
+    final String accountId,
+    final String id,
+  ) async {
+    final response = await _repository.deleteTransaction(
+      accountId: accountId,
+      transactionId: id,
+    );
     return response.fold(Left.new, (r) => _repository.fetchAccount());
   }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:expense_tracker_app_bloc/src/core/error/failures.dart';
 import 'package:expense_tracker_app_bloc/src/features/home/domain/entities/account.dart';
 import 'package:expense_tracker_app_bloc/src/features/home/domain/repositories/account_repository.dart';
@@ -31,15 +33,24 @@ void main() {
       () async {
     provideDummy<Either<Failure, void>>(const Right(null));
     provideDummy<Either<Failure, AccountEntity>>(const Right(account));
-    when(mockAccountRepository.deleteExpense(expenseId: 'test'))
-        .thenAnswer((realInvocation) async => const Right(null));
+    when(
+      mockAccountRepository.deleteExpense(
+        accountId: 'test',
+        expenseId: 'test',
+      ),
+    ).thenAnswer((realInvocation) async => const Right(null));
     when(mockAccountRepository.fetchAccount())
         .thenAnswer((realInvocation) async => const Right(account));
 
-    final result = await sut('test');
+    final result = await sut('test', 'test');
 
     expect(result, const Right(account));
-    verify(mockAccountRepository.deleteExpense(expenseId: 'test')).called(1);
+    verify(
+      mockAccountRepository.deleteExpense(
+        accountId: 'test',
+        expenseId: 'test',
+      ),
+    ).called(1);
     verify(mockAccountRepository.fetchAccount()).called(1);
     verifyNoMoreInteractions(mockAccountRepository);
   });
@@ -51,15 +62,25 @@ void main() {
     provideDummy<Either<Failure, AccountEntity>>(
       const Left(HomeFailure(message: 'test')),
     );
-    when(mockAccountRepository.deleteExpense(expenseId: 'test'))
-        .thenAnswer((realInvocation) async => const Right(null));
+    when(
+      mockAccountRepository.deleteExpense(
+        accountId: 'test',
+        expenseId: 'test',
+      ),
+    ).thenAnswer((realInvocation) async => const Right(null));
     when(mockAccountRepository.fetchAccount()).thenAnswer(
-        (realInvocation) async => const Left(HomeFailure(message: 'test')));
+      (realInvocation) async => const Left(HomeFailure(message: 'test')),
+    );
 
-    final result = await sut('test');
+    final result = await sut('test', 'test');
 
     expect(result, const Left(HomeFailure(message: 'test')));
-    verify(mockAccountRepository.deleteExpense(expenseId: 'test')).called(1);
+    verify(
+      mockAccountRepository.deleteExpense(
+        accountId: 'test',
+        expenseId: 'test',
+      ),
+    ).called(1);
     verify(mockAccountRepository.fetchAccount()).called(1);
     verifyNoMoreInteractions(mockAccountRepository);
   });

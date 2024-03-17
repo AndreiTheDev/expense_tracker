@@ -67,13 +67,18 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
       ) as _i3.Future<_i4.Either<_i5.Failure, _i6.AccountEntity>>);
 
   @override
-  _i3.Future<_i4.Either<_i5.Failure, void>> addExpense(
-          {required _i8.ExpenseEntity? expenseEntity}) =>
+  _i3.Future<_i4.Either<_i5.Failure, void>> addExpense({
+    required String? accountId,
+    required _i8.ExpenseEntity? expenseEntity,
+  }) =>
       (super.noSuchMethod(
         Invocation.method(
           #addExpense,
           [],
-          {#expenseEntity: expenseEntity},
+          {
+            #accountId: accountId,
+            #expenseEntity: expenseEntity,
+          },
         ),
         returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
             _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
@@ -81,7 +86,10 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
           Invocation.method(
             #addExpense,
             [],
-            {#expenseEntity: expenseEntity},
+            {
+              #accountId: accountId,
+              #expenseEntity: expenseEntity,
+            },
           ),
         )),
         returnValueForMissingStub:
@@ -91,19 +99,27 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
           Invocation.method(
             #addExpense,
             [],
-            {#expenseEntity: expenseEntity},
+            {
+              #accountId: accountId,
+              #expenseEntity: expenseEntity,
+            },
           ),
         )),
       ) as _i3.Future<_i4.Either<_i5.Failure, void>>);
 
   @override
-  _i3.Future<_i4.Either<_i5.Failure, void>> addIncome(
-          {required _i9.IncomeEntity? incomeEntity}) =>
+  _i3.Future<_i4.Either<_i5.Failure, void>> addIncome({
+    required String? accountId,
+    required _i9.IncomeEntity? incomeEntity,
+  }) =>
       (super.noSuchMethod(
         Invocation.method(
           #addIncome,
           [],
-          {#incomeEntity: incomeEntity},
+          {
+            #accountId: accountId,
+            #incomeEntity: incomeEntity,
+          },
         ),
         returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
             _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
@@ -111,7 +127,10 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
           Invocation.method(
             #addIncome,
             [],
-            {#incomeEntity: incomeEntity},
+            {
+              #accountId: accountId,
+              #incomeEntity: incomeEntity,
+            },
           ),
         )),
         returnValueForMissingStub:
@@ -121,19 +140,27 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
           Invocation.method(
             #addIncome,
             [],
-            {#incomeEntity: incomeEntity},
+            {
+              #accountId: accountId,
+              #incomeEntity: incomeEntity,
+            },
           ),
         )),
       ) as _i3.Future<_i4.Either<_i5.Failure, void>>);
 
   @override
-  _i3.Future<_i4.Either<_i5.Failure, void>> deleteExpense(
-          {required String? expenseId}) =>
+  _i3.Future<_i4.Either<_i5.Failure, void>> deleteExpense({
+    required String? accountId,
+    required String? expenseId,
+  }) =>
       (super.noSuchMethod(
         Invocation.method(
           #deleteExpense,
           [],
-          {#expenseId: expenseId},
+          {
+            #accountId: accountId,
+            #expenseId: expenseId,
+          },
         ),
         returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
             _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
@@ -141,7 +168,10 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
           Invocation.method(
             #deleteExpense,
             [],
-            {#expenseId: expenseId},
+            {
+              #accountId: accountId,
+              #expenseId: expenseId,
+            },
           ),
         )),
         returnValueForMissingStub:
@@ -151,19 +181,27 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
           Invocation.method(
             #deleteExpense,
             [],
-            {#expenseId: expenseId},
+            {
+              #accountId: accountId,
+              #expenseId: expenseId,
+            },
           ),
         )),
       ) as _i3.Future<_i4.Either<_i5.Failure, void>>);
 
   @override
-  _i3.Future<_i4.Either<_i5.Failure, void>> deleteIncome(
-          {required String? incomeId}) =>
+  _i3.Future<_i4.Either<_i5.Failure, void>> deleteIncome({
+    required String? accountId,
+    required String? incomeId,
+  }) =>
       (super.noSuchMethod(
         Invocation.method(
           #deleteIncome,
           [],
-          {#incomeId: incomeId},
+          {
+            #accountId: accountId,
+            #incomeId: incomeId,
+          },
         ),
         returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
             _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
@@ -171,7 +209,10 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
           Invocation.method(
             #deleteIncome,
             [],
-            {#incomeId: incomeId},
+            {
+              #accountId: accountId,
+              #incomeId: incomeId,
+            },
           ),
         )),
         returnValueForMissingStub:
@@ -181,19 +222,27 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
           Invocation.method(
             #deleteIncome,
             [],
-            {#incomeId: incomeId},
+            {
+              #accountId: accountId,
+              #incomeId: incomeId,
+            },
           ),
         )),
       ) as _i3.Future<_i4.Either<_i5.Failure, void>>);
 
   @override
-  _i3.Future<_i4.Either<_i5.Failure, void>> deleteTransaction(
-          {required String? transactionId}) =>
+  _i3.Future<_i4.Either<_i5.Failure, void>> deleteTransaction({
+    required String? accountId,
+    required String? transactionId,
+  }) =>
       (super.noSuchMethod(
         Invocation.method(
           #deleteTransaction,
           [],
-          {#transactionId: transactionId},
+          {
+            #accountId: accountId,
+            #transactionId: transactionId,
+          },
         ),
         returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
             _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
@@ -201,7 +250,10 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
           Invocation.method(
             #deleteTransaction,
             [],
-            {#transactionId: transactionId},
+            {
+              #accountId: accountId,
+              #transactionId: transactionId,
+            },
           ),
         )),
         returnValueForMissingStub:
@@ -211,7 +263,10 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
           Invocation.method(
             #deleteTransaction,
             [],
-            {#transactionId: transactionId},
+            {
+              #accountId: accountId,
+              #transactionId: transactionId,
+            },
           ),
         )),
       ) as _i3.Future<_i4.Either<_i5.Failure, void>>);

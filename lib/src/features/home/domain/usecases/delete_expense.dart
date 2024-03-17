@@ -9,8 +9,14 @@ class DeleteExpense {
 
   DeleteExpense(this._repository);
 
-  Future<Either<Failure, AccountEntity>> call(final String id) async {
-    final response = await _repository.deleteExpense(expenseId: id);
+  Future<Either<Failure, AccountEntity>> call(
+    final String accountId,
+    final String id,
+  ) async {
+    final response = await _repository.deleteExpense(
+      accountId: accountId,
+      expenseId: id,
+    );
     return response.fold(Left.new, (r) => _repository.fetchAccount());
   }
 }

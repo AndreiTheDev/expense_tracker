@@ -38,16 +38,24 @@ void main() {
   test('AddIncome adds the income and returns new account entity', () async {
     provideDummy<Either<Failure, void>>(const Right(null));
     provideDummy<Either<Failure, AccountEntity>>(const Right(account));
-    when(mockAccountRepository.addIncome(incomeEntity: incomeEntity))
-        .thenAnswer((realInvocation) async => const Right(null));
+    when(
+      mockAccountRepository.addIncome(
+        accountId: 'test',
+        incomeEntity: incomeEntity,
+      ),
+    ).thenAnswer((realInvocation) async => const Right(null));
     when(mockAccountRepository.fetchAccount())
         .thenAnswer((realInvocation) async => const Right(account));
 
-    final result = await sut(incomeEntity);
+    final result = await sut('test', incomeEntity);
 
     expect(result, const Right(account));
-    verify(mockAccountRepository.addIncome(incomeEntity: incomeEntity))
-        .called(1);
+    verify(
+      mockAccountRepository.addIncome(
+        accountId: 'test',
+        incomeEntity: incomeEntity,
+      ),
+    ).called(1);
     verify(mockAccountRepository.fetchAccount()).called(1);
     verifyNoMoreInteractions(mockAccountRepository);
   });
@@ -58,16 +66,25 @@ void main() {
     provideDummy<Either<Failure, AccountEntity>>(
       const Left(HomeFailure(message: 'test')),
     );
-    when(mockAccountRepository.addIncome(incomeEntity: incomeEntity))
-        .thenAnswer((realInvocation) async => const Right(null));
+    when(
+      mockAccountRepository.addIncome(
+        accountId: 'test',
+        incomeEntity: incomeEntity,
+      ),
+    ).thenAnswer((realInvocation) async => const Right(null));
     when(mockAccountRepository.fetchAccount()).thenAnswer(
-        (realInvocation) async => const Left(HomeFailure(message: 'test')));
+      (realInvocation) async => const Left(HomeFailure(message: 'test')),
+    );
 
-    final result = await sut(incomeEntity);
+    final result = await sut('test', incomeEntity);
 
     expect(result, const Left(HomeFailure(message: 'test')));
-    verify(mockAccountRepository.addIncome(incomeEntity: incomeEntity))
-        .called(1);
+    verify(
+      mockAccountRepository.addIncome(
+        accountId: 'test',
+        incomeEntity: incomeEntity,
+      ),
+    ).called(1);
     verify(mockAccountRepository.fetchAccount()).called(1);
     verifyNoMoreInteractions(mockAccountRepository);
   });

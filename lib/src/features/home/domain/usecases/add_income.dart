@@ -10,8 +10,14 @@ class AddIncome {
 
   AddIncome(this._repository);
 
-  Future<Either<Failure, AccountEntity>> call(final IncomeEntity entity) async {
-    final response = await _repository.addIncome(incomeEntity: entity);
+  Future<Either<Failure, AccountEntity>> call(
+    final String accountId,
+    final IncomeEntity entity,
+  ) async {
+    final response = await _repository.addIncome(
+      accountId: accountId,
+      incomeEntity: entity,
+    );
     return response.fold(Left.new, (r) => _repository.fetchAccount());
   }
 }

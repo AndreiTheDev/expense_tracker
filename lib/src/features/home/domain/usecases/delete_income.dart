@@ -9,8 +9,14 @@ class DeleteIncome {
 
   DeleteIncome(this._repository);
 
-  Future<Either<Failure, AccountEntity>> call(final String id) async {
-    final response = await _repository.deleteIncome(incomeId: id);
+  Future<Either<Failure, AccountEntity>> call(
+    final String accountId,
+    final String id,
+  ) async {
+    final response = await _repository.deleteIncome(
+      accountId: accountId,
+      incomeId: id,
+    );
     return response.fold(Left.new, (r) => _repository.fetchAccount());
   }
 }
