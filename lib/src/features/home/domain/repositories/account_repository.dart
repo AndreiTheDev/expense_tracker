@@ -11,22 +11,27 @@ abstract interface class AccountRepository {
   });
 
   Future<Either<Failure, void>> addExpense({
+    required final String accountId,
     required final ExpenseEntity expenseEntity,
   });
 
   Future<Either<Failure, void>> addIncome({
+    required final String accountId,
     required final IncomeEntity incomeEntity,
   });
 
   Future<Either<Failure, void>> deleteExpense({
+    required final String accountId,
     required final String expenseId,
   });
 
   Future<Either<Failure, void>> deleteIncome({
+    required final String accountId,
     required final String incomeId,
   });
 
   Future<Either<Failure, void>> deleteTransaction({
+    required final String accountId,
     required final String transactionId,
   });
 }
