@@ -2,6 +2,7 @@
 
 import 'package:expense_tracker_app_bloc/src/core/error/failures.dart';
 import 'package:expense_tracker_app_bloc/src/features/home/domain/entities/account.dart';
+import 'package:expense_tracker_app_bloc/src/features/home/domain/entities/income.dart';
 import 'package:expense_tracker_app_bloc/src/features/home/domain/repositories/account_repository.dart';
 import 'package:expense_tracker_app_bloc/src/features/home/domain/usecases/delete_income.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,6 +16,12 @@ import 'delete_income_test.mocks.dart';
 void main() {
   late DeleteIncome sut;
   late MockAccountRepository mockAccountRepository;
+  final IncomeEntity incomeEntity = IncomeEntity(
+    category: 'test',
+    description: 'test',
+    amount: -100,
+    date: DateTime(2000),
+  );
   const AccountEntity account = AccountEntity(
     id: 'test',
     name: 'test',
@@ -36,19 +43,19 @@ void main() {
     when(
       mockAccountRepository.deleteIncome(
         accountId: 'test',
-        incomeId: 'test',
+        incomeEntity: incomeEntity,
       ),
     ).thenAnswer((realInvocation) async => const Right(null));
     when(mockAccountRepository.fetchAccount())
         .thenAnswer((realInvocation) async => const Right(account));
 
-    final result = await sut('test', 'test');
+    final result = await sut('test', incomeEntity);
 
     expect(result, const Right(account));
     verify(
       mockAccountRepository.deleteIncome(
         accountId: 'test',
-        incomeId: 'test',
+        incomeEntity: incomeEntity,
       ),
     ).called(1);
     verify(mockAccountRepository.fetchAccount()).called(1);
@@ -65,20 +72,20 @@ void main() {
     when(
       mockAccountRepository.deleteIncome(
         accountId: 'test',
-        incomeId: 'test',
+        incomeEntity: incomeEntity,
       ),
     ).thenAnswer((realInvocation) async => const Right(null));
     when(mockAccountRepository.fetchAccount()).thenAnswer(
       (realInvocation) async => const Left(HomeFailure(message: 'test')),
     );
 
-    final result = await sut('test', 'test');
+    final result = await sut('test', incomeEntity);
 
     expect(result, const Left(HomeFailure(message: 'test')));
     verify(
       mockAccountRepository.deleteIncome(
         accountId: 'test',
-        incomeId: 'test',
+        incomeEntity: incomeEntity,
       ),
     ).called(1);
     verify(mockAccountRepository.fetchAccount()).called(1);

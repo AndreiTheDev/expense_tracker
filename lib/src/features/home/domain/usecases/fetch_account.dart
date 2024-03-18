@@ -9,7 +9,7 @@ class FetchAccount {
 
   FetchAccount(this._repository);
 
-  Future<Either<Failure, AccountEntity>> call(final String id) async {
-    return _repository.fetchAccount(id: id);
+  Future<Either<Failure, AccountEntity>> call(final String accountId) async {
+    return _repository.fetchAccount(id: accountId);
   }
 }

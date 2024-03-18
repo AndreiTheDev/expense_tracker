@@ -12,6 +12,8 @@ import 'package:expense_tracker_app_bloc/src/features/home/domain/entities/expen
     as _i8;
 import 'package:expense_tracker_app_bloc/src/features/home/domain/entities/income.dart'
     as _i9;
+import 'package:expense_tracker_app_bloc/src/features/home/domain/entities/transaction.dart'
+    as _i10;
 import 'package:expense_tracker_app_bloc/src/features/home/domain/repositories/account_repository.dart'
     as _i2;
 import 'package:fpdart/fpdart.dart' as _i4;
@@ -151,7 +153,7 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
   @override
   _i3.Future<_i4.Either<_i5.Failure, void>> deleteExpense({
     required String? accountId,
-    required String? expenseId,
+    required _i8.ExpenseEntity? expenseEntity,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -159,7 +161,7 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
           [],
           {
             #accountId: accountId,
-            #expenseId: expenseId,
+            #expenseEntity: expenseEntity,
           },
         ),
         returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
@@ -170,7 +172,7 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
             [],
             {
               #accountId: accountId,
-              #expenseId: expenseId,
+              #expenseEntity: expenseEntity,
             },
           ),
         )),
@@ -183,7 +185,7 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
             [],
             {
               #accountId: accountId,
-              #expenseId: expenseId,
+              #expenseEntity: expenseEntity,
             },
           ),
         )),
@@ -192,7 +194,7 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
   @override
   _i3.Future<_i4.Either<_i5.Failure, void>> deleteIncome({
     required String? accountId,
-    required String? incomeId,
+    required _i9.IncomeEntity? incomeEntity,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -200,7 +202,7 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
           [],
           {
             #accountId: accountId,
-            #incomeId: incomeId,
+            #incomeEntity: incomeEntity,
           },
         ),
         returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
@@ -211,7 +213,7 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
             [],
             {
               #accountId: accountId,
-              #incomeId: incomeId,
+              #incomeEntity: incomeEntity,
             },
           ),
         )),
@@ -224,7 +226,7 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
             [],
             {
               #accountId: accountId,
-              #incomeId: incomeId,
+              #incomeEntity: incomeEntity,
             },
           ),
         )),
@@ -233,7 +235,7 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
   @override
   _i3.Future<_i4.Either<_i5.Failure, void>> deleteTransaction({
     required String? accountId,
-    required String? transactionId,
+    required _i10.TransactionEntity? transactionEntity,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -241,7 +243,7 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
           [],
           {
             #accountId: accountId,
-            #transactionId: transactionId,
+            #transactionEntity: transactionEntity,
           },
         ),
         returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
@@ -252,7 +254,7 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
             [],
             {
               #accountId: accountId,
-              #transactionId: transactionId,
+              #transactionEntity: transactionEntity,
             },
           ),
         )),
@@ -265,7 +267,7 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
             [],
             {
               #accountId: accountId,
-              #transactionId: transactionId,
+              #transactionEntity: transactionEntity,
             },
           ),
         )),

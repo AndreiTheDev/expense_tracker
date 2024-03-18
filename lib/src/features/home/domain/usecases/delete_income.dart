@@ -2,6 +2,7 @@ import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/error/failures.dart';
 import '../entities/account.dart';
+import '../entities/income.dart';
 import '../repositories/account_repository.dart';
 
 class DeleteIncome {
@@ -11,11 +12,11 @@ class DeleteIncome {
 
   Future<Either<Failure, AccountEntity>> call(
     final String accountId,
-    final String id,
+    final IncomeEntity incomeEntity,
   ) async {
     final response = await _repository.deleteIncome(
       accountId: accountId,
-      incomeId: id,
+      incomeEntity: incomeEntity,
     );
     return response.fold(Left.new, (r) => _repository.fetchAccount());
   }

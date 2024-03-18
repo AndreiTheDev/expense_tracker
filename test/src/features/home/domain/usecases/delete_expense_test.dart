@@ -2,6 +2,7 @@
 
 import 'package:expense_tracker_app_bloc/src/core/error/failures.dart';
 import 'package:expense_tracker_app_bloc/src/features/home/domain/entities/account.dart';
+import 'package:expense_tracker_app_bloc/src/features/home/domain/entities/expense.dart';
 import 'package:expense_tracker_app_bloc/src/features/home/domain/repositories/account_repository.dart';
 import 'package:expense_tracker_app_bloc/src/features/home/domain/usecases/delete_expense.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,6 +16,12 @@ import 'delete_expense_test.mocks.dart';
 void main() {
   late DeleteExpense sut;
   late MockAccountRepository mockAccountRepository;
+  final ExpenseEntity expenseEntity = ExpenseEntity(
+    category: 'test',
+    description: 'test',
+    amount: -100,
+    date: DateTime(2000),
+  );
   const AccountEntity account = AccountEntity(
     id: 'test',
     name: 'test',
@@ -36,19 +43,19 @@ void main() {
     when(
       mockAccountRepository.deleteExpense(
         accountId: 'test',
-        expenseId: 'test',
+        expenseEntity: expenseEntity,
       ),
     ).thenAnswer((realInvocation) async => const Right(null));
     when(mockAccountRepository.fetchAccount())
         .thenAnswer((realInvocation) async => const Right(account));
 
-    final result = await sut('test', 'test');
+    final result = await sut('test', expenseEntity);
 
     expect(result, const Right(account));
     verify(
       mockAccountRepository.deleteExpense(
         accountId: 'test',
-        expenseId: 'test',
+        expenseEntity: expenseEntity,
       ),
     ).called(1);
     verify(mockAccountRepository.fetchAccount()).called(1);
@@ -65,20 +72,20 @@ void main() {
     when(
       mockAccountRepository.deleteExpense(
         accountId: 'test',
-        expenseId: 'test',
+        expenseEntity: expenseEntity,
       ),
     ).thenAnswer((realInvocation) async => const Right(null));
     when(mockAccountRepository.fetchAccount()).thenAnswer(
       (realInvocation) async => const Left(HomeFailure(message: 'test')),
     );
 
-    final result = await sut('test', 'test');
+    final result = await sut('test', expenseEntity);
 
     expect(result, const Left(HomeFailure(message: 'test')));
     verify(
       mockAccountRepository.deleteExpense(
         accountId: 'test',
-        expenseId: 'test',
+        expenseEntity: expenseEntity,
       ),
     ).called(1);
     verify(mockAccountRepository.fetchAccount()).called(1);
