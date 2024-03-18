@@ -10,6 +10,17 @@ class TransactionDto extends TransactionEntity {
     super.id,
   });
 
+  factory TransactionDto.fromEntity(final TransactionEntity entity) {
+    return TransactionDto(
+      id: entity.id,
+      category: entity.category,
+      description: entity.description,
+      amount: entity.amount,
+      date: entity.date,
+      relatedDoc: entity.relatedDoc,
+    );
+  }
+
   factory TransactionDto.fromJson(final Map<String, dynamic> json) {
     return TransactionDto(
       id: json['id'],
