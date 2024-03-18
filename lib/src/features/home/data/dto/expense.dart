@@ -6,8 +6,20 @@ class ExpenseDto extends ExpenseEntity {
     required super.description,
     required super.amount,
     required super.date,
+    super.relatedDoc,
     super.id,
   });
+
+  factory ExpenseDto.fromEntity(final ExpenseEntity entity) {
+    return ExpenseDto(
+      id: entity.id,
+      category: entity.category,
+      description: entity.description,
+      amount: entity.amount,
+      date: entity.date,
+      relatedDoc: entity.relatedDoc,
+    );
+  }
 
   factory ExpenseDto.fromJson(final Map<String, dynamic> json) {
     return ExpenseDto(
@@ -16,6 +28,7 @@ class ExpenseDto extends ExpenseEntity {
       description: json['description'],
       amount: json['amount'],
       date: json['date'],
+      relatedDoc: json['relatedDoc'],
     );
   }
 
@@ -26,6 +39,7 @@ class ExpenseDto extends ExpenseEntity {
       'description': description,
       'amount': amount,
       'date': date,
+      'relatedDoc': relatedDoc ?? '',
     };
   }
 }

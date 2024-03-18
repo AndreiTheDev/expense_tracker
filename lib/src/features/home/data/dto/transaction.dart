@@ -6,6 +6,7 @@ class TransactionDto extends TransactionEntity {
     required super.description,
     required super.amount,
     required super.date,
+    super.relatedDoc,
     super.id,
   });
 
@@ -16,6 +17,7 @@ class TransactionDto extends TransactionEntity {
       description: json['description'],
       amount: json['amount'],
       date: json['date'],
+      relatedDoc: json['relatedDoc'],
     );
   }
 
@@ -26,6 +28,7 @@ class TransactionDto extends TransactionEntity {
       'description': description,
       'amount': amount,
       'date': date,
+      'relatedDoc': relatedDoc ?? '',
     };
   }
 }

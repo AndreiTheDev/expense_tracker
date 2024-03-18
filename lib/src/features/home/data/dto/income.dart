@@ -6,8 +6,20 @@ class IncomeDto extends IncomeEntity {
     required super.description,
     required super.amount,
     required super.date,
+    super.relatedDoc,
     super.id,
   });
+
+  factory IncomeDto.fromEntity(final IncomeEntity entity) {
+    return IncomeDto(
+      id: entity.id,
+      category: entity.category,
+      description: entity.description,
+      amount: entity.amount,
+      date: entity.date,
+      relatedDoc: entity.relatedDoc,
+    );
+  }
 
   factory IncomeDto.fromJson(final Map<String, dynamic> json) {
     return IncomeDto(
@@ -16,6 +28,7 @@ class IncomeDto extends IncomeEntity {
       description: json['description'],
       amount: json['amount'],
       date: json['date'],
+      relatedDoc: json['relatedDoc'],
     );
   }
 
@@ -26,6 +39,7 @@ class IncomeDto extends IncomeEntity {
       'description': description,
       'amount': amount,
       'date': date,
+      'relatedDoc': relatedDoc ?? '',
     };
   }
 }

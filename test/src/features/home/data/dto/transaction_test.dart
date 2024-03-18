@@ -20,6 +20,7 @@ void main() {
     'description': 'testDescription',
     'amount': 100.0,
     'date': DateTime(1999),
+    'relatedDoc': '',
   };
 
   test('Transaction is created from Json', () {

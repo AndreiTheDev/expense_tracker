@@ -1,11 +1,20 @@
 import 'package:expense_tracker_app_bloc/src/features/home/data/dto/expense.dart';
+import 'package:expense_tracker_app_bloc/src/features/home/domain/entities/expense.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  late ExpenseDto expense;
+  late ExpenseDto expenseDto;
+  late ExpenseEntity expenseEntity;
 
   setUp(() {
-    expense = ExpenseDto(
+    expenseDto = ExpenseDto(
+      id: 'test',
+      category: 'testCategory',
+      description: 'testDescription',
+      amount: 100,
+      date: DateTime(1999),
+    );
+    expenseEntity = ExpenseEntity(
       id: 'test',
       category: 'testCategory',
       description: 'testDescription',
@@ -20,14 +29,19 @@ void main() {
     'description': 'testDescription',
     'amount': 100.0,
     'date': DateTime(1999),
+    'relatedDoc': '',
   };
 
   test('Expense is created from Json', () {
     final sut = ExpenseDto.fromJson(json);
-    expect(sut, expense);
+    expect(sut, expenseDto);
   });
 
   test('Correct Json object is returned from toJson call', () {
-    expect(expense.toJson(), json);
+    expect(expenseDto.toJson(), json);
+  });
+
+  test('Correct Dto object is returned from fromEntity call', () {
+    expect(ExpenseDto.fromEntity(expenseEntity), expenseDto);
   });
 }
