@@ -15,19 +15,25 @@ const double xxlText = 64;
 
 const xsSeparator = SizedBox(
   height: xsSize,
+  width: xsSize,
 );
 const smallSeparator = SizedBox(
   height: smallSize,
+  width: smallSize,
 );
 const mediumSeparator = SizedBox(
   height: mediumSize,
+  width: mediumSize,
 );
 const largeSeparator = SizedBox(
   height: largeSize,
+  width: largeSize,
 );
 const xlSeparator = SizedBox(
   height: xlSize,
+  width: xlSize,
 );
 const xxlSeparator = SizedBox(
   height: xxlSize,
+  width: xxlSize,
 );
