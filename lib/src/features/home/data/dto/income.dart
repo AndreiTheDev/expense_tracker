@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../../domain/entities/income.dart';
 
 class IncomeDto extends IncomeEntity {
@@ -22,12 +24,13 @@ class IncomeDto extends IncomeEntity {
   }
 
   factory IncomeDto.fromJson(final Map<String, dynamic> json) {
+    final Timestamp date = json['date'];
     return IncomeDto(
       id: json['id'],
       category: json['category'],
       description: json['description'],
       amount: json['amount'],
-      date: json['date'],
+      date: date.toDate(),
       relatedDoc: json['relatedDoc'],
     );
   }
@@ -39,7 +42,7 @@ class IncomeDto extends IncomeEntity {
       'description': description,
       'amount': amount,
       'date': date,
-      'relatedDoc': relatedDoc ?? '',
+      'relatedDoc': relatedDoc,
     };
   }
 }

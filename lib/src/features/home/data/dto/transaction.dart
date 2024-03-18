@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../../domain/entities/transaction.dart';
 
 class TransactionDto extends TransactionEntity {
@@ -22,12 +24,13 @@ class TransactionDto extends TransactionEntity {
   }
 
   factory TransactionDto.fromJson(final Map<String, dynamic> json) {
+    final Timestamp date = json['date'];
     return TransactionDto(
       id: json['id'],
       category: json['category'],
       description: json['description'],
       amount: json['amount'],
-      date: json['date'],
+      date: date.toDate(),
       relatedDoc: json['relatedDoc'],
     );
   }
@@ -39,7 +42,7 @@ class TransactionDto extends TransactionEntity {
       'description': description,
       'amount': amount,
       'date': date,
-      'relatedDoc': relatedDoc ?? '',
+      'relatedDoc': relatedDoc,
     };
   }
 }
