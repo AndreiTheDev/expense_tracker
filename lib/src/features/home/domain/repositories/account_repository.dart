@@ -4,6 +4,7 @@ import '../../../../core/error/failures.dart';
 import '../entities/account.dart';
 import '../entities/expense.dart';
 import '../entities/income.dart';
+import '../entities/transaction.dart';
 
 abstract interface class AccountRepository {
   Future<Either<Failure, AccountEntity>> fetchAccount({
@@ -22,16 +23,16 @@ abstract interface class AccountRepository {
 
   Future<Either<Failure, void>> deleteExpense({
     required final String accountId,
-    required final String expenseId,
+    required final ExpenseEntity expenseEntity,
   });
 
   Future<Either<Failure, void>> deleteIncome({
     required final String accountId,
-    required final String incomeId,
+    required final IncomeEntity incomeEntity,
   });
 
   Future<Either<Failure, void>> deleteTransaction({
     required final String accountId,
-    required final String transactionId,
+    required final TransactionEntity transactionEntity,
   });
 }
