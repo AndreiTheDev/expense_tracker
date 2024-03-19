@@ -8,7 +8,7 @@ import '../entities/transaction.dart';
 
 abstract interface class AccountRepository {
   Future<Either<Failure, AccountEntity>> fetchAccount({
-    final String id = 'defaultAccount',
+    final String accountId,
   });
 
   Future<Either<Failure, void>> addExpense({
