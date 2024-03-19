@@ -5,6 +5,7 @@ import '../../features/authentication/presentation/blocs/user_bloc/user_bloc.dar
 import '../../features/authentication/presentation/views/recover_password_view.dart';
 import '../../features/authentication/presentation/views/sign_in_view.dart';
 import '../../features/authentication/presentation/views/sign_up_view.dart';
+import '../../features/home/presentation/views/add_transactions_view.dart';
 import '../../features/home/presentation/views/home_view.dart';
 import '../common_views/splash_view.dart';
 import 'app_routes.dart';
@@ -22,6 +23,15 @@ final appRouter = GoRouter(
       name: AppRoutes.home.name,
       pageBuilder: (context, state) =>
           const NoTransitionPage(child: HomeView()),
+      routes: [
+        GoRoute(
+          path: AppRoutes.addTransactions.path,
+          name: AppRoutes.addTransactions.name,
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: AddTransactionsView(),
+          ),
+        ),
+      ],
     ),
     GoRoute(
       path: AppRoutes.signin.path,

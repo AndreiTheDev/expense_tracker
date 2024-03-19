@@ -4,7 +4,8 @@ enum AppRoutes {
   signin(name: 'signin', path: '/signin'),
   signup(name: 'signup', path: '/signup'),
   signupDetails(name: 'details', path: 'details'),
-  recoverPassword(name: 'recoverpassword', path: '/recoverpassword');
+  recoverPassword(name: 'recoverpassword', path: '/recoverpassword'),
+  addTransactions(name: 'addtransactions', path: 'addtransactions');
 
   const AppRoutes({
     required this.name,
