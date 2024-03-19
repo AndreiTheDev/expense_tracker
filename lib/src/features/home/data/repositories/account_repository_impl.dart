@@ -9,6 +9,7 @@ import '../../domain/entities/transaction.dart';
 import '../../domain/repositories/account_repository.dart';
 import '../datasources/home_firebase_datasource.dart';
 import '../datasources/home_firestore_datasource.dart';
+import '../dto/account.dart';
 import '../dto/expense.dart';
 import '../dto/income.dart';
 import '../dto/transaction.dart';
@@ -46,16 +47,16 @@ class AccountRepositoryImpl implements AccountRepository {
 
   @override
   Future<Either<Failure, AccountEntity>> fetchAccount({
-    String id = 'default',
+    String accountId = 'default',
   }) async {
     final uid = firebaseDataScource.getUid();
     try {
       if (uid != null) {
         final accountDetails =
-            await firestoreDataSource.fetchAccountDetails(uid, id);
+            await firestoreDataSource.fetchAccountDetails(uid, accountId);
         final accountTransactions =
-            await firestoreDataSource.fetchAccountTransactions(uid, id);
-        final accountEntity = AccountEntity(
+            await firestoreDataSource.fetchAccountTransactions(uid, accountId);
+        final accountEntity = AccountDto(
           id: accountDetails['id'],
           name: accountDetails['name'],
           income: accountDetails['income'],
