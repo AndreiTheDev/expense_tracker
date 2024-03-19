@@ -25,6 +25,15 @@ import 'src/features/authentication/presentation/cubits/profile_photos_urls/prof
 import 'src/features/authentication/presentation/cubits/recover_password_form/recover_password_form_cubit.dart';
 import 'src/features/authentication/presentation/cubits/sign_in_form/sign_in_form_cubit.dart';
 import 'src/features/authentication/presentation/cubits/sign_up_form/sign_up_form_cubit.dart';
+import 'src/features/home/data/datasources/home_firebase_datasource.dart';
+import 'src/features/home/data/datasources/home_firestore_datasource.dart';
+import 'src/features/home/data/repositories/account_repository_impl.dart';
+import 'src/features/home/domain/repositories/account_repository.dart';
+import 'src/features/home/domain/usecases/add_expense.dart';
+import 'src/features/home/domain/usecases/add_income.dart';
+import 'src/features/home/domain/usecases/delete_transaction.dart';
+import 'src/features/home/domain/usecases/fetch_account.dart';
+import 'src/features/home/presentation/bloc/account_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -39,6 +48,14 @@ Future<void> init() async {
         signOutUser: sl(),
         recoverPassword: sl(),
         deleteUser: sl(),
+      ),
+    )
+    ..registerFactory(
+      () => AccountBloc(
+        fetchAccount: sl(),
+        addIncome: sl(),
+        addExpense: sl(),
+        deleteTransaction: sl(),
       ),
     )
 
@@ -56,6 +73,10 @@ Future<void> init() async {
     ..registerLazySingleton(() => SignOutUser(sl()))
     ..registerLazySingleton(() => SignUpUser(sl()))
     ..registerLazySingleton(() => FetchProfilePhotosUrls(sl()))
+    ..registerLazySingleton(() => FetchAccount(sl()))
+    ..registerLazySingleton(() => AddIncome(sl()))
+    ..registerLazySingleton(() => AddExpense(sl()))
+    ..registerLazySingleton(() => DeleteTransaction(sl()))
 
     //Repositories
     ..registerLazySingleton<AuthenticationRepository>(
@@ -69,6 +90,8 @@ Future<void> init() async {
     ..registerLazySingleton<ProfilePhotosRepository>(
       () => ProfilePhotosRepositoryImpl(storageDataSource: sl()),
     )
+    ..registerLazySingleton<AccountRepository>(
+        () => AccountRepositoryImpl(sl(), sl()))
 
     //Data sources
     ..registerLazySingleton<AuthenticationFirebaseDataSource>(
@@ -82,6 +105,12 @@ Future<void> init() async {
     )
     ..registerLazySingleton<AuthenticationMessagingDataSource>(
       () => AuthenticationMessagingDataSourceImpl(sl())..init(),
+    )
+    ..registerLazySingleton<HomeFirebaseDataScource>(
+      () => HomeFirebaseDataSourceImpl(sl()),
+    )
+    ..registerLazySingleton<HomeFirestoreDataSource>(
+      () => HomeFirestoreDataSourceImpl(sl()),
     )
 
     //Firebase instances
