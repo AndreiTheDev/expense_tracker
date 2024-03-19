@@ -18,6 +18,11 @@ class DeleteIncome {
       accountId: accountId,
       incomeEntity: incomeEntity,
     );
-    return response.fold(Left.new, (r) => _repository.fetchAccount());
+    return response.fold(
+      Left.new,
+      (r) => _repository.fetchAccount(
+        accountId: accountId,
+      ),
+    );
   }
 }

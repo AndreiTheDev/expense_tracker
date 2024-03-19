@@ -47,7 +47,7 @@ void main() {
     when(mockAccountRepository.fetchAccount())
         .thenAnswer((realInvocation) async => const Right(account));
 
-    final result = await sut('test', incomeEntity);
+    final result = await sut(accountId: 'test', incomeEntity: incomeEntity);
 
     expect(result, const Right(account));
     verify(
@@ -56,7 +56,7 @@ void main() {
         incomeEntity: incomeEntity,
       ),
     ).called(1);
-    verify(mockAccountRepository.fetchAccount()).called(1);
+    verify(mockAccountRepository.fetchAccount(accountId: 'test')).called(1);
     verifyNoMoreInteractions(mockAccountRepository);
   });
 
@@ -76,7 +76,7 @@ void main() {
       (realInvocation) async => const Left(HomeFailure(message: 'test')),
     );
 
-    final result = await sut('test', incomeEntity);
+    final result = await sut(accountId: 'test', incomeEntity: incomeEntity);
 
     expect(result, const Left(HomeFailure(message: 'test')));
     verify(
@@ -85,7 +85,7 @@ void main() {
         incomeEntity: incomeEntity,
       ),
     ).called(1);
-    verify(mockAccountRepository.fetchAccount()).called(1);
+    verify(mockAccountRepository.fetchAccount(accountId: 'test')).called(1);
     verifyNoMoreInteractions(mockAccountRepository);
   });
 }

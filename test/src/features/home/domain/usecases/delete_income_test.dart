@@ -58,7 +58,7 @@ void main() {
         incomeEntity: incomeEntity,
       ),
     ).called(1);
-    verify(mockAccountRepository.fetchAccount()).called(1);
+    verify(mockAccountRepository.fetchAccount(accountId: 'test')).called(1);
     verifyNoMoreInteractions(mockAccountRepository);
   });
 
@@ -88,7 +88,7 @@ void main() {
         incomeEntity: incomeEntity,
       ),
     ).called(1);
-    verify(mockAccountRepository.fetchAccount()).called(1);
+    verify(mockAccountRepository.fetchAccount(accountId: 'test')).called(1);
     verifyNoMoreInteractions(mockAccountRepository);
   });
 }

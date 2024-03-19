@@ -39,12 +39,12 @@ import 'package:mockito/src/dummies.dart' as _i7;
 class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
   @override
   _i3.Future<_i4.Either<_i5.Failure, _i6.AccountEntity>> fetchAccount(
-          {String? id = r'defaultAccount'}) =>
+          {String? accountId}) =>
       (super.noSuchMethod(
         Invocation.method(
           #fetchAccount,
           [],
-          {#id: id},
+          {#accountId: accountId},
         ),
         returnValue:
             _i3.Future<_i4.Either<_i5.Failure, _i6.AccountEntity>>.value(
@@ -53,7 +53,7 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
           Invocation.method(
             #fetchAccount,
             [],
-            {#id: id},
+            {#accountId: accountId},
           ),
         )),
         returnValueForMissingStub:
@@ -63,7 +63,7 @@ class MockAccountRepository extends _i1.Mock implements _i2.AccountRepository {
           Invocation.method(
             #fetchAccount,
             [],
-            {#id: id},
+            {#accountId: accountId},
           ),
         )),
       ) as _i3.Future<_i4.Either<_i5.Failure, _i6.AccountEntity>>);

@@ -10,14 +10,19 @@ class AddExpense {
 
   AddExpense(this._repository);
 
-  Future<Either<Failure, AccountEntity>> call(
-    final String accountId,
-    final ExpenseEntity entity,
-  ) async {
+  Future<Either<Failure, AccountEntity>> call({
+    required final String accountId,
+    required final ExpenseEntity expenseEntity,
+  }) async {
     final response = await _repository.addExpense(
       accountId: accountId,
-      expenseEntity: entity,
+      expenseEntity: expenseEntity,
     );
-    return response.fold(Left.new, (r) => _repository.fetchAccount());
+    return response.fold(
+      Left.new,
+      (r) => _repository.fetchAccount(
+        accountId: accountId,
+      ),
+    );
   }
 }

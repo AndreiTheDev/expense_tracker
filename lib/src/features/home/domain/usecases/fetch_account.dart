@@ -9,7 +9,9 @@ class FetchAccount {
 
   FetchAccount(this._repository);
 
-  Future<Either<Failure, AccountEntity>> call(final String accountId) async {
-    return _repository.fetchAccount(id: accountId);
+  Future<Either<Failure, AccountEntity>> call({
+    required final String accountId,
+  }) async {
+    return _repository.fetchAccount(accountId: accountId);
   }
 }

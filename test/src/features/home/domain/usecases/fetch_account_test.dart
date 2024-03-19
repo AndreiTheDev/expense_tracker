@@ -32,10 +32,10 @@ void main() {
     when(mockAccountRepository.fetchAccount())
         .thenAnswer((realInvocation) async => const Right(entity));
 
-    final result = await sut('test');
+    final result = await sut(accountId: 'test');
 
     expect(result, const Right(entity));
-    verify(mockAccountRepository.fetchAccount(id: 'test')).called(1);
+    verify(mockAccountRepository.fetchAccount(accountId: 'test')).called(1);
     verifyNoMoreInteractions(mockAccountRepository);
   });
 
@@ -47,10 +47,10 @@ void main() {
       (realInvocation) async => const Left(HomeFailure(message: 'test')),
     );
 
-    final result = await sut('test');
+    final result = await sut(accountId: 'test');
 
     expect(result, const Left(HomeFailure(message: 'test')));
-    verify(mockAccountRepository.fetchAccount(id: 'test')).called(1);
+    verify(mockAccountRepository.fetchAccount(accountId: 'test')).called(1);
     verifyNoMoreInteractions(mockAccountRepository);
   });
 }

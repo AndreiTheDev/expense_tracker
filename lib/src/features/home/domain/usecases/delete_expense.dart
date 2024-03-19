@@ -18,6 +18,11 @@ class DeleteExpense {
       accountId: accountId,
       expenseEntity: expenseEntity,
     );
-    return response.fold(Left.new, (r) => _repository.fetchAccount());
+    return response.fold(
+      Left.new,
+      (r) => _repository.fetchAccount(
+        accountId: accountId,
+      ),
+    );
   }
 }
