@@ -170,3 +170,45 @@ class HomeView extends StatelessWidget {
     );
   }
 }
+
+class TransactionsListHeader extends StatelessWidget {
+  const TransactionsListHeader({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: mediumSize,
+        right: mediumSize,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(
+            'Transactions',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextButton(
+            onPressed: () {},
+            style: ButtonStyle(
+              overlayColor: MaterialStatePropertyAll(
+                textDark.withOpacity(0.15),
+              ),
+            ),
+            child: const Text(
+              'View All',
+              style: TextStyle(
+                color: textDark,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
