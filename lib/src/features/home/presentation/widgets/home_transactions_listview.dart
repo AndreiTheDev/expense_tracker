@@ -1,85 +1,147 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../../core/utils/utils.dart';
-import '../bloc/account_bloc.dart';
+import '../../domain/entities/transaction.dart';
 
 class HomeTransactionsListview extends StatelessWidget {
-  const HomeTransactionsListview({super.key});
+  const HomeTransactionsListview({required this.transactionsList, super.key});
+
+  final List<TransactionEntity> transactionsList;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: BlocBuilder<AccountBloc, AccountState>(
-        builder: (context, state) {
-          if (state is AccountLoaded) {
-            final accountTransactions = state.account.transactions;
-            return ListView.separated(
-              padding: const EdgeInsets.symmetric(
-                vertical: smallSize,
-                horizontal: mediumSize,
-              ),
-              itemCount: accountTransactions.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  padding: const EdgeInsets.all(smallSize),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(smallSize),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0xffdddddd),
-                        offset: Offset(0, 6),
-                        blurRadius: 10,
-                      ),
-                    ],
+      child: ListView.separated(
+        padding: const EdgeInsets.symmetric(
+          vertical: smallSize,
+          horizontal: mediumSize,
+        ),
+        itemCount: transactionsList.length,
+        itemBuilder: (context, index) {
+          return Container(
+            padding: const EdgeInsets.all(smallSize),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(smallSize),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color(0xffdddddd),
+                  offset: Offset(0, 6),
+                  blurRadius: 10,
+                ),
+              ],
+            ),
+            height: 80,
+            child: Row(
+              children: [
+                const IconContainer(
+                  icon: Icons.shopping_bag,
+                ),
+                xsSeparator,
+                Text(
+                  transactionsList[index].category,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
-                  height: 80,
-                  child: Row(
-                    children: [
-                      const IconContainer(
-                        icon: Icons.shopping_bag,
+                ),
+                const Expanded(child: SizedBox()),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      '${transactionsList[index].amount.toStringAsFixed(2)}\$',
+                    ),
+                    Text(
+                      transactionsList[index]
+                          .date
+                          .toIso8601String()
+                          .substring(0, 10),
+                      style: TextStyle(
+                        color: textDark.withOpacity(0.6),
+                        fontSize: 12,
                       ),
-                      xsSeparator,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
+        separatorBuilder: (context, index) {
+          return smallSeparator;
+        },
+      ),
+    );
+  }
+}
+
+class HomeTransactionsListviewLoading extends StatelessWidget {
+  const HomeTransactionsListviewLoading({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Skeletonizer(
+        child: ListView.separated(
+          padding: const EdgeInsets.symmetric(
+            vertical: smallSize,
+            horizontal: mediumSize,
+          ),
+          itemCount: 6,
+          itemBuilder: (context, index) {
+            return Container(
+              padding: const EdgeInsets.all(smallSize),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(smallSize),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color(0xffdddddd),
+                    offset: Offset(0, 6),
+                    blurRadius: 10,
+                  ),
+                ],
+              ),
+              height: 80,
+              child: const Row(
+                children: [
+                  IconContainer(
+                    icon: Icons.shopping_bag,
+                  ),
+                  xsSeparator,
+                  Text(
+                    'Placeholder',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Expanded(child: SizedBox()),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
                       Text(
-                        accountTransactions[index].category,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
+                        'Placeholder',
+                      ),
+                      Text(
+                        'Placeholder',
+                        style: TextStyle(
+                          color: textDark,
+                          fontSize: 12,
                         ),
                       ),
-                      const Expanded(child: SizedBox()),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            accountTransactions[index]
-                                .amount
-                                .toStringAsFixed(2),
-                          ),
-                          Text(
-                            accountTransactions[index]
-                                .date
-                                .toIso8601String()
-                                .substring(0, 10),
-                            style: TextStyle(
-                              color: textDark.withOpacity(0.6),
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
                     ],
                   ),
-                );
-              },
-              separatorBuilder: (context, index) {
-                return smallSeparator;
-              },
+                ],
+              ),
             );
-          }
-          return const Text('No data');
-        },
+          },
+          separatorBuilder: (context, index) {
+            return smallSeparator;
+          },
+        ),
       ),
     );
   }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../../core/utils/utils.dart';
-import '../bloc/account_bloc.dart';
+import '../../domain/entities/account.dart';
 
 class HomeCard extends StatelessWidget {
-  const HomeCard({super.key});
+  const HomeCard({required this.currentAccount, super.key});
+
+  final AccountEntity currentAccount;
 
   @override
   Widget build(BuildContext context) {
@@ -42,34 +44,36 @@ class HomeCard extends StatelessWidget {
               ),
             ),
             xsSeparator,
-            BlocBuilder<AccountBloc, AccountState>(
-              builder: (context, state) {
-                if (state is AccountLoaded) {
-                  return Text(
-                    '\$ ${state.account.totalBalance.toStringAsFixed(2)}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: largeText,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  );
-                }
-                return const Text(
-                  'unknown',
-                  style: TextStyle(
-                    fontSize: largeText,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                );
-              },
+            Text(
+              '\$ ${currentAccount.totalBalance.toStringAsFixed(2)}',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: largeText,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const Expanded(child: SizedBox()),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IncomeRow(),
-                ExpenseRow(),
+                DetailRow(
+                  amount: currentAccount.income,
+                  icon: const Icon(
+                    Icons.arrow_downward,
+                    color: Color(0xff3fe444),
+                    size: 18,
+                  ),
+                  description: 'Income',
+                ),
+                DetailRow(
+                  amount: currentAccount.expenses,
+                  icon: const Icon(
+                    Icons.arrow_upward,
+                    color: Color(0xfffb5d67),
+                    size: 18,
+                  ),
+                  description: 'Expenses',
+                ),
               ],
             ),
           ],
@@ -79,106 +83,125 @@ class HomeCard extends StatelessWidget {
   }
 }
 
-class IncomeRow extends StatelessWidget {
-  const IncomeRow({
-    super.key,
-  });
+class HomeCardLoading extends StatelessWidget {
+  const HomeCardLoading({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(4),
+    return Skeletonizer(
+      child: Padding(
+        padding: const EdgeInsets.only(
+          left: mediumSize,
+          right: mediumSize,
+        ),
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            vertical: mediumSize,
+            horizontal: smallSize,
+          ),
           decoration: BoxDecoration(
-            color: const Color(0x33f4f4f4),
-            borderRadius: BorderRadius.circular(99),
-          ),
-          child: const Icon(
-            Icons.arrow_downward,
-            color: Color(0xff3fe444),
-            size: 18,
-          ),
-        ),
-        xsSeparator,
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Income',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 12,
+            borderRadius: BorderRadius.circular(mediumSize),
+            boxShadow: const [
+              BoxShadow(
+                offset: Offset(-4, 6),
+                color: Color(0xffc4c4c4),
+                blurRadius: 10,
               ),
-            ),
-            BlocBuilder<AccountBloc, AccountState>(
-              builder: (context, state) {
-                if (state is AccountLoaded) {
-                  return Text(
-                    state.account.income.toStringAsFixed(2),
-                    style: const TextStyle(color: Colors.white),
-                  );
-                }
-                return const Text(
-                  'test',
-                  style: TextStyle(color: Colors.white),
-                );
-              },
-            ),
-          ],
+            ],
+            gradient: buttonsGradient,
+          ),
+          height: 200,
+          width: double.infinity,
+          child: const Column(
+            children: [
+              Text(
+                'Total Balance',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              xsSeparator,
+              Text(
+                r'$ placeholder',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: largeText,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Expanded(child: SizedBox()),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  DetailRow(
+                    amount: 100,
+                    icon: Icon(
+                      Icons.arrow_downward,
+                      color: Color(0xff3fe444),
+                      size: 18,
+                    ),
+                    description: 'Placeholder',
+                  ),
+                  DetailRow(
+                    amount: 100,
+                    icon: Icon(
+                      Icons.arrow_downward,
+                      color: Color(0xfffb5d67),
+                      size: 18,
+                    ),
+                    description: 'Placeholder',
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-      ],
+      ),
     );
   }
 }
 
-class ExpenseRow extends StatelessWidget {
-  const ExpenseRow({
+class DetailRow extends StatelessWidget {
+  const DetailRow({
+    required this.amount,
+    required this.icon,
+    required this.description,
     super.key,
   });
+
+  final double amount;
+  final Icon icon;
+  final String description;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Expenses',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 12,
-              ),
-            ),
-            BlocBuilder<AccountBloc, AccountState>(
-              builder: (context, state) {
-                if (state is AccountLoaded) {
-                  return Text(
-                    state.account.expenses.abs().toStringAsFixed(2),
-                    style: const TextStyle(color: Colors.white),
-                  );
-                }
-                return const Text(
-                  'test',
-                  style: TextStyle(color: Colors.white),
-                );
-              },
-            ),
-          ],
-        ),
-        xsSeparator,
         Container(
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
             color: const Color(0x33f4f4f4),
             borderRadius: BorderRadius.circular(99),
           ),
-          child: const Icon(
-            Icons.arrow_upward,
-            color: Color(0xfffb5d67),
-            size: 18,
-          ),
+          child: icon,
+        ),
+        xsSeparator,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              description,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+              ),
+            ),
+            Text(
+              amount.toStringAsFixed(2),
+              style: const TextStyle(color: Colors.white),
+            ),
+          ],
         ),
       ],
     );
