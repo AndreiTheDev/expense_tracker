@@ -34,6 +34,7 @@ import 'src/features/home/domain/usecases/add_income.dart';
 import 'src/features/home/domain/usecases/delete_transaction.dart';
 import 'src/features/home/domain/usecases/fetch_account.dart';
 import 'src/features/home/presentation/bloc/account_bloc.dart';
+import 'src/features/home/presentation/cubits/add_transaction/add_transaction_form_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -64,6 +65,7 @@ Future<void> init() async {
     ..registerFactory(SignInFormCubit.new)
     ..registerFactory(RecoverPasswordFormCubit.new)
     ..registerFactory(SignUpFormCubit.new)
+    ..registerFactory(AddTransactionFormCubit.new)
 
     //Use Cases
     ..registerLazySingleton(() => DeleteUser(sl()))
