@@ -7,12 +7,14 @@ class GradientElevatedButton extends StatelessWidget {
     required this.onTap,
     required this.displayWidget,
     this.gradient = buttonsGradient,
+    this.borderRadius = 70,
     super.key,
   });
 
   final VoidCallback onTap;
   final Widget displayWidget;
   final LinearGradient gradient;
+  final double borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +22,14 @@ class GradientElevatedButton extends StatelessWidget {
       onTap: onTap,
       overlayColor: const MaterialStatePropertyAll(Color(0x33cccccc)),
       customBorder: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(70),
+        borderRadius: BorderRadius.circular(borderRadius),
       ),
       child: Ink(
         padding: const EdgeInsets.symmetric(
           vertical: xsSize,
         ),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(70),
+          borderRadius: BorderRadius.circular(borderRadius),
           boxShadow: const [
             BoxShadow(
               color: Color(0xffcccccc),
