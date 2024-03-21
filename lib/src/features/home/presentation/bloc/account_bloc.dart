@@ -45,8 +45,10 @@ class AccountBloc extends Bloc<AccountEvent, AccountState>
       accountId: event.accountId,
     );
     repsponse.fold(
-      (failure) =>
-          emitPresentation(AccountErrorEvent(message: failure.message)),
+      (failure) {
+        emitPresentation(AccountErrorEvent(message: failure.message));
+        emit(AccountError());
+      },
       (entity) => emit(AccountLoaded(entity)),
     );
   }
@@ -61,8 +63,10 @@ class AccountBloc extends Bloc<AccountEvent, AccountState>
       incomeEntity: event.incomeEntity,
     );
     repsponse.fold(
-      (failure) =>
-          emitPresentation(AccountErrorEvent(message: failure.message)),
+      (failure) {
+        emitPresentation(AccountErrorEvent(message: failure.message));
+        emit(AccountError());
+      },
       (entity) => emit(AccountLoaded(entity)),
     );
   }
@@ -77,8 +81,10 @@ class AccountBloc extends Bloc<AccountEvent, AccountState>
       expenseEntity: event.expenseEntity,
     );
     repsponse.fold(
-      (failure) =>
-          emitPresentation(AccountErrorEvent(message: failure.message)),
+      (failure) {
+        emitPresentation(AccountErrorEvent(message: failure.message));
+        emit(AccountError());
+      },
       (entity) => emit(AccountLoaded(entity)),
     );
   }
@@ -93,8 +99,10 @@ class AccountBloc extends Bloc<AccountEvent, AccountState>
       transactionEntity: event.transactionEntity,
     );
     repsponse.fold(
-      (failure) =>
-          emitPresentation(AccountErrorEvent(message: failure.message)),
+      (failure) {
+        emitPresentation(AccountErrorEvent(message: failure.message));
+        emit(AccountError());
+      },
       (entity) => emit(AccountLoaded(entity)),
     );
   }
