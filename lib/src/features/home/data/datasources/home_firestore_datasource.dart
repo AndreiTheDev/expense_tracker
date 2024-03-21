@@ -111,6 +111,7 @@ class HomeFirestoreDataSourceImpl implements HomeFirestoreDataSource {
         .doc(accountId)
         .collection('transactions')
         .orderBy('date', descending: true)
+        .orderBy('timestamp', descending: true)
         .limit(10)
         .get();
     final List<Map<String, dynamic>> data =
@@ -148,10 +149,12 @@ class HomeFirestoreDataSourceImpl implements HomeFirestoreDataSource {
       transaction
         ..set(expenseRef, {
           ...expenseDto.toJson(),
+          'timestamp': Timestamp.now(),
           'relatedDoc': transactionsRef.path,
         })
         ..set(transactionsRef, {
           ...expenseDto.toJson(),
+          'timestamp': Timestamp.now(),
           'relatedDoc': expenseRef.path,
         })
         ..update(accountRef, {
@@ -191,10 +194,12 @@ class HomeFirestoreDataSourceImpl implements HomeFirestoreDataSource {
       transaction
         ..set(incomeRef, {
           ...incomeDto.toJson(),
+          'timestamp': Timestamp.now(),
           'relatedDoc': transactionsRef.path,
         })
         ..set(transactionsRef, {
           ...incomeDto.toJson(),
+          'timestamp': Timestamp.now(),
           'relatedDoc': incomeRef.path,
         })
         ..update(accountRef, {
@@ -223,8 +228,6 @@ class HomeFirestoreDataSourceImpl implements HomeFirestoreDataSource {
         .collection('expenses')
         .doc(expenseDto.id);
     final transactionsRef = _firestoreInstance.doc(expenseDto.relatedDoc);
-
-    print(transactionsRef);
 
     await _firestoreInstance.runTransaction((transaction) async {
       transaction
@@ -256,8 +259,6 @@ class HomeFirestoreDataSourceImpl implements HomeFirestoreDataSource {
         .collection('incomes')
         .doc(incomeDto.id);
     final transactionsRef = _firestoreInstance.doc(incomeDto.relatedDoc);
-
-    print(transactionsRef);
 
     await _firestoreInstance.runTransaction((transaction) async {
       transaction
