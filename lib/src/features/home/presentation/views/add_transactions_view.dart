@@ -9,6 +9,7 @@ import '../../../../../injection_container.dart';
 import '../../../../core/common_widgets/custom_appbar_button.dart';
 import '../../../../core/common_widgets/gradient_elevated_button.dart';
 import '../../../../core/utils/utils.dart';
+import '../bloc/account_bloc.dart';
 import '../cubits/add_transaction/add_transaction_form_cubit.dart';
 import '../widgets/transaction_switcher.dart';
 
@@ -47,8 +48,8 @@ class _AddTransactionsViewState extends State<AddTransactionsView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<AddTransactionFormCubit>(),
+    return BlocProvider<AddTransactionFormCubit>(
+      create: (context) => sl(),
       child: Builder(
         builder: (context) {
           return Scaffold(
@@ -202,20 +203,39 @@ class _AddTransactionsViewState extends State<AddTransactionsView> {
                     },
                   ),
                   const Expanded(child: SizedBox()),
-                  GradientElevatedButton(
-                    onTap: () {
-                      final bool isFormValid = context
-                          .read<AddTransactionFormCubit>()
-                          .validateForm();
-                      print(isFormValid);
+                  BlocBuilder<AddTransactionFormCubit, AddTransactionFormState>(
+                    builder: (context, state) {
+                      return GradientElevatedButton(
+                        onTap: () {
+                          final bool isFormValid = context
+                              .read<AddTransactionFormCubit>()
+                              .validateForm();
+                          if (isFormValid && isAddIncome) {
+                            context.read<AccountBloc>().add(
+                                  AccountAddIncomeEvent(
+                                    incomeEntity: state.toIncomeEntity(),
+                                  ),
+                                );
+                            context.pop();
+                          }
+                          if (isFormValid && !isAddIncome) {
+                            context.read<AccountBloc>().add(
+                                  AccountAddExpenseEvent(
+                                    expenseEntity: state.toExpenseEntity(),
+                                  ),
+                                );
+                            context.pop();
+                          }
+                        },
+                        displayWidget: const Text(
+                          'Add',
+                          style: TextStyle(
+                            color: textLight,
+                          ),
+                        ),
+                        borderRadius: xsSize,
+                      );
                     },
-                    displayWidget: const Text(
-                      'Add',
-                      style: TextStyle(
-                        color: textLight,
-                      ),
-                    ),
-                    borderRadius: xsSize,
                   ),
                   smallSeparator,
                 ],
