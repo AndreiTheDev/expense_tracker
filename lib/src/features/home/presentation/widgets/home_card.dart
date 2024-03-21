@@ -198,7 +198,7 @@ class DetailRow extends StatelessWidget {
               ),
             ),
             Text(
-              amount.toStringAsFixed(2),
+              amount.abs().toStringAsFixed(2),
               style: const TextStyle(color: Colors.white),
             ),
           ],
