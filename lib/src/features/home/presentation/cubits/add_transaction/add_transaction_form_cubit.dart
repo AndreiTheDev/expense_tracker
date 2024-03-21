@@ -1,7 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:intl/intl.dart';
 
+import '../../../domain/entities/expense.dart';
+import '../../../domain/entities/income.dart';
 import '../../models/amount.dart';
 import '../../models/category.dart';
 import '../../models/date.dart';
@@ -39,8 +42,6 @@ class AddTransactionFormCubit extends Cubit<AddTransactionFormState> {
     final description = Description.dirty(value: value);
     emit(state.copyWith(description: description));
   }
-
-  // TODO(toEntities): to entities left to implement
 
   bool validateForm() {
     final bool isFormValid = Formz.validate(

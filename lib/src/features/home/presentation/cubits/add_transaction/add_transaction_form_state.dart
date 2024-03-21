@@ -31,6 +31,24 @@ class AddTransactionFormState extends Equatable {
     );
   }
 
+  IncomeEntity toIncomeEntity() {
+    return IncomeEntity(
+      category: category.value,
+      description: description.value,
+      amount: double.parse(amount.value),
+      date: DateFormat('MMM d, y', 'en_US').parse(date.value),
+    );
+  }
+
+  ExpenseEntity toExpenseEntity() {
+    return ExpenseEntity(
+      category: category.value,
+      description: description.value,
+      amount: -double.parse(amount.value),
+      date: DateFormat('MMM d, y', 'en_US').parse(date.value),
+    );
+  }
+
   @override
   List<Object> get props => [amount, category, description, date, isValid];
 }
