@@ -148,6 +148,7 @@ class _SignUpUserDetailsState extends State<SignUpUserDetails> {
                         ),
                       );
                 }
+                FocusManager.instance.primaryFocus?.unfocus();
               },
               displayWidget: BlocBuilder<UserBloc, UserState>(
                 builder: (context, state) {

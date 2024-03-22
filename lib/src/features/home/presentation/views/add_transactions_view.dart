@@ -53,6 +53,7 @@ class _AddTransactionsViewState extends State<AddTransactionsView> {
       child: Builder(
         builder: (context) {
           return Scaffold(
+            resizeToAvoidBottomInset: false,
             body: Padding(
               padding: const EdgeInsets.all(mediumSize),
               child: Column(
@@ -226,6 +227,7 @@ class _AddTransactionsViewState extends State<AddTransactionsView> {
                                 );
                             context.pop();
                           }
+                          FocusManager.instance.primaryFocus?.unfocus();
                         },
                         displayWidget: const Text(
                           'Add',

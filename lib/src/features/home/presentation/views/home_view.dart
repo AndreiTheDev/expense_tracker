@@ -36,9 +36,15 @@ class HomeView extends StatelessWidget {
                     ),
                     mediumSeparator,
                     const TransactionsListHeader(),
-                    HomeTransactionsListview(
-                      transactionsList: currentAccount.transactions,
-                    ),
+                    if (currentAccount.transactions.isEmpty)
+                      const Padding(
+                        padding: EdgeInsets.only(top: mediumSize),
+                        child: Text('There are no transactions yet.'),
+                      ),
+                    if (currentAccount.transactions.isNotEmpty)
+                      HomeTransactionsListview(
+                        transactionsList: currentAccount.transactions,
+                      ),
                   ],
                 );
               }
@@ -46,7 +52,7 @@ class HomeView extends StatelessWidget {
                 return const Column(
                   children: [
                     xlSeparator,
-                    HomeAppBarLoading(),
+                    HomeAppBar(),
                     smallSeparator,
                     HomeCardLoading(),
                     mediumSeparator,
