@@ -56,12 +56,15 @@ class AccountRepositoryImpl implements AccountRepository {
             await firestoreDataSource.fetchAccountDetails(uid, accountId);
         final accountTransactions =
             await firestoreDataSource.fetchAccountTransactions(uid, accountId);
+        final num accountIncome = accountDetails['income'];
+        final num accountExpenses = accountDetails['expenses'];
+        final num accountTotalBalance = accountDetails['totalBalance'];
         final accountEntity = AccountDto(
           id: accountDetails['id'],
           name: accountDetails['name'],
-          income: accountDetails['income'],
-          expenses: accountDetails['expenses'],
-          totalBalance: accountDetails['totalBalance'],
+          income: accountIncome.toDouble(),
+          expenses: accountExpenses.toDouble(),
+          totalBalance: accountTotalBalance.toDouble(),
           transactions: [
             for (final Map<String, dynamic> transaction in accountTransactions)
               TransactionDto.fromJson(transaction),
