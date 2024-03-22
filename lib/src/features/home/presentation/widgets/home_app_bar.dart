@@ -63,6 +63,7 @@ class HomeAppBar extends StatelessWidget {
   }
 }
 
+//this widget will not be used yet, app design and logic seems better without it
 class HomeAppBarLoading extends StatelessWidget {
   const HomeAppBarLoading({super.key});
 
