@@ -17,6 +17,7 @@ class SignUpView extends StatelessWidget {
     return BlocProvider(
       create: (context) => sl<SignUpFormCubit>(),
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Padding(
           padding: const EdgeInsets.all(smallSize),
           child: BlocBuilder<SignUpFormCubit, SignUpFormState>(

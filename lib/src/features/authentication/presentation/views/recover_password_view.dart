@@ -17,6 +17,7 @@ class RecoverPasswordView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: BlocProvider(
         create: (context) => sl<RecoverPasswordFormCubit>(),
         child: Builder(
@@ -77,6 +78,7 @@ class RecoverPasswordView extends StatelessWidget {
                                     ),
                                   );
                             }
+                            FocusManager.instance.primaryFocus?.unfocus();
                           },
                           displayWidget: BlocBuilder<UserBloc, UserState>(
                             builder: (context, state) {

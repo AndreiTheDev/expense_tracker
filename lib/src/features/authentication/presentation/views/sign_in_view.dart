@@ -25,6 +25,7 @@ class _SignInViewState extends State<SignInView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: BlocProvider(
         create: (context) => sl<SignInFormCubit>(),
         child: Builder(
@@ -139,6 +140,7 @@ class _SignInViewState extends State<SignInView> {
                                     ),
                                   );
                             }
+                            FocusManager.instance.primaryFocus?.unfocus();
                           },
                           displayWidget: BlocBuilder<UserBloc, UserState>(
                             builder: (context, state) {
