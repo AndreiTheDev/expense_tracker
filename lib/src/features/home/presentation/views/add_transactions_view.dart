@@ -48,6 +48,7 @@ class _AddTransactionsViewState extends State<AddTransactionsView> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isIos = Theme.of(context).platform == TargetPlatform.iOS;
     return BlocProvider<AddTransactionFormCubit>(
       create: (context) => sl(),
       child: Builder(
@@ -65,7 +66,7 @@ class _AddTransactionsViewState extends State<AddTransactionsView> {
                       onTap: () {
                         context.pop();
                       },
-                      icon: Icons.arrow_back_ios_new,
+                      icon: isIos ? Icons.arrow_back_ios_new : Icons.arrow_back,
                     ),
                   ),
                   mediumSeparator,

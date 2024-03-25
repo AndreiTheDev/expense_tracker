@@ -5,22 +5,27 @@ admin.initializeApp();
 
 //aranjeaza functia
 exports.accountCreate = functions.auth.user().onCreate((user) => {
-  admin
-    .firestore()
+  const firestore = admin.firestore();
+  const batch = firestore.batch();
+
+  const accountsDoc = firestore
     .collection("users")
     .doc(user.uid)
     .collection("accounts")
-    .doc("default")
-    .set(
-      {
-        createdBy: user.uid,
-        expenses: 0,
-        income: 0,
-        id: "default",
-        name: "Default Account",
-        totalBalance: 0,
-        transactions: [],
-      },
-      { merge: true }
-    );
+    .doc("default");
+
+  batch.set(
+    accountsDoc,
+    {
+      createdBy: user.uid,
+      expenses: 0,
+      income: 0,
+      id: "default",
+      name: "Default Account",
+      totalBalance: 0,
+    },
+    { merge: true }
+  );
+
+  batch.commit();
 });
