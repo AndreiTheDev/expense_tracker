@@ -3,13 +3,17 @@ import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../domain/entities/expense.dart';
+import '../../domain/entities/expenses_details.dart';
 import '../../domain/entities/income.dart';
 
+import '../../domain/entities/incomes_details.dart';
 import '../../domain/repositories/viewall_repository.dart';
 import '../datasources/viewall_firebase_datasource.dart';
 import '../datasources/viewall_firestore_datasource.dart';
 import '../dtos/expense.dart';
+import '../dtos/expenses_details.dart';
 import '../dtos/income.dart';
+import '../dtos/incomes_details.dart';
 
 class ViewallRepositoryImpl implements ViewallRepository {
   final ViewallFirebaseDataSource firebaseDataSource;
@@ -64,18 +68,18 @@ class ViewallRepositoryImpl implements ViewallRepository {
   }
 
   @override
-  Future<Either<Failure, List<ExpenseEntity>>> fetchExpenses({
+  Future<Either<Failure, ExpensesDetailsEntity>> fetchExpensesDetails({
     String accountId = 'default',
   }) async {
     try {
       final uid = firebaseDataSource.getUid();
       if (uid != null) {
-        final response =
-            await firestoreDataSource.fetchExpenses(uid, accountId);
+        final expensesList =
+            await firestoreDataSource.fetchExpensesList(uid, accountId);
+        final expensesChart =
+            await firestoreDataSource.fetchExpensesChart(uid, accountId);
         return Right(
-          [
-            for (final expense in response) ExpenseDto.fromJson(expense),
-          ],
+          ExpensesDetailsDto.fromDtos(expensesList, null),
         );
       }
       return const Left(HomeFailure(message: 'Unable to fetch expenses.'));
@@ -87,17 +91,18 @@ class ViewallRepositoryImpl implements ViewallRepository {
   }
 
   @override
-  Future<Either<Failure, List<IncomeEntity>>> fetchIncomes({
+  Future<Either<Failure, IncomesDetailsEntity>> fetchIncomesDetails({
     String accountId = 'default',
   }) async {
     try {
       final uid = firebaseDataSource.getUid();
       if (uid != null) {
-        final response = await firestoreDataSource.fetchIncomes(uid, accountId);
+        final incomesList =
+            await firestoreDataSource.fetchIncomesList(uid, accountId);
+        final incomesChart =
+            await firestoreDataSource.fetchIncomesChart(uid, accountId);
         return Right(
-          [
-            for (final income in response) IncomeDto.fromJson(income),
-          ],
+          IncomesDetailsDto.fromDtos(incomesList, null),
         );
       }
       return const Left(HomeFailure(message: 'Unable to fetch incomes.'));
