@@ -1,17 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../dtos/chart.dart';
 import '../dtos/expense.dart';
 import '../dtos/income.dart';
 
 abstract interface class ViewallFirestoreDataSource {
-  Future<List<Map<String, dynamic>>> fetchExpenses(
+  Future<List<ExpenseDto>> fetchExpensesList(
     final String uid,
     final String accountId,
   );
 
-  Future<List<Map<String, dynamic>>> fetchIncomes(
+  Future<List<IncomeDto>> fetchIncomesList(
     final String uid,
     final String accountId,
+  );
+
+  Future<ChartDto> fetchExpensesChart(
+    String uid,
+    String accountId,
+  );
+
+  Future<ChartDto> fetchIncomesChart(
+    String uid,
+    String accountId,
   );
 
   Future<void> deleteIncome(
@@ -95,7 +106,7 @@ class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
   }
 
   @override
-  Future<List<Map<String, dynamic>>> fetchExpenses(
+  Future<List<ExpenseDto>> fetchExpensesList(
     String uid,
     String accountId,
   ) async {
@@ -109,13 +120,13 @@ class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
         .orderBy('date', descending: true)
         .limit(10)
         .get();
-    final List<Map<String, dynamic>> data =
-        snapshot.docs.map((doc) => doc.data()).toList();
+    final List<ExpenseDto> data =
+        snapshot.docs.map((doc) => ExpenseDto.fromJson(doc.data())).toList();
     return data;
   }
 
   @override
-  Future<List<Map<String, dynamic>>> fetchIncomes(
+  Future<List<IncomeDto>> fetchIncomesList(
     String uid,
     String accountId,
   ) async {
@@ -129,8 +140,42 @@ class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
         .orderBy('date', descending: true)
         .limit(10)
         .get();
-    final List<Map<String, dynamic>> data =
-        snapshot.docs.map((doc) => doc.data()).toList();
+    final List<IncomeDto> data =
+        snapshot.docs.map((doc) => IncomeDto.fromJson(doc.data())).toList();
+    return data;
+  }
+
+  @override
+  Future<ChartDto> fetchExpensesChart(
+    String uid,
+    String accountId,
+  ) async {
+    final snapshot = await _firestoreInstance
+        .collection('users')
+        .doc(uid)
+        .collection('accounts')
+        .doc(accountId)
+        .collection('expenses_chart')
+        .doc('test')
+        .get();
+    final ChartDto data = ChartDto();
+    return data;
+  }
+
+  @override
+  Future<ChartDto> fetchIncomesChart(
+    String uid,
+    String accountId,
+  ) async {
+    final snapshot = await _firestoreInstance
+        .collection('users')
+        .doc(uid)
+        .collection('accounts')
+        .doc(accountId)
+        .collection('incomes_chart')
+        .doc('test')
+        .get();
+    final ChartDto data = ChartDto();
     return data;
   }
 }
