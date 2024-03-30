@@ -2,14 +2,16 @@ import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/error/failures.dart';
 import '../entities/expense.dart';
+import '../entities/expenses_details.dart';
 import '../entities/income.dart';
+import '../entities/incomes_details.dart';
 
 abstract interface class ViewallRepository {
-  Future<Either<Failure, List<ExpenseEntity>>> fetchExpenses({
+  Future<Either<Failure, ExpensesDetailsEntity>> fetchExpensesDetails({
     final String accountId,
   });
 
-  Future<Either<Failure, List<IncomeEntity>>> fetchIncomes({
+  Future<Either<Failure, IncomesDetailsEntity>> fetchIncomesDetails({
     final String accountId,
   });
 
