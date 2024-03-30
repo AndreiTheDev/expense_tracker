@@ -1,18 +1,18 @@
 import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/error/failures.dart';
-import '../entities/expense.dart';
+import '../entities/incomes_details.dart';
 import '../repositories/viewall_repository.dart';
 
-class FetchExpenses {
+class FetchIncomesDetails {
   final ViewallRepository _repository;
 
-  FetchExpenses(this._repository);
+  FetchIncomesDetails(this._repository);
 
-  Future<Either<Failure, List<ExpenseEntity>>> call({
+  Future<Either<Failure, IncomesDetailsEntity>> call({
     required final String accountId,
   }) {
-    return _repository.fetchExpenses(
+    return _repository.fetchIncomesDetails(
       accountId: accountId,
     );
   }
