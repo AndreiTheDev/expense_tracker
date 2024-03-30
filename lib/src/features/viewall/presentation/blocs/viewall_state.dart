@@ -15,13 +15,26 @@ final class ViewallLoading extends ViewallState {
 }
 
 final class ViewallLoaded extends ViewallState {
-  final List<IncomeEntity> incomesList;
-  final List<ExpenseEntity> expensesList;
+  final IncomesDetailsEntity? incomesDetails;
+  final ExpensesDetailsEntity? expensesDetails;
 
-  const ViewallLoaded(this.incomesList, this.expensesList);
+  const ViewallLoaded({
+    this.incomesDetails,
+    this.expensesDetails,
+  });
+
+  ViewallLoaded copyWith({
+    final IncomesDetailsEntity? incomesDetails,
+    final ExpensesDetailsEntity? expensesDetails,
+  }) {
+    return ViewallLoaded(
+      incomesDetails: incomesDetails ?? this.incomesDetails,
+      expensesDetails: expensesDetails ?? this.expensesDetails,
+    );
+  }
 
   @override
-  List<Object> get props => [incomesList, expensesList];
+  List<Object> get props => [];
 }
 
 final class ViewallError extends ViewallState {
