@@ -6,12 +6,13 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../injection_container.dart';
+import '../../../../core/common_widgets/custom_appbar.dart';
 import '../../../../core/common_widgets/custom_appbar_button.dart';
+import '../../../../core/common_widgets/custom_switcher.dart';
 import '../../../../core/common_widgets/gradient_elevated_button.dart';
 import '../../../../core/utils/utils.dart';
 import '../bloc/account_bloc.dart';
 import '../cubits/add_transaction/add_transaction_form_cubit.dart';
-import '../widgets/transaction_switcher.dart';
 
 class AddTransactionsView extends StatefulWidget {
   const AddTransactionsView({super.key});
@@ -60,31 +61,30 @@ class _AddTransactionsViewState extends State<AddTransactionsView> {
               child: Column(
                 children: [
                   xlSeparator,
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: CustomAppbarButton(
-                      onTap: () {
-                        context.pop();
-                      },
+                  CustomAppbar(
+                    leftButton: CustomAppbarButton(
+                      onTap: context.pop,
                       icon: isIos ? Icons.arrow_back_ios_new : Icons.arrow_back,
                     ),
-                  ),
-                  mediumSeparator,
-                  Text(
-                    isAddIncome ? 'Add Income' : 'Add Expense',
-                    style: const TextStyle(
-                      fontSize: largeText,
+                    middleWidget: Text(
+                      isAddIncome ? 'Add Income' : 'Add Expense',
+                      style: const TextStyle(
+                        fontSize: mediumText,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                  mediumSeparator,
-                  TransactionSwitcher(
-                    isAddIncome: isAddIncome,
-                    incomeOnTap: () => setState(() {
+                  xxlSeparator,
+                  CustomSwitcher(
+                    isFirstButtonActive: isAddIncome,
+                    firstButtonOnTap: () => setState(() {
                       isAddIncome = true;
                     }),
-                    expenseOnTap: () => setState(() {
+                    firstButtonText: 'Income',
+                    secondButtonOnTap: () => setState(() {
                       isAddIncome = false;
                     }),
+                    secondButtonText: 'Expense',
                   ),
                   mediumSeparator,
                   BlocBuilder<AddTransactionFormCubit, AddTransactionFormState>(
@@ -190,6 +190,7 @@ class _AddTransactionsViewState extends State<AddTransactionsView> {
                         onTap: () async {
                           final pickedDate = await showDatePicker(
                             context: context,
+                            initialDate: DateTime.now(),
                             firstDate: DateTime(2020),
                             lastDate: DateTime.now(),
                           );
