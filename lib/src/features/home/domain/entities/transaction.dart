@@ -1,12 +1,20 @@
 import 'package:equatable/equatable.dart';
 import 'package:uuid/uuid.dart';
 
-class TransactionEntity extends Equatable {
+import '../../../../core/interfaces/entities/transaction_interface.dart';
+
+class TransactionEntity extends Equatable implements ITransactionEntity {
+  @override
   final String id;
+  @override
   final String category;
+  @override
   final String description;
+  @override
   final double amount;
+  @override
   final DateTime date;
+  @override
   final String relatedDoc;
 
   TransactionEntity({
