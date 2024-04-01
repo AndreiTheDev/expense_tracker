@@ -27,7 +27,7 @@ class CustomAppbarButton extends StatelessWidget {
         ),
         child: Icon(
           icon,
-          size: 24,
+          size: iconSize,
           color: iconButtonsColor,
         ),
       ),
