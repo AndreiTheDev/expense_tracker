@@ -6,6 +6,7 @@ const double mediumSize = 24;
 const double largeSize = 36;
 const double xlSize = 48;
 const double xxlSize = 64;
+const double iconSize = 24;
 
 const double smallText = 14;
 const double mediumText = 24;
