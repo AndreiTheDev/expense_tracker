@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-import '../../../../core/utils/utils.dart';
-import '../../domain/entities/transaction.dart';
+import '../interfaces/entities/transaction_interface.dart';
+import '../utils/utils.dart';
 
-class HomeTransactionsListview extends StatelessWidget {
-  const HomeTransactionsListview({required this.transactionsList, super.key});
+//create transaction interface and give it as a type to the list
+class TransactionsListview extends StatelessWidget {
+  const TransactionsListview({required this.transactionsList, super.key});
 
-  final List<TransactionEntity> transactionsList;
+  final List<ITransactionEntity> transactionsList;
 
   @override
   Widget build(BuildContext context) {
