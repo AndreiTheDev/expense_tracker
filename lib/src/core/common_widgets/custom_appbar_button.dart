@@ -18,6 +18,8 @@ class CustomAppbarButton extends StatelessWidget {
       onTap: onTap,
       behavior: HitTestBehavior.translucent,
       child: Container(
+        //if padding size will be changed then
+        //update CustomAppbar sizedbox width
         padding: const EdgeInsets.all(xsSize),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -25,6 +27,7 @@ class CustomAppbarButton extends StatelessWidget {
         ),
         child: Icon(
           icon,
+          size: 24,
           color: iconButtonsColor,
         ),
       ),
