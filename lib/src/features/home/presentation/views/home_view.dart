@@ -138,7 +138,9 @@ class TransactionsListHeader extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: () async {
+              await context.pushNamed(AppRoutes.viewall.name);
+            },
             style: ButtonStyle(
               overlayColor: MaterialStatePropertyAll(
                 textDark.withOpacity(0.15),
