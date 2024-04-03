@@ -59,7 +59,7 @@ class HomeView extends StatelessWidget {
                     Skeletonizer(
                       child: TransactionsListHeader(),
                     ),
-                    HomeTransactionsListviewLoading(),
+                    TransactionsListviewLoading(),
                   ],
                 );
               }
