@@ -35,6 +35,16 @@ import 'src/features/home/domain/usecases/delete_transaction.dart';
 import 'src/features/home/domain/usecases/fetch_account.dart';
 import 'src/features/home/presentation/bloc/account_bloc.dart';
 import 'src/features/home/presentation/cubits/add_transaction/add_transaction_form_cubit.dart';
+import 'src/features/viewall/data/datasources/viewall_firebase_datasource.dart';
+import 'src/features/viewall/data/datasources/viewall_firestore_datasource.dart';
+import 'src/features/viewall/data/repositories/viewall_repository_impl.dart';
+import 'src/features/viewall/domain/repositories/viewall_repository.dart';
+import 'src/features/viewall/domain/usecases/delete_expense.dart';
+import 'src/features/viewall/domain/usecases/delete_income.dart';
+import 'src/features/viewall/domain/usecases/fetch_expenses_details.dart';
+import 'src/features/viewall/domain/usecases/fetch_incomes_details.dart';
+import 'src/features/viewall/presentation/blocs/viewall_bloc.dart';
+import 'src/features/viewall/presentation/cubit/viewall_view_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -59,6 +69,14 @@ Future<void> init() async {
         deleteTransaction: sl(),
       ),
     )
+    ..registerFactory(
+      () => ViewallBloc(
+        deleteExpense: sl(),
+        deleteIncome: sl(),
+        fetchExpensesDetails: sl(),
+        fetchIncomesDetails: sl(),
+      ),
+    )
 
     //Cubits
     ..registerFactory(() => ProfilePhotosUrlsCubit(profilePhotosUrls: sl()))
@@ -66,6 +84,7 @@ Future<void> init() async {
     ..registerFactory(RecoverPasswordFormCubit.new)
     ..registerFactory(SignUpFormCubit.new)
     ..registerFactory(AddTransactionFormCubit.new)
+    ..registerFactory(ViewallViewCubit.new)
 
     //Use Cases
     ..registerLazySingleton(() => DeleteUser(sl()))
@@ -79,6 +98,10 @@ Future<void> init() async {
     ..registerLazySingleton(() => AddIncome(sl()))
     ..registerLazySingleton(() => AddExpense(sl()))
     ..registerLazySingleton(() => DeleteTransaction(sl()))
+    ..registerLazySingleton(() => DeleteExpense(sl()))
+    ..registerLazySingleton(() => DeleteIncome(sl()))
+    ..registerLazySingleton(() => FetchExpensesDetails(sl()))
+    ..registerLazySingleton(() => FetchIncomesDetails(sl()))
 
     //Repositories
     ..registerLazySingleton<AuthenticationRepository>(
@@ -93,7 +116,11 @@ Future<void> init() async {
       () => ProfilePhotosRepositoryImpl(storageDataSource: sl()),
     )
     ..registerLazySingleton<AccountRepository>(
-        () => AccountRepositoryImpl(sl(), sl()))
+      () => AccountRepositoryImpl(sl(), sl()),
+    )
+    ..registerLazySingleton<ViewallRepository>(
+      () => ViewallRepositoryImpl(sl(), sl()),
+    )
 
     //Data sources
     ..registerLazySingleton<AuthenticationFirebaseDataSource>(
@@ -113,6 +140,12 @@ Future<void> init() async {
     )
     ..registerLazySingleton<HomeFirestoreDataSource>(
       () => HomeFirestoreDataSourceImpl(sl()),
+    )
+    ..registerLazySingleton<ViewallFirebaseDataSource>(
+      () => ViewallFirebaseDataSourceImpl(sl()),
+    )
+    ..registerLazySingleton<ViewallFirestoreDataSource>(
+      () => ViewallFirestoreDataSourceImpl(sl()),
     )
 
     //Firebase instances
