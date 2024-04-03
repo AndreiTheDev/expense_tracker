@@ -4,9 +4,11 @@ import 'package:skeletonizer/skeletonizer.dart';
 import '../interfaces/entities/transaction_interface.dart';
 import '../utils/utils.dart';
 
-//create transaction interface and give it as a type to the list
 class TransactionsListview extends StatelessWidget {
-  const TransactionsListview({required this.transactionsList, super.key});
+  const TransactionsListview({
+    required this.transactionsList,
+    super.key,
+  });
 
   final List<ITransactionEntity> transactionsList;
 
@@ -20,53 +22,57 @@ class TransactionsListview extends StatelessWidget {
         ),
         itemCount: transactionsList.length,
         itemBuilder: (context, index) {
-          return Container(
-            padding: const EdgeInsets.all(smallSize),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(smallSize),
-              boxShadow: const [
-                BoxShadow(
-                  color: Color(0xffdddddd),
-                  offset: Offset(0, 6),
-                  blurRadius: 10,
-                ),
-              ],
-            ),
-            height: 80,
-            child: Row(
-              children: [
-                const IconContainer(
-                  icon: Icons.shopping_bag,
-                ),
-                xsSeparator,
-                Text(
-                  transactionsList[index].category,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
+          return Dismissible(
+            key: Key(transactionsList[index].id),
+            onDismissed: (direction) {},
+            child: Container(
+              padding: const EdgeInsets.all(smallSize),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(smallSize),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color(0xffdddddd),
+                    offset: Offset(0, 6),
+                    blurRadius: 10,
                   ),
-                ),
-                const Expanded(child: SizedBox()),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      '${transactionsList[index].amount.toStringAsFixed(2)}\$',
+                ],
+              ),
+              height: 80,
+              child: Row(
+                children: [
+                  const IconContainer(
+                    icon: Icons.shopping_bag,
+                  ),
+                  xsSeparator,
+                  Text(
+                    transactionsList[index].category,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
                     ),
-                    Text(
-                      transactionsList[index]
-                          .date
-                          .toIso8601String()
-                          .substring(0, 10),
-                      style: TextStyle(
-                        color: textDark.withOpacity(0.6),
-                        fontSize: 12,
+                  ),
+                  const Expanded(child: SizedBox()),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        '${transactionsList[index].amount.toStringAsFixed(2)}\$',
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      Text(
+                        transactionsList[index]
+                            .date
+                            .toIso8601String()
+                            .substring(0, 10),
+                        style: TextStyle(
+                          color: textDark.withOpacity(0.6),
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           );
         },
@@ -78,8 +84,8 @@ class TransactionsListview extends StatelessWidget {
   }
 }
 
-class HomeTransactionsListviewLoading extends StatelessWidget {
-  const HomeTransactionsListviewLoading({super.key});
+class TransactionsListviewLoading extends StatelessWidget {
+  const TransactionsListviewLoading({super.key});
 
   @override
   Widget build(BuildContext context) {
