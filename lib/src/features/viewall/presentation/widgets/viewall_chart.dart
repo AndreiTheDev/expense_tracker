@@ -110,7 +110,7 @@ class ViewallChart extends StatelessWidget {
   }
 }
 
-class MonthlyColumn extends StatelessWidget {
+class MonthlyColumn extends StatefulWidget {
   const MonthlyColumn({
     required this.total,
     required this.monthText,
@@ -121,24 +121,49 @@ class MonthlyColumn extends StatelessWidget {
   final String monthText;
 
   @override
+  State<MonthlyColumn> createState() => _MonthlyColumnState();
+}
+
+class _MonthlyColumnState extends State<MonthlyColumn>
+    with TickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    duration: const Duration(milliseconds: 1300),
+    vsync: this,
+  )..forward();
+  late final Animation<double> _animation = CurvedAnimation(
+    parent: _controller,
+    curve: Curves.fastOutSlowIn,
+  );
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Expanded(
           child: Container(
-            width: 8,
+            clipBehavior: Clip.antiAlias,
             alignment: Alignment.bottomCenter,
+            width: 8,
             decoration: BoxDecoration(
               color: Colors.grey[200],
               borderRadius: BorderRadius.circular(mediumSize),
             ),
             child: LayoutBuilder(
               builder: (context, constraints) {
-                return Container(
-                  height: constraints.maxHeight - total,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(smallSize),
-                    gradient: buttonsGradient,
+                return SizeTransition(
+                  sizeFactor: _animation,
+                  child: Container(
+                    height: constraints.maxHeight - widget.total,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(smallSize),
+                      gradient: buttonsGradient,
+                    ),
                   ),
                 );
               },
@@ -149,7 +174,7 @@ class MonthlyColumn extends StatelessWidget {
           height: 4,
         ),
         Text(
-          monthText,
+          widget.monthText,
           style: const TextStyle(
             fontSize: smallText,
           ),
