@@ -6,11 +6,11 @@ import '../utils/utils.dart';
 
 class TransactionsListview extends StatelessWidget {
   const TransactionsListview({
-    required this.transactionsList,
+    required this.transactionsListCards,
     super.key,
   });
 
-  final List<ITransactionEntity> transactionsList;
+  final List<TransactionsListCard> transactionsListCards;
 
   @override
   Widget build(BuildContext context) {
@@ -20,65 +20,78 @@ class TransactionsListview extends StatelessWidget {
           vertical: smallSize,
           horizontal: mediumSize,
         ),
-        itemCount: transactionsList.length,
+        itemCount: transactionsListCards.length,
         itemBuilder: (context, index) {
-          return Dismissible(
-            key: Key(transactionsList[index].id),
-            onDismissed: (direction) {},
-            child: Container(
-              padding: const EdgeInsets.all(smallSize),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(smallSize),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color(0xffdddddd),
-                    offset: Offset(0, 6),
-                    blurRadius: 10,
-                  ),
-                ],
-              ),
-              height: 80,
-              child: Row(
-                children: [
-                  const IconContainer(
-                    icon: Icons.shopping_bag,
-                  ),
-                  xsSeparator,
-                  Text(
-                    transactionsList[index].category,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const Expanded(child: SizedBox()),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        '${transactionsList[index].amount.toStringAsFixed(2)}\$',
-                      ),
-                      Text(
-                        transactionsList[index]
-                            .date
-                            .toIso8601String()
-                            .substring(0, 10),
-                        style: TextStyle(
-                          color: textDark.withOpacity(0.6),
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          );
+          return transactionsListCards[index];
         },
         separatorBuilder: (context, index) {
           return smallSeparator;
         },
+      ),
+    );
+  }
+}
+
+class TransactionsListCard extends StatelessWidget {
+  const TransactionsListCard({
+    required this.transaction,
+    required this.deleteTransactionCallback,
+    super.key,
+  });
+
+  final ITransactionEntity transaction;
+  final VoidCallback deleteTransactionCallback;
+
+  @override
+  Widget build(BuildContext context) {
+    return Dismissible(
+      key: Key(transaction.id),
+      onDismissed: (direction) => deleteTransactionCallback(),
+      child: Container(
+        padding: const EdgeInsets.all(smallSize),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(smallSize),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0xffdddddd),
+              offset: Offset(0, 6),
+              blurRadius: 10,
+            ),
+          ],
+        ),
+        height: 80,
+        child: Row(
+          children: [
+            const IconContainer(
+              icon: Icons.shopping_bag,
+            ),
+            xsSeparator,
+            Text(
+              transaction.category,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const Expanded(child: SizedBox()),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  '${transaction.amount.toStringAsFixed(2)}\$',
+                ),
+                Text(
+                  transaction.date.toIso8601String().substring(0, 10),
+                  style: TextStyle(
+                    color: textDark.withOpacity(0.6),
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
