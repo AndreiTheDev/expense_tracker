@@ -34,7 +34,7 @@ final class ViewallLoaded extends ViewallState {
   }
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [incomesDetails, expensesDetails];
 }
 
 final class ViewallError extends ViewallState {
