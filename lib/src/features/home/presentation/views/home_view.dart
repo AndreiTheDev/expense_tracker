@@ -43,7 +43,19 @@ class HomeView extends StatelessWidget {
                       ),
                     if (currentAccount.transactions.isNotEmpty)
                       TransactionsListview(
-                        transactionsList: currentAccount.transactions,
+                        transactionsListCards: [
+                          for (final transaction in currentAccount.transactions)
+                            TransactionsListCard(
+                              transaction: transaction,
+                              deleteTransactionCallback: () {
+                                context.read<AccountBloc>().add(
+                                      AccountDeleteTransactionEvent(
+                                        transactionEntity: transaction,
+                                      ),
+                                    );
+                              },
+                            ),
+                        ],
                       ),
                   ],
                 );
