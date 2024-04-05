@@ -8,6 +8,7 @@ import '../../../../core/common_widgets/custom_appbar_button.dart';
 import '../../../../core/common_widgets/custom_switcher.dart';
 import '../../../../core/common_widgets/transactions_listview.dart';
 import '../../../../core/utils/utils.dart';
+import '../../../home/presentation/bloc/account_bloc.dart';
 import '../blocs/viewall_bloc.dart';
 import '../cubit/viewall_view_cubit.dart';
 import '../widgets/viewall_chart.dart';
@@ -23,7 +24,6 @@ class _ViewallViewState extends State<ViewallView> {
   @override
   Widget build(BuildContext context) {
     final isIos = Theme.of(context).platform == TargetPlatform.iOS;
-
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -67,7 +67,12 @@ class _ViewallViewState extends State<ViewallView> {
                           icon: isIos
                               ? Icons.arrow_back_ios_new
                               : Icons.arrow_back,
-                          onTap: context.pop,
+                          onTap: () {
+                            context
+                                .read<AccountBloc>()
+                                .add(const AccountFetchEvent());
+                            context.pop();
+                          },
                         ),
                         middleWidget: const Text(
                           'Transactions',
@@ -106,45 +111,69 @@ class _ViewallViewState extends State<ViewallView> {
                     smallSeparator,
                     BlocBuilder<ViewallBloc, ViewallState>(
                       builder: (context, blocState) {
-                        if (blocState is ViewallLoaded &&
-                            viewState is ViewallViewIncomes &&
-                            blocState.incomesDetails != null) {
-                          return blocState
-                                  .incomesDetails!.incomesList.isNotEmpty
-                              ? TransactionsListview(
-                                  transactionsList:
-                                      blocState.incomesDetails!.incomesList,
-                                )
-                              : const Padding(
-                                  padding: EdgeInsets.only(top: smallSize),
-                                  child: Text('There are no incomes yet.'),
-                                );
+                        switch (blocState) {
+                          case ViewallLoaded()
+                              when viewState is ViewallViewIncomes &&
+                                  blocState.incomesDetails != null:
+                            return blocState
+                                    .incomesDetails!.incomesList.isNotEmpty
+                                ? TransactionsListview(
+                                    transactionsListCards: [
+                                      for (final incomeEntity in blocState
+                                          .incomesDetails!.incomesList)
+                                        TransactionsListCard(
+                                          transaction: incomeEntity,
+                                          deleteTransactionCallback: () {
+                                            context.read<ViewallBloc>().add(
+                                                  ViewallDeleteIncomeEvent(
+                                                    incomeEntity: incomeEntity,
+                                                  ),
+                                                );
+                                          },
+                                        ),
+                                    ],
+                                  )
+                                : const Padding(
+                                    padding: EdgeInsets.only(top: smallSize),
+                                    child: Text('There are no incomes yet.'),
+                                  );
+                          case ViewallLoaded()
+                              when viewState is ViewallViewExpenses &&
+                                  blocState.expensesDetails != null:
+                            return blocState
+                                    .expensesDetails!.expensesList.isNotEmpty
+                                ? TransactionsListview(
+                                    transactionsListCards: [
+                                      for (final expenseEntity in blocState
+                                          .expensesDetails!.expensesList)
+                                        TransactionsListCard(
+                                          transaction: expenseEntity,
+                                          deleteTransactionCallback: () {
+                                            context.read<ViewallBloc>().add(
+                                                  ViewallDeleteExpenseEvent(
+                                                    expenseEntity:
+                                                        expenseEntity,
+                                                  ),
+                                                );
+                                          },
+                                        ),
+                                    ],
+                                  )
+                                : const Padding(
+                                    padding: EdgeInsets.only(top: smallSize),
+                                    child: Text('There are no expenses yet.'),
+                                  );
+                          case ViewallLoading():
+                            return const TransactionsListviewLoading();
+                          case ViewallLoaded()
+                              when blocState.incomesDetails == null ||
+                                  blocState.expensesDetails == null:
+                            return const Text(
+                              'Unable to fetch data. Please reload the page.',
+                            );
+                          default:
+                            return const Text('An unknown error occured.');
                         }
-                        if (blocState is ViewallLoaded &&
-                            viewState is ViewallViewExpenses &&
-                            blocState.expensesDetails != null) {
-                          return blocState
-                                  .expensesDetails!.expensesList.isNotEmpty
-                              ? TransactionsListview(
-                                  transactionsList:
-                                      blocState.expensesDetails!.expensesList,
-                                )
-                              : const Padding(
-                                  padding: EdgeInsets.only(top: smallSize),
-                                  child: Text('There are no expenses yet.'),
-                                );
-                        }
-                        if (blocState is ViewallLoading) {
-                          return const TransactionsListviewLoading();
-                        }
-                        if (blocState is ViewallLoaded &&
-                            (blocState.incomesDetails == null ||
-                                blocState.expensesDetails == null)) {
-                          return const Text(
-                            'Unable to fetch data. Please reload the page.',
-                          );
-                        }
-                        return const Text('An unknown error occured.');
                       },
                     ),
                   ],
