@@ -42,8 +42,11 @@ exports.onExpenseCollectionChanges = onDocumentWritten(
       const expenseDate = Intl.DateTimeFormat("fr-CA", {
         year: "numeric",
         month: "2-digit",
+        day: "2-digit",
         timeZone: "Europe/Bucharest",
       }).format(docBefore.date.toDate());
+      const filterDate = new Date(expenseDate);
+      filterDate.setDate(27);
       firestore
         .doc(
           `users/${event.params.uid}/accounts/${
@@ -53,7 +56,7 @@ exports.onExpenseCollectionChanges = onDocumentWritten(
         .set(
           {
             total: FieldValue.increment(docBefore.amount),
-            startingDate: docBefore.date,
+            filterDate: filterDate,
           },
           { merge: true }
         );
@@ -63,8 +66,11 @@ exports.onExpenseCollectionChanges = onDocumentWritten(
     const expenseDate = Intl.DateTimeFormat("fr-CA", {
       year: "numeric",
       month: "2-digit",
+      day: "2-digit",
       timeZone: "Europe/Bucharest",
     }).format(docAfter.date.toDate());
+    const filterDate = new Date(expenseDate);
+    filterDate.setDate(27);
     firestore
       .doc(
         `users/${event.params.uid}/accounts/${
@@ -74,7 +80,7 @@ exports.onExpenseCollectionChanges = onDocumentWritten(
       .set(
         {
           total: FieldValue.increment(-docAfter.amount),
-          startingDate: docAfter.date,
+          filterDate: filterDate,
         },
         { merge: true }
       );
@@ -91,8 +97,11 @@ exports.onIncomesCollectionChanges = onDocumentWritten(
       const incomeDate = Intl.DateTimeFormat("fr-CA", {
         year: "numeric",
         month: "2-digit",
+        day: "2-digit",
         timeZone: "Europe/Bucharest",
       }).format(docBefore.date.toDate());
+      const filterDate = new Date(incomeDate);
+      filterDate.setDate(27);
       firestore
         .doc(
           `users/${event.params.uid}/accounts/${
@@ -102,7 +111,7 @@ exports.onIncomesCollectionChanges = onDocumentWritten(
         .set(
           {
             total: FieldValue.increment(-docBefore.amount),
-            startingDate: docBefore.date,
+            filterDate: filterDate,
           },
           { merge: true }
         );
@@ -112,8 +121,11 @@ exports.onIncomesCollectionChanges = onDocumentWritten(
     const incomeDate = Intl.DateTimeFormat("fr-CA", {
       year: "numeric",
       month: "2-digit",
+      day: "2-digit",
       timeZone: "Europe/Bucharest",
     }).format(docAfter.date.toDate());
+    const filterDate = new Date(incomeDate);
+    filterDate.setDate(27);
     firestore
       .doc(
         `users/${event.params.uid}/accounts/${
@@ -123,7 +135,7 @@ exports.onIncomesCollectionChanges = onDocumentWritten(
       .set(
         {
           total: FieldValue.increment(docAfter.amount),
-          startingDate: docAfter.date,
+          filterDate: filterDate,
         },
         { merge: true }
       );
