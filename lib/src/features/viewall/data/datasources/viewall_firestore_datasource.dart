@@ -150,15 +150,23 @@ class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
     String uid,
     String accountId,
   ) async {
+    final currentDate = DateTime.now();
+    final startingMonth = currentDate
+        .subtract(Duration(days: 150 + currentDate.day - 1, hours: -1));
+    final endOfCurrentMonth =
+        currentDate.add(Duration(days: 30 - currentDate.day));
     final snapshot = await _firestoreInstance
         .collection('users')
         .doc(uid)
         .collection('accounts')
         .doc(accountId)
         .collection('expenses_chart')
-        .doc('test')
+        .orderBy('filterDate', descending: false)
+        .where('filterDate', isGreaterThanOrEqualTo: startingMonth)
+        .where('filterDate', isLessThanOrEqualTo: endOfCurrentMonth)
+        .limit(6)
         .get();
-    final ChartDto data = ChartDto();
+    final ChartDto data = ChartDto(monthlyList: []);
     return data;
   }
 
@@ -167,15 +175,23 @@ class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
     String uid,
     String accountId,
   ) async {
+    final currentDate = DateTime.now();
+    final startingMonth = currentDate
+        .subtract(Duration(days: 150 + currentDate.day - 1, hours: -1));
+    final endOfCurrentMonth =
+        currentDate.add(Duration(days: 30 - currentDate.day));
     final snapshot = await _firestoreInstance
         .collection('users')
         .doc(uid)
         .collection('accounts')
         .doc(accountId)
         .collection('incomes_chart')
-        .doc('test')
+        .orderBy('filterDate', descending: false)
+        .where('filterDate', isGreaterThanOrEqualTo: startingMonth)
+        .where('filterDate', isLessThanOrEqualTo: endOfCurrentMonth)
+        .limit(6)
         .get();
-    final ChartDto data = ChartDto();
+    final ChartDto data = ChartDto(monthlyList: []);
     return data;
   }
 }
