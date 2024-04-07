@@ -6,9 +6,9 @@ void main() {
   late ExpensesDetailsEntity sut;
 
   setUp(() {
-    sut = ExpensesDetailsEntity(
-      expensesList: const [],
-      expensesChart: ChartEntity(),
+    sut = const ExpensesDetailsEntity(
+      expensesList: [],
+      expensesChart: ChartEntity(monthlyList: []),
     );
   });
 
@@ -17,7 +17,7 @@ void main() {
       sut.props,
       [
         const [],
-        ChartEntity(),
+        const ChartEntity(monthlyList: []),
       ],
     );
   });

@@ -191,7 +191,7 @@ void main() {
         'default',
       ),
     ).thenAnswer(
-      (realInvocation) async => Future.value(ChartDto()),
+      (realInvocation) async => Future.value(const ChartDto(monthlyList: [])),
     );
 
     final response = await sut.fetchExpensesDetails();
@@ -285,7 +285,7 @@ void main() {
         'default',
       ),
     ).thenAnswer(
-      (realInvocation) async => Future.value(ChartDto()),
+      (realInvocation) async => Future.value(const ChartDto(monthlyList: [])),
     );
 
     final response = await sut.fetchIncomesDetails();

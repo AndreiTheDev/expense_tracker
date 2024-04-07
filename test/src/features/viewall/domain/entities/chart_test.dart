@@ -5,7 +5,7 @@ void main() {
   late ChartEntity sut;
 
   setUp(() {
-    sut = ChartEntity();
+    sut = const ChartEntity(monthlyList: []);
   });
 
   test('ChartEntity props do not change', () {
