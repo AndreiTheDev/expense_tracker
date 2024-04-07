@@ -4,6 +4,6 @@
 
 - Also users are provided with an option to share there accounts with their family / friends so they can use a shared account where transactions from everybody will be added.
 
-![Designs image](https://github.com/AndreiTheDev/expense_tracker/blob/main/assets/expense_tracker_design.png)
-
 ## It also has a neat design :).
+
+![Designs image](https://github.com/AndreiTheDev/expense_tracker/blob/main/assets/expense_tracker_design.png)
