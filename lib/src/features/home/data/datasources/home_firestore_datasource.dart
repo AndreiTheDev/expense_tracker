@@ -67,8 +67,6 @@ class HomeFirestoreDataSourceImpl implements HomeFirestoreDataSource {
         .doc(transactionDto.id);
     final relatedDocRef = _firestoreInstance.doc(transactionDto.relatedDoc);
 
-    print(relatedDocRef);
-
     await _firestoreInstance.runTransaction((transaction) async {
       transaction
         ..update(accountRef, {
