@@ -27,7 +27,7 @@ class ViewallBloc extends Bloc<ViewallEvent, ViewallState> {
         _deleteIncome = deleteIncome,
         _fetchExpensesDetails = fetchExpensesDetails,
         _fetchIncomesDetails = fetchIncomesDetails,
-        super(ViewallInitial()) {
+        super(ViewallLoading()) {
     on<ViewallDeleteExpenseEvent>(_viewallDeleteExpenseEvent);
     on<ViewallDeleteIncomeEvent>(_viewallDeleteIncomeEvent);
     on<ViewallFetchExpensesDetailsEvent>(_viewallFetchExpensesDetailsEvent);
@@ -38,14 +38,14 @@ class ViewallBloc extends Bloc<ViewallEvent, ViewallState> {
     final ViewallDeleteExpenseEvent event,
     final Emitter<ViewallState> emit,
   ) async {
-    final currentState = state;
+    final initialState = state;
     final response = await _deleteExpense(
       accountId: event.accountId,
       expenseEntity: event.expenseEntity,
     );
     response.fold((l) => null, (r) {
-      if (currentState is ViewallLoaded) {
-        emit(currentState.copyWith(expensesDetails: r));
+      if (initialState is ViewallLoaded) {
+        emit(initialState.copyWith(expensesDetails: r));
       } else {
         emit(ViewallLoaded(expensesDetails: r));
       }
@@ -56,14 +56,14 @@ class ViewallBloc extends Bloc<ViewallEvent, ViewallState> {
     final ViewallDeleteIncomeEvent event,
     final Emitter<ViewallState> emit,
   ) async {
-    final currentState = state;
+    final initialState = state;
     final response = await _deleteIncome(
       accountId: event.accountId,
       incomeEntity: event.incomeEntity,
     );
     response.fold((l) => null, (r) {
-      if (currentState is ViewallLoaded) {
-        emit(currentState.copyWith(incomesDetails: r));
+      if (initialState is ViewallLoaded) {
+        emit(initialState.copyWith(incomesDetails: r));
       } else {
         emit(ViewallLoaded(incomesDetails: r));
       }
@@ -74,33 +74,40 @@ class ViewallBloc extends Bloc<ViewallEvent, ViewallState> {
     final ViewallFetchExpensesDetailsEvent event,
     final Emitter<ViewallState> emit,
   ) async {
-    final currentState = state;
-    final response = await _fetchExpensesDetails(
-      accountId: event.accountId,
-    );
-    response.fold((l) => null, (r) {
-      if (currentState is ViewallLoaded) {
-        emit(currentState.copyWith(expensesDetails: r));
-      } else {
-        emit(ViewallLoaded(expensesDetails: r));
-      }
-    });
+    final initialState = state;
+    if (initialState is! ViewallLoaded ||
+        initialState.expensesDetails == null) {
+      emit(ViewallLoading());
+      final response = await _fetchExpensesDetails(
+        accountId: event.accountId,
+      );
+      response.fold((l) => null, (r) {
+        if (initialState is ViewallLoaded) {
+          emit(initialState.copyWith(expensesDetails: r));
+        } else {
+          emit(ViewallLoaded(expensesDetails: r));
+        }
+      });
+    }
   }
 
   Future<void> _viewallFetchIncomesDetailsEvent(
     final ViewallFetchIncomesDetailsEvent event,
     final Emitter<ViewallState> emit,
   ) async {
-    final currentState = state;
-    final response = await _fetchIncomesDetails(
-      accountId: event.accountId,
-    );
-    response.fold((l) => null, (r) {
-      if (currentState is ViewallLoaded) {
-        emit(currentState.copyWith(incomesDetails: r));
-      } else {
-        emit(ViewallLoaded(incomesDetails: r));
-      }
-    });
+    final initialState = state;
+    if (initialState is! ViewallLoaded || initialState.incomesDetails == null) {
+      emit(ViewallLoading());
+      final response = await _fetchIncomesDetails(
+        accountId: event.accountId,
+      );
+      response.fold((l) => null, (r) {
+        if (initialState is ViewallLoaded) {
+          emit(initialState.copyWith(incomesDetails: r));
+        } else {
+          emit(ViewallLoaded(incomesDetails: r));
+        }
+      });
+    }
   }
 }

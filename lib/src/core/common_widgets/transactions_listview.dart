@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-import '../../../../core/utils/utils.dart';
-import '../../domain/entities/transaction.dart';
+import '../interfaces/entities/transaction_interface.dart';
+import '../utils/utils.dart';
 
-class HomeTransactionsListview extends StatelessWidget {
-  const HomeTransactionsListview({required this.transactionsList, super.key});
+class TransactionsListview extends StatelessWidget {
+  const TransactionsListview({
+    required this.transactionsListCards,
+    super.key,
+  });
 
-  final List<TransactionEntity> transactionsList;
+  final List<TransactionsListCard> transactionsListCards;
 
   @override
   Widget build(BuildContext context) {
@@ -17,57 +20,9 @@ class HomeTransactionsListview extends StatelessWidget {
           vertical: smallSize,
           horizontal: mediumSize,
         ),
-        itemCount: transactionsList.length,
+        itemCount: transactionsListCards.length,
         itemBuilder: (context, index) {
-          return Container(
-            padding: const EdgeInsets.all(smallSize),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(smallSize),
-              boxShadow: const [
-                BoxShadow(
-                  color: Color(0xffdddddd),
-                  offset: Offset(0, 6),
-                  blurRadius: 10,
-                ),
-              ],
-            ),
-            height: 80,
-            child: Row(
-              children: [
-                const IconContainer(
-                  icon: Icons.shopping_bag,
-                ),
-                xsSeparator,
-                Text(
-                  transactionsList[index].category,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const Expanded(child: SizedBox()),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      '${transactionsList[index].amount.toStringAsFixed(2)}\$',
-                    ),
-                    Text(
-                      transactionsList[index]
-                          .date
-                          .toIso8601String()
-                          .substring(0, 10),
-                      style: TextStyle(
-                        color: textDark.withOpacity(0.6),
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
+          return transactionsListCards[index];
         },
         separatorBuilder: (context, index) {
           return smallSeparator;
@@ -77,8 +32,73 @@ class HomeTransactionsListview extends StatelessWidget {
   }
 }
 
-class HomeTransactionsListviewLoading extends StatelessWidget {
-  const HomeTransactionsListviewLoading({super.key});
+class TransactionsListCard extends StatelessWidget {
+  const TransactionsListCard({
+    required this.transaction,
+    required this.deleteTransactionCallback,
+    super.key,
+  });
+
+  final ITransactionEntity transaction;
+  final VoidCallback deleteTransactionCallback;
+
+  @override
+  Widget build(BuildContext context) {
+    return Dismissible(
+      key: Key(transaction.id),
+      onDismissed: (direction) => deleteTransactionCallback(),
+      child: Container(
+        padding: const EdgeInsets.all(smallSize),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(smallSize),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0xffdddddd),
+              offset: Offset(0, 6),
+              blurRadius: 10,
+            ),
+          ],
+        ),
+        height: 80,
+        child: Row(
+          children: [
+            const IconContainer(
+              icon: Icons.shopping_bag,
+            ),
+            xsSeparator,
+            Text(
+              transaction.category,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const Expanded(child: SizedBox()),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  '${transaction.amount.toStringAsFixed(2)}\$',
+                ),
+                Text(
+                  transaction.date.toIso8601String().substring(0, 10),
+                  style: TextStyle(
+                    color: textDark.withOpacity(0.6),
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class TransactionsListviewLoading extends StatelessWidget {
+  const TransactionsListviewLoading({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -161,7 +161,7 @@ void main() {
   );
 
   blocTest(
-    'Delete expense return ViewallLoaded state from already loaded state',
+    'Delete income return ViewallLoaded state from already loaded state',
     build: () => viewallBloc,
     setUp: () async {
       provideDummy<Either<Failure, IncomesDetailsEntity>>(
@@ -219,6 +219,7 @@ void main() {
       const ViewallFetchExpensesDetailsEvent(),
     ),
     expect: () => [
+      ViewallLoading(),
       ViewallLoaded(
         expensesDetails: ExpensesDetailsEntity(
           expensesList: [expenseEntity],
@@ -236,6 +237,11 @@ void main() {
           ExpensesDetailsEntity(expensesList: [expenseEntity]),
         ),
       );
+      provideDummy<Either<Failure, IncomesDetailsEntity>>(
+        Right(
+          IncomesDetailsEntity(incomesList: [incomeEntity]),
+        ),
+      );
       when(
         mockFetchExpensesDetails.call(
           accountId: 'default',
@@ -245,15 +251,27 @@ void main() {
           ExpensesDetailsEntity(expensesList: [expenseEntity]),
         ),
       );
+      when(
+        mockFetchIncomesDetails.call(
+          accountId: 'default',
+        ),
+      ).thenAnswer(
+        (realInvocation) async => Right(
+          IncomesDetailsEntity(incomesList: [incomeEntity]),
+        ),
+      );
+      viewallBloc.add(const ViewallFetchIncomesDetailsEvent());
     },
-    act: (bloc) => bloc
-      ..add(
-        const ViewallFetchExpensesDetailsEvent(),
-      )
-      ..add(
-        const ViewallFetchExpensesDetailsEvent(),
-      ),
+    act: (bloc) => bloc.add(
+      const ViewallFetchExpensesDetailsEvent(),
+    ),
     expect: () => [
+      ViewallLoaded(
+        expensesDetails: ExpensesDetailsEntity(
+          expensesList: [expenseEntity],
+        ),
+      ),
+      ViewallLoading(),
       ViewallLoaded(
         expensesDetails: ExpensesDetailsEntity(
           expensesList: [expenseEntity],
@@ -285,6 +303,7 @@ void main() {
       const ViewallFetchIncomesDetailsEvent(),
     ),
     expect: () => [
+      ViewallLoading(),
       ViewallLoaded(
         incomesDetails: IncomesDetailsEntity(
           incomesList: [incomeEntity],
@@ -302,6 +321,11 @@ void main() {
           IncomesDetailsEntity(incomesList: [incomeEntity]),
         ),
       );
+      provideDummy<Either<Failure, ExpensesDetailsEntity>>(
+        Right(
+          ExpensesDetailsEntity(expensesList: [expenseEntity]),
+        ),
+      );
       when(
         mockFetchIncomesDetails.call(
           accountId: 'default',
@@ -311,15 +335,27 @@ void main() {
           IncomesDetailsEntity(incomesList: [incomeEntity]),
         ),
       );
+      when(
+        mockFetchExpensesDetails.call(
+          accountId: 'default',
+        ),
+      ).thenAnswer(
+        (realInvocation) async => Right(
+          ExpensesDetailsEntity(expensesList: [expenseEntity]),
+        ),
+      );
+      viewallBloc.add(const ViewallFetchExpensesDetailsEvent());
     },
-    act: (bloc) => bloc
-      ..add(
-        const ViewallFetchIncomesDetailsEvent(),
-      )
-      ..add(
-        const ViewallFetchIncomesDetailsEvent(),
-      ),
+    act: (bloc) => bloc.add(
+      const ViewallFetchIncomesDetailsEvent(),
+    ),
     expect: () => [
+      ViewallLoaded(
+        incomesDetails: IncomesDetailsEntity(
+          incomesList: [incomeEntity],
+        ),
+      ),
+      ViewallLoading(),
       ViewallLoaded(
         incomesDetails: IncomesDetailsEntity(
           incomesList: [incomeEntity],

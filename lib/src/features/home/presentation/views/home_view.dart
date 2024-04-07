@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../../../core/common_widgets/transactions_listview.dart';
 import '../../../../core/routing/app_routes.dart';
 import '../../../../core/utils/utils.dart';
 import '../bloc/account_bloc.dart';
 import '../widgets/home_app_bar.dart';
 import '../widgets/home_bottom_navigation_bar.dart';
 import '../widgets/home_card.dart';
-import '../widgets/home_transactions_listview.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -42,8 +42,20 @@ class HomeView extends StatelessWidget {
                         child: Text('There are no transactions yet.'),
                       ),
                     if (currentAccount.transactions.isNotEmpty)
-                      HomeTransactionsListview(
-                        transactionsList: currentAccount.transactions,
+                      TransactionsListview(
+                        transactionsListCards: [
+                          for (final transaction in currentAccount.transactions)
+                            TransactionsListCard(
+                              transaction: transaction,
+                              deleteTransactionCallback: () {
+                                context.read<AccountBloc>().add(
+                                      AccountDeleteTransactionEvent(
+                                        transactionEntity: transaction,
+                                      ),
+                                    );
+                              },
+                            ),
+                        ],
                       ),
                   ],
                 );
@@ -59,7 +71,7 @@ class HomeView extends StatelessWidget {
                     Skeletonizer(
                       child: TransactionsListHeader(),
                     ),
-                    HomeTransactionsListviewLoading(),
+                    TransactionsListviewLoading(),
                   ],
                 );
               }
@@ -138,7 +150,9 @@ class TransactionsListHeader extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: () async {
+              await context.pushNamed(AppRoutes.viewall.name);
+            },
             style: ButtonStyle(
               overlayColor: MaterialStatePropertyAll(
                 textDark.withOpacity(0.15),

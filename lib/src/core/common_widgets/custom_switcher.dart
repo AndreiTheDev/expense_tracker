@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/utils/utils.dart';
+import '../utils/utils.dart';
 
-class TransactionSwitcher extends StatelessWidget {
-  const TransactionSwitcher({
-    required this.isAddIncome,
-    required this.incomeOnTap,
-    required this.expenseOnTap,
+class CustomSwitcher extends StatelessWidget {
+  const CustomSwitcher({
+    required this.isFirstButtonActive,
+    required this.firstButtonOnTap,
+    required this.firstButtonText,
+    required this.secondButtonOnTap,
+    required this.secondButtonText,
     super.key,
   });
 
-  final bool isAddIncome;
-  final VoidCallback incomeOnTap;
-  final VoidCallback expenseOnTap;
+  final bool isFirstButtonActive;
+  final VoidCallback firstButtonOnTap;
+  final String firstButtonText;
+  final VoidCallback secondButtonOnTap;
+  final String secondButtonText;
 
   @override
   Widget build(BuildContext context) {
@@ -36,20 +40,20 @@ class TransactionSwitcher extends StatelessWidget {
             child: Material(
               borderRadius: BorderRadius.circular(xsSize + 2),
               child: InkWell(
-                onTap: incomeOnTap,
+                onTap: firstButtonOnTap,
                 overlayColor: const MaterialStatePropertyAll(Color(0x33dddddd)),
                 borderRadius: BorderRadius.circular(xsSize + 2),
                 child: Ink(
                   decoration: BoxDecoration(
-                    color: !isAddIncome ? Colors.white : null,
-                    gradient: isAddIncome ? buttonsGradient : null,
+                    color: !isFirstButtonActive ? Colors.white : null,
+                    gradient: isFirstButtonActive ? buttonsGradient : null,
                     borderRadius: BorderRadius.circular(xsSize + 2),
                   ),
                   child: Align(
                     child: Text(
-                      'Income',
+                      firstButtonText,
                       style: TextStyle(
-                        color: isAddIncome ? Colors.white : null,
+                        color: isFirstButtonActive ? Colors.white : null,
                       ),
                     ),
                   ),
@@ -62,20 +66,20 @@ class TransactionSwitcher extends StatelessWidget {
             child: Material(
               borderRadius: BorderRadius.circular(xsSize + 2),
               child: InkWell(
-                onTap: expenseOnTap,
+                onTap: secondButtonOnTap,
                 overlayColor: const MaterialStatePropertyAll(Color(0x33dddddd)),
                 borderRadius: BorderRadius.circular(xsSize + 2),
                 child: Ink(
                   decoration: BoxDecoration(
-                    color: isAddIncome ? Colors.white : null,
-                    gradient: !isAddIncome ? buttonsGradient : null,
+                    color: isFirstButtonActive ? Colors.white : null,
+                    gradient: !isFirstButtonActive ? buttonsGradient : null,
                     borderRadius: BorderRadius.circular(xsSize + 2),
                   ),
                   child: Align(
                     child: Text(
-                      'Expense',
+                      secondButtonText,
                       style: TextStyle(
-                        color: !isAddIncome ? Colors.white : null,
+                        color: !isFirstButtonActive ? Colors.white : null,
                       ),
                     ),
                   ),

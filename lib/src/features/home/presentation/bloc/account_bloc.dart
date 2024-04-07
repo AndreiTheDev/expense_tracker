@@ -93,7 +93,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountState>
     final AccountDeleteTransactionEvent event,
     final Emitter<AccountState> emit,
   ) async {
-    emit(AccountLoading());
     final repsponse = await _deleteTransaction(
       accountId: event.accountId,
       transactionEntity: event.transactionEntity,

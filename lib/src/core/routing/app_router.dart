@@ -7,6 +7,7 @@ import '../../features/authentication/presentation/views/sign_in_view.dart';
 import '../../features/authentication/presentation/views/sign_up_view.dart';
 import '../../features/home/presentation/views/add_transactions_view.dart';
 import '../../features/home/presentation/views/home_view.dart';
+import '../../features/viewall/presentation/views/viewall_view.dart';
 import '../common_views/splash_view.dart';
 import 'app_routes.dart';
 
@@ -29,6 +30,13 @@ final appRouter = GoRouter(
           name: AppRoutes.addTransactions.name,
           pageBuilder: (context, state) => const NoTransitionPage(
             child: AddTransactionsView(),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.viewall.path,
+          name: AppRoutes.viewall.name,
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: ViewallView(),
           ),
         ),
       ],
