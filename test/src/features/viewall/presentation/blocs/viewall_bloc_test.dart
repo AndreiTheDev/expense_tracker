@@ -161,7 +161,7 @@ void main() {
   );
 
   blocTest(
-    'Delete expense return ViewallLoaded state from already loaded state',
+    'Delete income return ViewallLoaded state from already loaded state',
     build: () => viewallBloc,
     setUp: () async {
       provideDummy<Either<Failure, IncomesDetailsEntity>>(
