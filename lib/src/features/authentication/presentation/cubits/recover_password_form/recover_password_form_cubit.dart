@@ -17,7 +17,6 @@ class RecoverPasswordFormCubit extends Cubit<RecoverPasswordFormState> {
         isValid: Formz.validate([email]),
       ),
     );
-    print(state);
   }
 
   bool validateForm() {

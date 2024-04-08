@@ -63,7 +63,9 @@ class UserBloc extends Bloc<UserEvent, UserState>
   }
 
   Future<void> _userSignIn(
-      final UserSignInEvent event, final Emitter<UserState> emit) async {
+    final UserSignInEvent event,
+    final Emitter<UserState> emit,
+  ) async {
     emit(UserLoading());
     final response = await _signInUser(event.email, event.password);
     response.fold((left) {

@@ -100,7 +100,8 @@ class _AddTransactionsViewState extends State<AddTransactionsView> {
                           fontSize: smallText + 4,
                           foreground: Paint()
                             ..shader = buttonsGradient.createShader(
-                                const Rect.fromLTWH(0, 0, 200, 70)),
+                              const Rect.fromLTWH(0, 0, 200, 70),
+                            ),
                         ),
                         textAlign: TextAlign.center,
                         keyboardType: TextInputType.number,
