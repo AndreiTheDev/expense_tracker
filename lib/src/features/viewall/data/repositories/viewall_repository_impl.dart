@@ -79,7 +79,7 @@ class ViewallRepositoryImpl implements ViewallRepository {
         final expensesChart =
             await firestoreDataSource.fetchExpensesChart(uid, accountId);
         return Right(
-          ExpensesDetailsDto.fromDtos(expensesList, null),
+          ExpensesDetailsDto.fromDtos(expensesList, expensesChart),
         );
       }
       return const Left(HomeFailure(message: 'Unable to fetch expenses.'));
@@ -102,7 +102,7 @@ class ViewallRepositoryImpl implements ViewallRepository {
         final incomesChart =
             await firestoreDataSource.fetchIncomesChart(uid, accountId);
         return Right(
-          IncomesDetailsDto.fromDtos(incomesList, null),
+          IncomesDetailsDto.fromDtos(incomesList, incomesChart),
         );
       }
       return const Left(HomeFailure(message: 'Unable to fetch incomes.'));
