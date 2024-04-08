@@ -5,12 +5,12 @@ import 'income.dart';
 class IncomesDetailsDto extends IncomesDetailsEntity {
   const IncomesDetailsDto({
     required super.incomesList,
-    super.incomesChart,
+    required super.incomesChart,
   });
 
   factory IncomesDetailsDto.fromDtos(
     final List<IncomeDto> incomesListDtos,
-    final ChartDto? incomesChartDto,
+    final ChartDto incomesChartDto,
   ) {
     return IncomesDetailsDto(
       incomesList: [
