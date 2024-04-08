@@ -9,9 +9,10 @@ class MonthlyChartDataDto extends MonthlyChartDataEntity {
   });
 
   factory MonthlyChartDataDto.fromJson(final Map<String, dynamic> json) {
-    final Timestamp date = json['date'];
+    final Timestamp date = json['filterDate'];
+    final num balance = json['total'];
     return MonthlyChartDataDto(
-      balance: json['balance'],
+      balance: balance.toDouble(),
       date: date.toDate(),
     );
   }
