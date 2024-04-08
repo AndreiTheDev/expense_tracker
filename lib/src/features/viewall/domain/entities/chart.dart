@@ -5,11 +5,13 @@ import 'monthly_chart_data.dart';
 
 class ChartEntity extends Equatable {
   final List<MonthlyChartDataEntity> monthlyList;
+  final double maxMonthThreshold;
 
   const ChartEntity({
     required this.monthlyList,
+    required this.maxMonthThreshold,
   });
 
   @override
-  List<Object?> get props => [monthlyList];
+  List<Object?> get props => [monthlyList, maxMonthThreshold];
 }
