@@ -207,20 +207,20 @@ class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
     final List<MonthlyChartDataDto> monthlyChartDataList,
   ) {
     double maxMonthBalance = 0;
-    final monthlyList = <MonthlyChartDataDto>[];
-    for (var i = 0; i < 6; i++) {
+    final monthlyList = List<MonthlyChartDataDto>.generate(6, (index) {
+      final dateToBeAdded = startingDate.add(Duration(days: 31 * index));
+      MonthlyChartDataDto? monthlyChartDataToBeAdded;
       for (final monthlyChartDataDto in monthlyChartDataList) {
-        final dateToBeAdded = startingDate.add(Duration(days: 31 * i));
         if (dateToBeAdded.month == monthlyChartDataDto.date.month) {
           if (monthlyChartDataDto.balance > maxMonthBalance) {
             maxMonthBalance = monthlyChartDataDto.balance;
           }
-          monthlyList.add(monthlyChartDataDto);
-        } else {
-          monthlyList.add(MonthlyChartDataDto(balance: 0, date: dateToBeAdded));
+          monthlyChartDataToBeAdded = monthlyChartDataDto;
         }
       }
-    }
+      return monthlyChartDataToBeAdded ??
+          MonthlyChartDataDto(balance: 0, date: dateToBeAdded);
+    });
     return ChartDto(
       monthlyList: monthlyList,
       maxMonthThreshold: _calculateMaxMonthThreshold(maxMonthBalance),
