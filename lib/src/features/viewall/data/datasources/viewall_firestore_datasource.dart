@@ -239,6 +239,9 @@ class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
 
   double _calculateMaxMonthThreshold(final double maxMonthBalance) {
     int digits = 0;
+    if (maxMonthBalance == 0) {
+      return 1;
+    }
     double copyMaxMonthBalance = maxMonthBalance;
     while (copyMaxMonthBalance > 10) {
       copyMaxMonthBalance = copyMaxMonthBalance / 10;
