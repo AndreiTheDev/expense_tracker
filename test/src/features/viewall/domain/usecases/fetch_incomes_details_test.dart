@@ -1,4 +1,5 @@
 import 'package:expense_tracker_app_bloc/src/core/error/failures.dart';
+import 'package:expense_tracker_app_bloc/src/features/viewall/domain/entities/chart.dart';
 import 'package:expense_tracker_app_bloc/src/features/viewall/domain/entities/incomes_details.dart';
 import 'package:expense_tracker_app_bloc/src/features/viewall/domain/repositories/viewall_repository.dart';
 import 'package:expense_tracker_app_bloc/src/features/viewall/domain/usecases/fetch_incomes_details.dart';
@@ -13,8 +14,10 @@ import 'fetch_incomes_details_test.mocks.dart';
 void main() {
   late FetchIncomesDetails sut;
   late MockViewallRepository mockViewallRepository;
-  const IncomesDetailsEntity incomesDetailsEntity =
-      IncomesDetailsEntity(incomesList: []);
+  const IncomesDetailsEntity incomesDetailsEntity = IncomesDetailsEntity(
+    incomesList: [],
+    incomesChart: ChartEntity(monthlyList: [], maxMonthThreshold: 0),
+  );
 
   setUp(() {
     mockViewallRepository = MockViewallRepository();

@@ -1,4 +1,5 @@
 import 'package:expense_tracker_app_bloc/src/core/error/failures.dart';
+import 'package:expense_tracker_app_bloc/src/features/viewall/domain/entities/chart.dart';
 import 'package:expense_tracker_app_bloc/src/features/viewall/domain/entities/income.dart';
 import 'package:expense_tracker_app_bloc/src/features/viewall/domain/entities/incomes_details.dart';
 import 'package:expense_tracker_app_bloc/src/features/viewall/domain/repositories/viewall_repository.dart';
@@ -22,8 +23,10 @@ void main() {
     date: DateTime(1999),
     relatedDoc: 'test',
   );
-  const IncomesDetailsEntity incomesDetailsEntity =
-      IncomesDetailsEntity(incomesList: []);
+  const IncomesDetailsEntity incomesDetailsEntity = IncomesDetailsEntity(
+    incomesList: [],
+    incomesChart: ChartEntity(monthlyList: [], maxMonthThreshold: 0),
+  );
 
   setUp(() {
     mockViewallRepository = MockViewallRepository();
