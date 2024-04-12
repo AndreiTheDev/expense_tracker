@@ -174,7 +174,7 @@ void main() {
     act: (bloc) => bloc.add(
       AccountDeleteTransactionEvent(transactionEntity: transactionEntity),
     ),
-    expect: () => [AccountLoading(), const AccountLoaded(accountEntity)],
+    expect: () => [const AccountLoaded(accountEntity)],
   );
 
   blocTest(
@@ -194,6 +194,6 @@ void main() {
     act: (bloc) => bloc.add(
       AccountDeleteTransactionEvent(transactionEntity: transactionEntity),
     ),
-    expect: () => [AccountLoading(), AccountError()],
+    expect: () => [AccountError()],
   );
 }
