@@ -8,7 +8,7 @@ void main() {
   setUp(() {
     sut = const ExpensesDetailsEntity(
       expensesList: [],
-      expensesChart: ChartEntity(monthlyList: []),
+      expensesChart: ChartEntity(monthlyList: [], maxMonthThreshold: 0),
     );
   });
 
@@ -17,7 +17,7 @@ void main() {
       sut.props,
       [
         const [],
-        const ChartEntity(monthlyList: []),
+        const ChartEntity(monthlyList: [], maxMonthThreshold: 0),
       ],
     );
   });
