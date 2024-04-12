@@ -7,6 +7,7 @@ import '../../../../../injection_container.dart';
 import '../../../../core/common_widgets/gradient_elevated_button.dart';
 import '../../../../core/common_widgets/gradient_text_button.dart';
 import '../../../../core/routing/app_routes.dart';
+import '../../../../core/utils/logger.dart';
 import '../../../../core/utils/utils.dart';
 import '../blocs/user_bloc/user_bloc.dart';
 import '../cubits/recover_password_form/recover_password_form_cubit.dart';
@@ -16,6 +17,7 @@ class RecoverPasswordView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    getLogger(RecoverPasswordView).d('build');
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: BlocProvider(

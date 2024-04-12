@@ -8,6 +8,7 @@ import '../../../../../injection_container.dart';
 import '../../../../core/common_widgets/gradient_elevated_button.dart';
 import '../../../../core/common_widgets/gradient_text_button.dart';
 import '../../../../core/routing/app_routes.dart';
+import '../../../../core/utils/logger.dart';
 import '../../../../core/utils/utils.dart';
 import '../blocs/user_bloc/user_bloc.dart';
 import '../cubits/sign_in_form/sign_in_form_cubit.dart';
@@ -24,6 +25,7 @@ class _SignInViewState extends State<SignInView> {
 
   @override
   Widget build(BuildContext context) {
+    getLogger(SignInView).d('build');
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: BlocProvider(
