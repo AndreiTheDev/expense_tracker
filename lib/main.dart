@@ -8,13 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'firebase_options.dart';
-import 'injection_container.dart' as depencies_injection;
+import 'injection_container.dart' as injection_container;
 import 'src/app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await depencies_injection.init();
+  await injection_container.init();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   if (kDebugMode) {
