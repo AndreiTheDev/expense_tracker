@@ -7,3 +7,5 @@
 ## It also has a neat design :).
 
 ![Designs image](https://github.com/AndreiTheDev/expense_tracker/blob/main/assets/expense_tracker_design.png)
+
+Design credit: https://dribbble.com/shots/15560984-Daily-Expense-Tracker
