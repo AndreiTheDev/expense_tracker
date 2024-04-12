@@ -5,13 +5,13 @@ void main() {
   late ChartEntity sut;
 
   setUp(() {
-    sut = ChartEntity();
+    sut = const ChartEntity(monthlyList: [], maxMonthThreshold: 0);
   });
 
   test('ChartEntity props do not change', () {
     expect(
       sut.props,
-      [],
+      [[], 0],
     );
   });
 }

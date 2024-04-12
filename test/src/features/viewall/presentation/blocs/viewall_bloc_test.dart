@@ -2,6 +2,7 @@
 
 import 'package:bloc_test/bloc_test.dart';
 import 'package:expense_tracker_app_bloc/src/core/error/failures.dart';
+import 'package:expense_tracker_app_bloc/src/features/viewall/domain/entities/chart.dart';
 import 'package:expense_tracker_app_bloc/src/features/viewall/domain/entities/expense.dart';
 import 'package:expense_tracker_app_bloc/src/features/viewall/domain/entities/expenses_details.dart';
 import 'package:expense_tracker_app_bloc/src/features/viewall/domain/entities/income.dart';
@@ -66,7 +67,10 @@ void main() {
     setUp: () async {
       provideDummy<Either<Failure, ExpensesDetailsEntity>>(
         const Right(
-          ExpensesDetailsEntity(expensesList: []),
+          ExpensesDetailsEntity(
+            expensesList: [],
+            expensesChart: ChartEntity(monthlyList: [], maxMonthThreshold: 0),
+          ),
         ),
       );
       when(
@@ -76,7 +80,10 @@ void main() {
         ),
       ).thenAnswer(
         (realInvocation) async => const Right(
-          ExpensesDetailsEntity(expensesList: []),
+          ExpensesDetailsEntity(
+            expensesList: [],
+            expensesChart: ChartEntity(monthlyList: [], maxMonthThreshold: 0),
+          ),
         ),
       );
     },
@@ -87,6 +94,7 @@ void main() {
       const ViewallLoaded(
         expensesDetails: ExpensesDetailsEntity(
           expensesList: [],
+          expensesChart: ChartEntity(monthlyList: [], maxMonthThreshold: 0),
         ),
       ),
     ],
@@ -100,7 +108,10 @@ void main() {
     setUp: () async {
       provideDummy<Either<Failure, ExpensesDetailsEntity>>(
         const Right(
-          ExpensesDetailsEntity(expensesList: []),
+          ExpensesDetailsEntity(
+            expensesList: [],
+            expensesChart: ChartEntity(monthlyList: [], maxMonthThreshold: 0),
+          ),
         ),
       );
       when(
@@ -110,7 +121,10 @@ void main() {
         ),
       ).thenAnswer(
         (realInvocation) async => const Right(
-          ExpensesDetailsEntity(expensesList: []),
+          ExpensesDetailsEntity(
+            expensesList: [],
+            expensesChart: ChartEntity(monthlyList: [], maxMonthThreshold: 0),
+          ),
         ),
       );
     },
@@ -123,6 +137,7 @@ void main() {
       const ViewallLoaded(
         expensesDetails: ExpensesDetailsEntity(
           expensesList: [],
+          expensesChart: ChartEntity(monthlyList: [], maxMonthThreshold: 0),
         ),
       ),
     ],
@@ -134,7 +149,10 @@ void main() {
     setUp: () async {
       provideDummy<Either<Failure, IncomesDetailsEntity>>(
         const Right(
-          IncomesDetailsEntity(incomesList: []),
+          IncomesDetailsEntity(
+            incomesList: [],
+            incomesChart: ChartEntity(monthlyList: [], maxMonthThreshold: 0),
+          ),
         ),
       );
       when(
@@ -144,7 +162,10 @@ void main() {
         ),
       ).thenAnswer(
         (realInvocation) async => const Right(
-          IncomesDetailsEntity(incomesList: []),
+          IncomesDetailsEntity(
+            incomesList: [],
+            incomesChart: ChartEntity(monthlyList: [], maxMonthThreshold: 0),
+          ),
         ),
       );
     },
@@ -155,6 +176,7 @@ void main() {
       const ViewallLoaded(
         incomesDetails: IncomesDetailsEntity(
           incomesList: [],
+          incomesChart: ChartEntity(monthlyList: [], maxMonthThreshold: 0),
         ),
       ),
     ],
@@ -166,7 +188,10 @@ void main() {
     setUp: () async {
       provideDummy<Either<Failure, IncomesDetailsEntity>>(
         const Right(
-          IncomesDetailsEntity(incomesList: []),
+          IncomesDetailsEntity(
+            incomesList: [],
+            incomesChart: ChartEntity(monthlyList: [], maxMonthThreshold: 0),
+          ),
         ),
       );
       when(
@@ -176,7 +201,10 @@ void main() {
         ),
       ).thenAnswer(
         (realInvocation) async => const Right(
-          IncomesDetailsEntity(incomesList: []),
+          IncomesDetailsEntity(
+            incomesList: [],
+            incomesChart: ChartEntity(monthlyList: [], maxMonthThreshold: 0),
+          ),
         ),
       );
     },
@@ -191,6 +219,7 @@ void main() {
       const ViewallLoaded(
         incomesDetails: IncomesDetailsEntity(
           incomesList: [],
+          incomesChart: ChartEntity(monthlyList: [], maxMonthThreshold: 0),
         ),
       ),
     ],
@@ -202,7 +231,11 @@ void main() {
     setUp: () async {
       provideDummy<Either<Failure, ExpensesDetailsEntity>>(
         Right(
-          ExpensesDetailsEntity(expensesList: [expenseEntity]),
+          ExpensesDetailsEntity(
+            expensesList: [expenseEntity],
+            expensesChart:
+                const ChartEntity(monthlyList: [], maxMonthThreshold: 0),
+          ),
         ),
       );
       when(
@@ -211,7 +244,11 @@ void main() {
         ),
       ).thenAnswer(
         (realInvocation) async => Right(
-          ExpensesDetailsEntity(expensesList: [expenseEntity]),
+          ExpensesDetailsEntity(
+            expensesList: [expenseEntity],
+            expensesChart:
+                const ChartEntity(monthlyList: [], maxMonthThreshold: 0),
+          ),
         ),
       );
     },
@@ -223,6 +260,8 @@ void main() {
       ViewallLoaded(
         expensesDetails: ExpensesDetailsEntity(
           expensesList: [expenseEntity],
+          expensesChart:
+              const ChartEntity(monthlyList: [], maxMonthThreshold: 0),
         ),
       ),
     ],
@@ -234,12 +273,20 @@ void main() {
     setUp: () async {
       provideDummy<Either<Failure, ExpensesDetailsEntity>>(
         Right(
-          ExpensesDetailsEntity(expensesList: [expenseEntity]),
+          ExpensesDetailsEntity(
+            expensesList: [expenseEntity],
+            expensesChart:
+                const ChartEntity(monthlyList: [], maxMonthThreshold: 0),
+          ),
         ),
       );
       provideDummy<Either<Failure, IncomesDetailsEntity>>(
         Right(
-          IncomesDetailsEntity(incomesList: [incomeEntity]),
+          IncomesDetailsEntity(
+            incomesList: [incomeEntity],
+            incomesChart:
+                const ChartEntity(monthlyList: [], maxMonthThreshold: 0),
+          ),
         ),
       );
       when(
@@ -248,7 +295,11 @@ void main() {
         ),
       ).thenAnswer(
         (realInvocation) async => Right(
-          ExpensesDetailsEntity(expensesList: [expenseEntity]),
+          ExpensesDetailsEntity(
+            expensesList: [expenseEntity],
+            expensesChart:
+                const ChartEntity(monthlyList: [], maxMonthThreshold: 0),
+          ),
         ),
       );
       when(
@@ -257,7 +308,11 @@ void main() {
         ),
       ).thenAnswer(
         (realInvocation) async => Right(
-          IncomesDetailsEntity(incomesList: [incomeEntity]),
+          IncomesDetailsEntity(
+            incomesList: [incomeEntity],
+            incomesChart:
+                const ChartEntity(monthlyList: [], maxMonthThreshold: 0),
+          ),
         ),
       );
       viewallBloc.add(const ViewallFetchIncomesDetailsEvent());
@@ -267,14 +322,23 @@ void main() {
     ),
     expect: () => [
       ViewallLoaded(
-        expensesDetails: ExpensesDetailsEntity(
-          expensesList: [expenseEntity],
+        incomesDetails: IncomesDetailsEntity(
+          incomesList: [incomeEntity],
+          incomesChart:
+              const ChartEntity(monthlyList: [], maxMonthThreshold: 0),
         ),
       ),
       ViewallLoading(),
       ViewallLoaded(
+        incomesDetails: IncomesDetailsEntity(
+          incomesList: [incomeEntity],
+          incomesChart:
+              const ChartEntity(monthlyList: [], maxMonthThreshold: 0),
+        ),
         expensesDetails: ExpensesDetailsEntity(
           expensesList: [expenseEntity],
+          expensesChart:
+              const ChartEntity(monthlyList: [], maxMonthThreshold: 0),
         ),
       ),
     ],
@@ -286,7 +350,11 @@ void main() {
     setUp: () async {
       provideDummy<Either<Failure, IncomesDetailsEntity>>(
         Right(
-          IncomesDetailsEntity(incomesList: [incomeEntity]),
+          IncomesDetailsEntity(
+            incomesList: [incomeEntity],
+            incomesChart:
+                const ChartEntity(monthlyList: [], maxMonthThreshold: 0),
+          ),
         ),
       );
       when(
@@ -295,7 +363,11 @@ void main() {
         ),
       ).thenAnswer(
         (realInvocation) async => Right(
-          IncomesDetailsEntity(incomesList: [incomeEntity]),
+          IncomesDetailsEntity(
+            incomesList: [incomeEntity],
+            incomesChart:
+                const ChartEntity(monthlyList: [], maxMonthThreshold: 0),
+          ),
         ),
       );
     },
@@ -307,6 +379,8 @@ void main() {
       ViewallLoaded(
         incomesDetails: IncomesDetailsEntity(
           incomesList: [incomeEntity],
+          incomesChart:
+              const ChartEntity(monthlyList: [], maxMonthThreshold: 0),
         ),
       ),
     ],
@@ -318,12 +392,20 @@ void main() {
     setUp: () async {
       provideDummy<Either<Failure, IncomesDetailsEntity>>(
         Right(
-          IncomesDetailsEntity(incomesList: [incomeEntity]),
+          IncomesDetailsEntity(
+            incomesList: [incomeEntity],
+            incomesChart:
+                const ChartEntity(monthlyList: [], maxMonthThreshold: 0),
+          ),
         ),
       );
       provideDummy<Either<Failure, ExpensesDetailsEntity>>(
         Right(
-          ExpensesDetailsEntity(expensesList: [expenseEntity]),
+          ExpensesDetailsEntity(
+            expensesList: [expenseEntity],
+            expensesChart:
+                const ChartEntity(monthlyList: [], maxMonthThreshold: 0),
+          ),
         ),
       );
       when(
@@ -332,7 +414,11 @@ void main() {
         ),
       ).thenAnswer(
         (realInvocation) async => Right(
-          IncomesDetailsEntity(incomesList: [incomeEntity]),
+          IncomesDetailsEntity(
+            incomesList: [incomeEntity],
+            incomesChart:
+                const ChartEntity(monthlyList: [], maxMonthThreshold: 0),
+          ),
         ),
       );
       when(
@@ -341,7 +427,11 @@ void main() {
         ),
       ).thenAnswer(
         (realInvocation) async => Right(
-          ExpensesDetailsEntity(expensesList: [expenseEntity]),
+          ExpensesDetailsEntity(
+            expensesList: [expenseEntity],
+            expensesChart:
+                const ChartEntity(monthlyList: [], maxMonthThreshold: 0),
+          ),
         ),
       );
       viewallBloc.add(const ViewallFetchExpensesDetailsEvent());
@@ -351,14 +441,23 @@ void main() {
     ),
     expect: () => [
       ViewallLoaded(
-        incomesDetails: IncomesDetailsEntity(
-          incomesList: [incomeEntity],
+        expensesDetails: ExpensesDetailsEntity(
+          expensesList: [expenseEntity],
+          expensesChart:
+              const ChartEntity(monthlyList: [], maxMonthThreshold: 0),
         ),
       ),
       ViewallLoading(),
       ViewallLoaded(
         incomesDetails: IncomesDetailsEntity(
           incomesList: [incomeEntity],
+          incomesChart:
+              const ChartEntity(monthlyList: [], maxMonthThreshold: 0),
+        ),
+        expensesDetails: ExpensesDetailsEntity(
+          expensesList: [expenseEntity],
+          expensesChart:
+              const ChartEntity(monthlyList: [], maxMonthThreshold: 0),
         ),
       ),
     ],

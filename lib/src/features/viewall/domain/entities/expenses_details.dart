@@ -5,13 +5,13 @@ import 'expense.dart';
 
 class ExpensesDetailsEntity extends Equatable {
   final List<ExpenseEntity> expensesList;
-  final ChartEntity? expensesChart;
+  final ChartEntity expensesChart;
 
   const ExpensesDetailsEntity({
     required this.expensesList,
-    this.expensesChart,
+    required this.expensesChart,
   });
 
   @override
-  List<Object?> get props => [expensesList, expensesChart];
+  List<Object> get props => [expensesList, expensesChart];
 }

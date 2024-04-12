@@ -131,7 +131,7 @@ void main() {
       verifyNoMoreInteractions(mockFirebaseDataSource);
     });
 
-    test('Is signed it returns userDto', () async {
+    test('Is signed in returns userDto', () async {
       when(mockFirebaseDataSource.isSignedIn())
           .thenAnswer((realInvocation) => mockUser);
       when(mockUser.uid).thenReturn('testUid');
@@ -147,7 +147,41 @@ void main() {
       verifyNoMoreInteractions(mockFirestoreDataSource);
     });
 
-    test('Is signed it returns authfailure', () async {
+    test('Is signed in returns success with user not signed in', () async {
+      when(mockFirebaseDataSource.isSignedIn()).thenReturn(null);
+
+      final response = await sut.isSignedIn();
+
+      expect(
+        response,
+        const Right(null),
+      );
+      verify(mockFirebaseDataSource.isSignedIn()).called(1);
+      verifyNoMoreInteractions(mockFirebaseDataSource);
+    });
+
+    test('Is signed in returns authfailure because UserDto is null', () async {
+      when(mockFirebaseDataSource.isSignedIn())
+          .thenAnswer((realInvocation) => mockUser);
+      when(mockUser.uid).thenReturn('testUid');
+      when(mockFirestoreDataSource.fetchUserData('testUid'))
+          .thenAnswer((realInvocation) async => null);
+
+      final response = await sut.isSignedIn();
+
+      expect(
+        response,
+        const Left(
+          AuthFailure(
+            message: 'Unable to verify if user is already signed in.',
+          ),
+        ),
+      );
+      verify(mockFirebaseDataSource.isSignedIn()).called(1);
+      verifyNoMoreInteractions(mockFirebaseDataSource);
+    });
+
+    test('Is signed in returns authfailure from AuthException', () async {
       when(mockFirebaseDataSource.isSignedIn()).thenThrow(
         AuthException(
           code: 'signin-failed',
@@ -165,7 +199,7 @@ void main() {
       verifyNoMoreInteractions(mockFirebaseDataSource);
     });
 
-    test('Is signed it returns authfailure from FirebaseException', () async {
+    test('Is signed in returns authfailure from FirebaseException', () async {
       when(mockFirebaseDataSource.isSignedIn())
           .thenThrow(FirebaseException(plugin: '', code: 'test'));
 
@@ -179,7 +213,7 @@ void main() {
       verifyNoMoreInteractions(mockFirebaseDataSource);
     });
 
-    test('Is signed it returns unknownerror', () async {
+    test('Is signed in returns unknownerror', () async {
       when(mockFirebaseDataSource.isSignedIn()).thenThrow(Exception());
 
       final response = await sut.isSignedIn();
@@ -244,6 +278,20 @@ void main() {
 
       final response = await sut.signInUser('test@email.com', 'testpassword');
       expect(response, equals(Right(userEntity)));
+    });
+
+    test('Sign in user returns AuthFailure because UserDto is null', () async {
+      when(mockFirebaseDataSource.signInUser('test@email.com', 'testpassword'))
+          .thenAnswer((realInvocation) async => mockUser);
+      when(mockUser.uid).thenReturn('testUid');
+      when(mockFirestoreDataSource.fetchUserData('testUid'))
+          .thenAnswer((realInvocation) async => null);
+
+      final response = await sut.signInUser('test@email.com', 'testpassword');
+      expect(
+        response,
+        equals(const Left(AuthFailure(message: 'Unable to sign in user.'))),
+      );
     });
 
     test('Sign in user fails with AuthException', () async {
@@ -336,6 +384,31 @@ void main() {
 
       final response = await sut.signUpUser(userDetailsEntity);
       expect(response, equals(Right(userDto)));
+    });
+
+    test('Sign up user returns AuthFailure because UserDto is null', () async {
+      const userDetailsEntity = UserSignUpDetailsEntity(
+        email: 'test@email.com',
+        password: 'testpassword',
+        completeName: 'test test',
+        photoUrl: 'test',
+      );
+
+      when(mockFirebaseDataSource.signUpUser('test@email.com', 'testpassword'))
+          .thenAnswer((realInvocation) async => mockUser);
+      when(mockUser.uid).thenReturn('testUid');
+      when(mockFirestoreDataSource.fetchUserData('testUid'))
+          .thenAnswer((realInvocation) async => null);
+
+      final response = await sut.signUpUser(userDetailsEntity);
+      expect(
+        response,
+        equals(
+          const Left(
+            AuthFailure(message: 'Unable to sign up user.'),
+          ),
+        ),
+      );
     });
 
     test('Sign up user fails from AuthException', () async {

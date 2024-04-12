@@ -68,6 +68,33 @@ void main() {
       expenseEntity: expenseEntity,
     );
     expect(response, const Right(null));
+    verify(mockFirebaseDataSource.getUid()).called(1);
+    verify(
+      mockFirestoreDataSource.deleteExpense(
+        'uid',
+        'default',
+        ExpenseDto.fromEntity(expenseEntity),
+      ),
+    ).called(1);
+    verifyNoMoreInteractions(mockFirebaseDataSource);
+    verifyNoMoreInteractions(mockFirestoreDataSource);
+  });
+
+  test('DeleteExpense returns Failure because user is not signed in', () async {
+    when(mockFirebaseDataSource.getUid()).thenReturn(null);
+
+    final response = await sut.deleteExpense(
+      accountId: 'default',
+      expenseEntity: expenseEntity,
+    );
+    expect(
+      response,
+      const Left(
+        HomeFailure(message: 'Unable to delete this expense.'),
+      ),
+    );
+    verify(mockFirebaseDataSource.getUid()).called(1);
+    verifyNoMoreInteractions(mockFirebaseDataSource);
   });
 
   test('DeleteExpense returns Failure from FirebaseException', () async {
@@ -87,6 +114,16 @@ void main() {
       expenseEntity: expenseEntity,
     );
     expect(response, const Left(HomeFailure(message: 'test')));
+    verify(mockFirebaseDataSource.getUid()).called(1);
+    verify(
+      mockFirestoreDataSource.deleteExpense(
+        'uid',
+        'default',
+        ExpenseDto.fromEntity(expenseEntity),
+      ),
+    ).called(1);
+    verifyNoMoreInteractions(mockFirebaseDataSource);
+    verifyNoMoreInteractions(mockFirestoreDataSource);
   });
 
   test('DeleteExpense returns Failure from Exception', () async {
@@ -109,6 +146,16 @@ void main() {
       response,
       const Left(HomeFailure(message: 'An unknown error occured.')),
     );
+    verify(mockFirebaseDataSource.getUid()).called(1);
+    verify(
+      mockFirestoreDataSource.deleteExpense(
+        'uid',
+        'default',
+        ExpenseDto.fromEntity(expenseEntity),
+      ),
+    ).called(1);
+    verifyNoMoreInteractions(mockFirebaseDataSource);
+    verifyNoMoreInteractions(mockFirestoreDataSource);
   });
 
   test('DeleteIncome returns success', () async {
@@ -128,6 +175,31 @@ void main() {
       incomeEntity: incomeEntity,
     );
     expect(response, const Right(null));
+    verify(mockFirebaseDataSource.getUid()).called(1);
+    verify(
+      mockFirestoreDataSource.deleteIncome(
+        'uid',
+        'default',
+        IncomeDto.fromEntity(incomeEntity),
+      ),
+    ).called(1);
+    verifyNoMoreInteractions(mockFirebaseDataSource);
+    verifyNoMoreInteractions(mockFirestoreDataSource);
+  });
+
+  test('DeleteIncome returns Failure because user is not signed in', () async {
+    when(mockFirebaseDataSource.getUid()).thenReturn(null);
+
+    final response = await sut.deleteIncome(
+      accountId: 'default',
+      incomeEntity: incomeEntity,
+    );
+    expect(
+      response,
+      const Left(HomeFailure(message: 'Unable to delete this income.')),
+    );
+    verify(mockFirebaseDataSource.getUid()).called(1);
+    verifyNoMoreInteractions(mockFirebaseDataSource);
   });
 
   test('DeleteIncome returns Failure from FirebaseException', () async {
@@ -147,6 +219,16 @@ void main() {
       incomeEntity: incomeEntity,
     );
     expect(response, const Left(HomeFailure(message: 'test')));
+    verify(mockFirebaseDataSource.getUid()).called(1);
+    verify(
+      mockFirestoreDataSource.deleteIncome(
+        'uid',
+        'default',
+        IncomeDto.fromEntity(incomeEntity),
+      ),
+    ).called(1);
+    verifyNoMoreInteractions(mockFirebaseDataSource);
+    verifyNoMoreInteractions(mockFirestoreDataSource);
   });
 
   test('DeleteIncome returns Failure from Exception', () async {
@@ -169,6 +251,16 @@ void main() {
       response,
       const Left(HomeFailure(message: 'An unknown error occured.')),
     );
+    verify(mockFirebaseDataSource.getUid()).called(1);
+    verify(
+      mockFirestoreDataSource.deleteIncome(
+        'uid',
+        'default',
+        IncomeDto.fromEntity(incomeEntity),
+      ),
+    ).called(1);
+    verifyNoMoreInteractions(mockFirebaseDataSource);
+    verifyNoMoreInteractions(mockFirestoreDataSource);
   });
 
   test('FetchExpensesDetails returns success', () async {
@@ -191,7 +283,9 @@ void main() {
         'default',
       ),
     ).thenAnswer(
-      (realInvocation) async => Future.value(ChartDto()),
+      (realInvocation) async => Future.value(
+        const ChartDto(monthlyList: [], maxMonthThreshold: 0),
+      ),
     );
 
     final response = await sut.fetchExpensesDetails();
@@ -200,9 +294,41 @@ void main() {
       Right(
         ExpensesDetailsDto(
           expensesList: [ExpenseDto.fromEntity(expenseEntity)],
+          expensesChart: const ChartDto(monthlyList: [], maxMonthThreshold: 0),
         ),
       ),
     );
+    verify(mockFirebaseDataSource.getUid()).called(1);
+    verify(
+      mockFirestoreDataSource.fetchExpensesList(
+        'uid',
+        'default',
+      ),
+    ).called(1);
+    verify(
+      mockFirestoreDataSource.fetchExpensesChart(
+        'uid',
+        'default',
+      ),
+    ).called(1);
+    verifyNoMoreInteractions(mockFirebaseDataSource);
+    verifyNoMoreInteractions(mockFirestoreDataSource);
+  });
+
+  test('FetchExpensesDetails returns Failure because user is not signed in',
+      () async {
+    when(mockFirebaseDataSource.getUid()).thenReturn(null);
+
+    final response = await sut.fetchExpensesDetails();
+    expect(
+      response,
+      const Left(
+        HomeFailure(message: 'Unable to fetch expenses.'),
+      ),
+    );
+
+    verify(mockFirebaseDataSource.getUid()).called(1);
+    verifyNoMoreInteractions(mockFirebaseDataSource);
   });
 
   test('FetchExpensesDetails returns Failure from FirebaseException', () async {
@@ -233,6 +359,21 @@ void main() {
         HomeFailure(message: 'test'),
       ),
     );
+    verify(mockFirebaseDataSource.getUid()).called(1);
+    verify(
+      mockFirestoreDataSource.fetchExpensesList(
+        'uid',
+        'default',
+      ),
+    ).called(1);
+    verify(
+      mockFirestoreDataSource.fetchExpensesChart(
+        'uid',
+        'default',
+      ),
+    ).called(1);
+    verifyNoMoreInteractions(mockFirebaseDataSource);
+    verifyNoMoreInteractions(mockFirestoreDataSource);
   });
 
   test('FetchExpensesDetails returns Failure from Exception', () async {
@@ -263,6 +404,21 @@ void main() {
         HomeFailure(message: 'An unknown error occured.'),
       ),
     );
+    verify(mockFirebaseDataSource.getUid()).called(1);
+    verify(
+      mockFirestoreDataSource.fetchExpensesList(
+        'uid',
+        'default',
+      ),
+    ).called(1);
+    verify(
+      mockFirestoreDataSource.fetchExpensesChart(
+        'uid',
+        'default',
+      ),
+    ).called(1);
+    verifyNoMoreInteractions(mockFirebaseDataSource);
+    verifyNoMoreInteractions(mockFirestoreDataSource);
   });
 
   test('FetchIncomesDetails returns success', () async {
@@ -285,7 +441,8 @@ void main() {
         'default',
       ),
     ).thenAnswer(
-      (realInvocation) async => Future.value(ChartDto()),
+      (realInvocation) async =>
+          Future.value(const ChartDto(monthlyList: [], maxMonthThreshold: 0)),
     );
 
     final response = await sut.fetchIncomesDetails();
@@ -294,9 +451,40 @@ void main() {
       Right(
         IncomesDetailsDto(
           incomesList: [IncomeDto.fromEntity(incomeEntity)],
+          incomesChart: const ChartDto(monthlyList: [], maxMonthThreshold: 0),
         ),
       ),
     );
+    verify(mockFirebaseDataSource.getUid()).called(1);
+    verify(
+      mockFirestoreDataSource.fetchIncomesList(
+        'uid',
+        'default',
+      ),
+    ).called(1);
+    verify(
+      mockFirestoreDataSource.fetchIncomesChart(
+        'uid',
+        'default',
+      ),
+    ).called(1);
+    verifyNoMoreInteractions(mockFirebaseDataSource);
+    verifyNoMoreInteractions(mockFirestoreDataSource);
+  });
+
+  test('FetchIncomesDetails returns Failure because user is not signed in',
+      () async {
+    when(mockFirebaseDataSource.getUid()).thenReturn(null);
+
+    final response = await sut.fetchIncomesDetails();
+    expect(
+      response,
+      const Left(
+        HomeFailure(message: 'Unable to fetch incomes.'),
+      ),
+    );
+    verify(mockFirebaseDataSource.getUid()).called(1);
+    verifyNoMoreInteractions(mockFirebaseDataSource);
   });
 
   test('FetchIncomesDetails returns Failure from FirebaseException', () async {
@@ -327,6 +515,21 @@ void main() {
         HomeFailure(message: 'test'),
       ),
     );
+    verify(mockFirebaseDataSource.getUid()).called(1);
+    verify(
+      mockFirestoreDataSource.fetchIncomesList(
+        'uid',
+        'default',
+      ),
+    ).called(1);
+    verify(
+      mockFirestoreDataSource.fetchIncomesChart(
+        'uid',
+        'default',
+      ),
+    ).called(1);
+    verifyNoMoreInteractions(mockFirebaseDataSource);
+    verifyNoMoreInteractions(mockFirestoreDataSource);
   });
 
   test('FetchIncomesDetails returns Failure from Exception', () async {
@@ -357,5 +560,20 @@ void main() {
         HomeFailure(message: 'An unknown error occured.'),
       ),
     );
+    verify(mockFirebaseDataSource.getUid()).called(1);
+    verify(
+      mockFirestoreDataSource.fetchIncomesList(
+        'uid',
+        'default',
+      ),
+    ).called(1);
+    verify(
+      mockFirestoreDataSource.fetchIncomesChart(
+        'uid',
+        'default',
+      ),
+    ).called(1);
+    verifyNoMoreInteractions(mockFirebaseDataSource);
+    verifyNoMoreInteractions(mockFirestoreDataSource);
   });
 }

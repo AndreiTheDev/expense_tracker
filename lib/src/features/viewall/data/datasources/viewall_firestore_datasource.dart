@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:logger/logger.dart';
 
+import '../../../../core/utils/logger.dart';
 import '../dtos/chart.dart';
 import '../dtos/expense.dart';
 import '../dtos/income.dart';
+import '../dtos/monthly_chart_data.dart';
 
 abstract interface class ViewallFirestoreDataSource {
   Future<List<ExpenseDto>> fetchExpensesList(
@@ -40,6 +43,7 @@ abstract interface class ViewallFirestoreDataSource {
 
 class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
   final FirebaseFirestore _firestoreInstance;
+  final Logger _logger = getLogger(ViewallFirestoreDataSourceImpl);
 
   ViewallFirestoreDataSourceImpl(this._firestoreInstance);
 
@@ -49,6 +53,11 @@ class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
     String accountId,
     ExpenseDto expenseDto,
   ) async {
+    _logger.d('''
+deleteExpense - called - params:
+      {uid: $uid,
+      accountId: $accountId,
+      expenseDto: $expenseDto}''');
     final accountRef = _firestoreInstance
         .collection('users')
         .doc(uid)
@@ -80,6 +89,11 @@ class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
     String accountId,
     IncomeDto incomeDto,
   ) async {
+    _logger.d('''
+deleteIncome - called - params:
+      {uid: $uid,
+      accountId: $accountId,
+      incomeDto: $incomeDto}''');
     final accountRef = _firestoreInstance
         .collection('users')
         .doc(uid)
@@ -110,6 +124,10 @@ class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
     String uid,
     String accountId,
   ) async {
+    _logger.d('''
+fetchExpensesList - called - params:
+      {uid: $uid,
+      accountId: $accountId,}''');
     final snapshot = await _firestoreInstance
         .collection('users')
         .doc(uid)
@@ -130,6 +148,10 @@ class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
     String uid,
     String accountId,
   ) async {
+    _logger.d('''
+fetchIncomesList - called - params:
+      {uid: $uid,
+      accountId: $accountId,}''');
     final snapshot = await _firestoreInstance
         .collection('users')
         .doc(uid)
@@ -150,8 +172,12 @@ class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
     String uid,
     String accountId,
   ) async {
+    _logger.d('''
+fetchExpensesChart - called - params:
+      {uid: $uid,
+      accountId: $accountId,}''');
     final currentDate = DateTime.now();
-    final startingMonth = currentDate
+    final startingDate = currentDate
         .subtract(Duration(days: 150 + currentDate.day - 1, hours: -1));
     final endOfCurrentMonth =
         currentDate.add(Duration(days: 30 - currentDate.day));
@@ -162,12 +188,15 @@ class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
         .doc(accountId)
         .collection('expenses_chart')
         .orderBy('filterDate', descending: false)
-        .where('filterDate', isGreaterThanOrEqualTo: startingMonth)
+        .where('filterDate', isGreaterThanOrEqualTo: startingDate)
         .where('filterDate', isLessThanOrEqualTo: endOfCurrentMonth)
         .limit(6)
         .get();
-    final ChartDto data = ChartDto(monthlyList: []);
-    return data;
+    final monthlyChartDataList =
+        _generateMonthlyChartDataDtosList(snapshot.docs);
+    final ChartDto chartDto =
+        _generateChartDto(startingDate, monthlyChartDataList);
+    return chartDto;
   }
 
   @override
@@ -175,8 +204,12 @@ class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
     String uid,
     String accountId,
   ) async {
+    _logger.d('''
+fetchIncomesChart - called - params:
+      {uid: $uid,
+      accountId: $accountId,}''');
     final currentDate = DateTime.now();
-    final startingMonth = currentDate
+    final startingDate = currentDate
         .subtract(Duration(days: 150 + currentDate.day - 1, hours: -1));
     final endOfCurrentMonth =
         currentDate.add(Duration(days: 30 - currentDate.day));
@@ -187,11 +220,73 @@ class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
         .doc(accountId)
         .collection('incomes_chart')
         .orderBy('filterDate', descending: false)
-        .where('filterDate', isGreaterThanOrEqualTo: startingMonth)
+        .where('filterDate', isGreaterThanOrEqualTo: startingDate)
         .where('filterDate', isLessThanOrEqualTo: endOfCurrentMonth)
         .limit(6)
         .get();
-    final ChartDto data = ChartDto(monthlyList: []);
-    return data;
+    final monthlyChartDataList =
+        _generateMonthlyChartDataDtosList(snapshot.docs);
+    final ChartDto chartDto =
+        _generateChartDto(startingDate, monthlyChartDataList);
+    return chartDto;
+  }
+
+  ChartDto _generateChartDto(
+    final DateTime startingDate,
+    final List<MonthlyChartDataDto> monthlyChartDataList,
+  ) {
+    _logger.i('_generateChartDto - called');
+    double maxMonthBalance = 0;
+    final monthlyList = List<MonthlyChartDataDto>.generate(6, (index) {
+      final dateToBeAdded = startingDate.add(Duration(days: 31 * index));
+      MonthlyChartDataDto? monthlyChartDataToBeAdded;
+      for (final monthlyChartDataDto in monthlyChartDataList) {
+        if (dateToBeAdded.month == monthlyChartDataDto.date.month) {
+          if (monthlyChartDataDto.balance > maxMonthBalance) {
+            maxMonthBalance = monthlyChartDataDto.balance;
+          }
+          monthlyChartDataToBeAdded = monthlyChartDataDto;
+        }
+      }
+      return monthlyChartDataToBeAdded ??
+          MonthlyChartDataDto(balance: 0, date: dateToBeAdded);
+    });
+    return ChartDto(
+      monthlyList: monthlyList,
+      maxMonthThreshold: _calculateMaxMonthThreshold(maxMonthBalance),
+    );
+  }
+
+  List<MonthlyChartDataDto> _generateMonthlyChartDataDtosList(
+    final List<QueryDocumentSnapshot<Map<String, dynamic>>> docList,
+  ) {
+    _logger.i('_generateMonthlyChartDataDtosList - called');
+    final monthlyChartDatalist = <MonthlyChartDataDto>[];
+    for (final doc in docList) {
+      monthlyChartDatalist.add(MonthlyChartDataDto.fromJson(doc.data()));
+    }
+    return monthlyChartDatalist;
+  }
+
+  double _calculateMaxMonthThreshold(final double maxMonthBalance) {
+    _logger.i('_calculateMaxMonthThreshold - called');
+    int digits = 0;
+    if (maxMonthBalance == 0) {
+      return 1;
+    }
+    double copyMaxMonthBalance = maxMonthBalance;
+    while (copyMaxMonthBalance > 10) {
+      copyMaxMonthBalance = copyMaxMonthBalance / 10;
+      digits++;
+    }
+    //deleting all the digits after the floating point and adding 1
+    //so the treshold is the next biggest number after the maxmonthbalance
+    //eg: 3245 => 4000
+    copyMaxMonthBalance = copyMaxMonthBalance.floorToDouble() + 1;
+    while (digits > 0) {
+      copyMaxMonthBalance = copyMaxMonthBalance * 10;
+      digits--;
+    }
+    return copyMaxMonthBalance;
   }
 }

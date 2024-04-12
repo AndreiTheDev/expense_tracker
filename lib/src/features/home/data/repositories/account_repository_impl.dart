@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:logger/logger.dart';
 import '../../../../core/error/failures.dart';
+import '../../../../core/utils/logger.dart';
 import '../../domain/entities/account.dart';
 import '../../domain/entities/expense.dart';
 import '../../domain/entities/income.dart';
@@ -17,6 +19,7 @@ import '../dto/transaction.dart';
 class AccountRepositoryImpl implements AccountRepository {
   final HomeFirebaseDataScource firebaseDataScource;
   final HomeFirestoreDataSource firestoreDataSource;
+  final Logger _logger = getLogger(AccountRepositoryImpl);
 
   AccountRepositoryImpl(this.firebaseDataScource, this.firestoreDataSource);
 
@@ -25,6 +28,10 @@ class AccountRepositoryImpl implements AccountRepository {
     required final String accountId,
     required TransactionEntity transactionEntity,
   }) async {
+    _logger.d('''
+deleteTransaction - called - params: 
+        {accountId: $accountId, 
+        transactionEntity: $transactionEntity,}''');
     final uid = firebaseDataScource.getUid();
     try {
       if (uid != null) {
@@ -33,14 +40,18 @@ class AccountRepositoryImpl implements AccountRepository {
           accountId,
           TransactionDto.fromEntity(transactionEntity),
         );
+        _logger.i('deleteTransaction - success');
         return const Right(null);
       }
+      _logger.e('deleteTransaction - user is not authenticated');
       return const Left(
         HomeFailure(message: 'Unable to delete expense from database.'),
       );
     } on FirebaseException catch (e) {
+      _logger.e('deleteTransaction - FirebaseException: ${e.code}');
       return Left(HomeFailure(message: e.code));
     } on Exception {
+      _logger.e('deleteTransaction - an unknown error occured');
       return const Left(HomeFailure(message: 'An unknown error occured.'));
     }
   }
@@ -49,6 +60,9 @@ class AccountRepositoryImpl implements AccountRepository {
   Future<Either<Failure, AccountEntity>> fetchAccount({
     String accountId = 'default',
   }) async {
+    _logger.d('''
+fetchAccount - called - params: 
+        {accountId: $accountId,}''');
     final uid = firebaseDataScource.getUid();
     try {
       if (uid != null) {
@@ -70,14 +84,18 @@ class AccountRepositoryImpl implements AccountRepository {
               TransactionDto.fromJson(transaction),
           ],
         );
+        _logger.i('fetchAccount - success');
         return Right(accountEntity);
       }
+      _logger.e('fetchAccount - user is not authenticated');
       return const Left(
         HomeFailure(message: 'Unable to get the account from database.'),
       );
     } on FirebaseException catch (e) {
+      _logger.e('fetchAccount - FirebaseException: ${e.code}');
       return Left(HomeFailure(message: e.code));
     } on Exception {
+      _logger.e('fetchAccount - an unknown error occured');
       return const Left(HomeFailure(message: 'An unknown error occured.'));
     }
   }
@@ -87,6 +105,10 @@ class AccountRepositoryImpl implements AccountRepository {
     required final String accountId,
     required ExpenseEntity expenseEntity,
   }) async {
+    _logger.d('''
+addExpense - called - params: 
+        {accountId: $accountId,
+        expenseEntity: $expenseEntity,}''');
     final uid = firebaseDataScource.getUid();
     try {
       if (uid != null) {
@@ -95,14 +117,18 @@ class AccountRepositoryImpl implements AccountRepository {
           accountId,
           ExpenseDto.fromEntity(expenseEntity),
         );
+        _logger.i('addExpense - success');
         return const Right(null);
       }
+      _logger.e('addExpense - user is not authenticated');
       return const Left(
         HomeFailure(message: 'Unable to get the account from database.'),
       );
     } on FirebaseException catch (e) {
+      _logger.e('addExpense - FirebaseException: ${e.code}');
       return Left(HomeFailure(message: e.code));
     } on Exception {
+      _logger.e('addExpense - an unknown error occured');
       return const Left(HomeFailure(message: 'An unknown error occured.'));
     }
   }
@@ -112,6 +138,10 @@ class AccountRepositoryImpl implements AccountRepository {
     required final String accountId,
     required IncomeEntity incomeEntity,
   }) async {
+    _logger.d('''
+addIncome - called - params: 
+        {accountId: $accountId,
+        incomeEntity: $incomeEntity,}''');
     final uid = firebaseDataScource.getUid();
     try {
       if (uid != null) {
@@ -120,14 +150,18 @@ class AccountRepositoryImpl implements AccountRepository {
           accountId,
           IncomeDto.fromEntity(incomeEntity),
         );
+        _logger.i('addIncome - success');
         return const Right(null);
       }
+      _logger.e('addIncome - user is not authenticated');
       return const Left(
         HomeFailure(message: 'Unable to get the account from database.'),
       );
     } on FirebaseException catch (e) {
+      _logger.e('addIncome - FirebaseException: ${e.code}');
       return Left(HomeFailure(message: e.code));
     } on Exception {
+      _logger.e('addIncome - an unknown error occured');
       return const Left(HomeFailure(message: 'An unknown error occured.'));
     }
   }
@@ -137,6 +171,10 @@ class AccountRepositoryImpl implements AccountRepository {
     required final String accountId,
     required ExpenseEntity expenseEntity,
   }) async {
+    _logger.d('''
+deleteExpense - called - params: 
+        {accountId: $accountId,
+        expenseEntity: $expenseEntity,}''');
     final uid = firebaseDataScource.getUid();
     try {
       if (uid != null) {
@@ -145,14 +183,18 @@ class AccountRepositoryImpl implements AccountRepository {
           accountId,
           ExpenseDto.fromEntity(expenseEntity),
         );
+        _logger.i('deleteExpense - success');
         return const Right(null);
       }
+      _logger.e('deleteExpense - user is not authenticated');
       return const Left(
         HomeFailure(message: 'Unable to delete expense from database.'),
       );
     } on FirebaseException catch (e) {
+      _logger.e('deleteExpense - FirebaseException: ${e.code}');
       return Left(HomeFailure(message: e.code));
     } on Exception {
+      _logger.e('deleteExpense - an unknown error occured');
       return const Left(HomeFailure(message: 'An unknown error occured.'));
     }
   }
@@ -162,6 +204,10 @@ class AccountRepositoryImpl implements AccountRepository {
     required final String accountId,
     required IncomeEntity incomeEntity,
   }) async {
+    _logger.d('''
+deleteIncome - called - params: 
+        {accountId: $accountId,
+        incomeEntity: $incomeEntity,}''');
     final uid = firebaseDataScource.getUid();
     try {
       if (uid != null) {
@@ -170,14 +216,18 @@ class AccountRepositoryImpl implements AccountRepository {
           accountId,
           IncomeDto.fromEntity(incomeEntity),
         );
+        _logger.i('deleteIncome - success');
         return const Right(null);
       }
+      _logger.e('deleteIncome - user is not authenticated');
       return const Left(
         HomeFailure(message: 'Unable to delete expense from database.'),
       );
     } on FirebaseException catch (e) {
+      _logger.e('deleteIncome - FirebaseException: ${e.code}');
       return Left(HomeFailure(message: e.code));
     } on Exception {
+      _logger.e('deleteIncome - an unknown error occured');
       return const Left(HomeFailure(message: 'An unknown error occured.'));
     }
   }

@@ -1,185 +1,181 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../../core/utils/utils.dart';
+import '../../domain/entities/chart.dart';
+import 'monthly_column.dart';
 
 class ViewallChart extends StatelessWidget {
-  const ViewallChart({super.key});
+  const ViewallChart({required this.chart, super.key});
+
+  final ChartEntity chart;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(
-        smallSize,
-        xsSize,
-        smallSize,
-        xsSize,
+    final List<String> amountIntervalTexts =
+        monthlyThresholdToAmountIntervalTexts(chart.maxMonthThreshold);
+    final dateFormatter = DateFormat.yMMMM('en_US');
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: mediumSize,
       ),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(smallSize),
-        boxShadow: const [
-          BoxShadow(
-            offset: Offset(0, 4),
-            color: Color(0xffdddddd),
-            blurRadius: 10,
-          ),
-        ],
-      ),
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 2.8,
-      child: Column(
-        children: [
-          Text(
-            '01 Jan 2021 - 01 April 2021',
-            style: TextStyle(
-              color: textDark.withOpacity(0.8),
-              fontSize: smallText,
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(
+          smallSize,
+          xsSize,
+          smallSize,
+          xsSize,
+        ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(smallSize),
+          boxShadow: const [
+            BoxShadow(
+              offset: Offset(0, 4),
+              color: Color(0xffdddddd),
+              blurRadius: 10,
             ),
-          ),
-          Text(
-            r'$3500.00',
-            style: TextStyle(
-              color: textDark.withOpacity(0.8),
-              fontSize: mediumText,
-              fontWeight: FontWeight.bold,
+          ],
+        ),
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height / 2.8,
+        child: Column(
+          children: [
+            Text(
+              //eg: 'Jan 2021 - April 2021',
+              '${dateFormatter.format(chart.monthlyList.first.date)} - ${dateFormatter.format(chart.monthlyList.last.date)}',
+              style: TextStyle(
+                color: textDark.withOpacity(0.8),
+                fontSize: smallText,
+              ),
             ),
-          ),
-          xsSeparator,
-          const Expanded(
-            child: Row(
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    AmountIntervalText(
-                      text: r'$5k',
-                    ),
-                    AmountIntervalText(
-                      text: r'$4k',
-                    ),
-                    AmountIntervalText(
-                      text: r'$3k',
-                    ),
-                    AmountIntervalText(
-                      text: r'$2k',
-                    ),
-                    AmountIntervalText(
-                      text: r'$1k',
-                    ),
-                    xsSeparator,
-                  ],
-                ),
-                smallSeparator,
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+            Text(
+              r'$3500.00',
+              style: TextStyle(
+                color: textDark.withOpacity(0.8),
+                fontSize: mediumText,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            xsSeparator,
+            Expanded(
+              child: Row(
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      MonthlyColumn(
-                        total: 100,
-                        monthText: '01',
-                      ),
-                      MonthlyColumn(
-                        total: 24,
-                        monthText: '02',
-                      ),
-                      MonthlyColumn(
-                        total: 140,
-                        monthText: '03',
-                      ),
-                      MonthlyColumn(
-                        total: 82,
-                        monthText: '04',
-                      ),
-                      MonthlyColumn(
-                        total: 120,
-                        monthText: '05',
-                      ),
-                      MonthlyColumn(
-                        total: 170,
-                        monthText: '06',
+                      for (final amountIntervalText
+                          in amountIntervalTexts.reversed)
+                        AmountIntervalText(
+                          text: amountIntervalText,
+                        ),
+                      const SizedBox(
+                        height: 36,
                       ),
                     ],
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        for (final chartMonth in chart.monthlyList)
+                          MonthlyColumn(
+                            monthData: chartMonth,
+                            columnHeightFactor:
+                                chartMonth.balance / chart.maxMonthThreshold,
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
 
-class MonthlyColumn extends StatefulWidget {
-  const MonthlyColumn({
-    required this.total,
-    required this.monthText,
-    super.key,
-  });
-
-  final double total;
-  final String monthText;
-
-  @override
-  State<MonthlyColumn> createState() => _MonthlyColumnState();
-}
-
-class _MonthlyColumnState extends State<MonthlyColumn>
-    with TickerProviderStateMixin {
-  late final AnimationController _controller = AnimationController(
-    duration: const Duration(milliseconds: 1300),
-    vsync: this,
-  )..forward();
-  late final Animation<double> _animation = CurvedAnimation(
-    parent: _controller,
-    curve: Curves.fastOutSlowIn,
-  );
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+class ViewallChartLoading extends StatelessWidget {
+  const ViewallChartLoading({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: Container(
-            clipBehavior: Clip.antiAlias,
-            alignment: Alignment.bottomCenter,
-            width: 8,
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(mediumSize),
-            ),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return SizeTransition(
-                  sizeFactor: _animation,
-                  child: Container(
-                    height: constraints.maxHeight - widget.total,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(smallSize),
-                      gradient: buttonsGradient,
+    return Skeletonizer(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: mediumSize,
+        ),
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(
+            smallSize,
+            xsSize,
+            smallSize,
+            xsSize,
+          ),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(smallSize),
+            boxShadow: const [
+              BoxShadow(
+                offset: Offset(0, 4),
+                color: Color(0xffdddddd),
+                blurRadius: 10,
+              ),
+            ],
+          ),
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height / 2.8,
+          child: Column(
+            children: [
+              Text(
+                '01 Jan 2021 - 01 April 2021',
+                style: TextStyle(
+                  color: textDark.withOpacity(0.8),
+                  fontSize: smallText,
+                ),
+              ),
+              Text(
+                r'$3500.00',
+                style: TextStyle(
+                  color: textDark.withOpacity(0.8),
+                  fontSize: mediumText,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              xsSeparator,
+              Expanded(
+                child: Row(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        for (int i = 0; i < 5; i++)
+                          const AmountIntervalText(
+                            text: r'$5k',
+                          ),
+                        xsSeparator,
+                      ],
                     ),
-                  ),
-                );
-              },
-            ),
+                    smallSeparator,
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          for (int i = 0; i < 6; i++)
+                            const MonthlyColumnLoading(),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
-        const SizedBox(
-          height: 4,
-        ),
-        Text(
-          widget.monthText,
-          style: const TextStyle(
-            fontSize: smallText,
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

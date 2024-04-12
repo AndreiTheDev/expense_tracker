@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:logger/logger.dart';
 
+import '../../../../core/utils/logger.dart';
 import '../dto/expense.dart';
 import '../dto/income.dart';
 import '../dto/transaction.dart';
@@ -44,6 +46,7 @@ abstract interface class HomeFirestoreDataSource {
 
 class HomeFirestoreDataSourceImpl implements HomeFirestoreDataSource {
   final FirebaseFirestore _firestoreInstance;
+  final Logger _logger = getLogger(HomeFirestoreDataSourceImpl);
 
   HomeFirestoreDataSourceImpl(this._firestoreInstance);
 
@@ -53,6 +56,11 @@ class HomeFirestoreDataSourceImpl implements HomeFirestoreDataSource {
     final String accountId,
     final TransactionDto transactionDto,
   ) async {
+    _logger.d('''
+deleteTransaction - called - params: 
+        {uid: $uid, 
+        accountId: $accountId, 
+        transactionDto: $transactionDto,}''');
     final accountRef = _firestoreInstance
         .collection('users')
         .doc(uid)
@@ -84,6 +92,10 @@ class HomeFirestoreDataSourceImpl implements HomeFirestoreDataSource {
     final String uid,
     String accountId,
   ) async {
+    _logger.d('''
+fetchAccountDetails - called - params: 
+        {uid: $uid, 
+        accountId: $accountId,}''');
     final snapshot = await _firestoreInstance
         .collection('users')
         .doc(uid)
@@ -102,6 +114,10 @@ class HomeFirestoreDataSourceImpl implements HomeFirestoreDataSource {
     String uid,
     String accountId,
   ) async {
+    _logger.d('''
+fetchAccountTransactions - called - params: 
+        {uid: $uid, 
+        accountId: $accountId,}''');
     final snapshot = await _firestoreInstance
         .collection('users')
         .doc(uid)
@@ -123,6 +139,11 @@ class HomeFirestoreDataSourceImpl implements HomeFirestoreDataSource {
     final String accountId,
     final ExpenseDto expenseDto,
   ) async {
+    _logger.d('''
+addExpense - called - params: 
+        {uid: $uid, 
+        accountId: $accountId,
+        expenseDto: $expenseDto,}''');
     final accountRef = _firestoreInstance
         .collection('users')
         .doc(uid)
@@ -168,6 +189,11 @@ class HomeFirestoreDataSourceImpl implements HomeFirestoreDataSource {
     String accountId,
     IncomeDto incomeDto,
   ) async {
+    _logger.d('''
+addIncome - called - params: 
+        {uid: $uid, 
+        accountId: $accountId,
+        incomeDto: $incomeDto,}''');
     final accountRef = _firestoreInstance
         .collection('users')
         .doc(uid)
@@ -213,6 +239,11 @@ class HomeFirestoreDataSourceImpl implements HomeFirestoreDataSource {
     String accountId,
     ExpenseDto expenseDto,
   ) async {
+    _logger.d('''
+deleteExpense - called - params: 
+        {uid: $uid, 
+        accountId: $accountId,
+        expenseDto: $expenseDto,}''');
     final accountRef = _firestoreInstance
         .collection('users')
         .doc(uid)
@@ -244,6 +275,11 @@ class HomeFirestoreDataSourceImpl implements HomeFirestoreDataSource {
     String accountId,
     IncomeDto incomeDto,
   ) async {
+    _logger.d('''
+deleteIncome - called - params: 
+        {uid: $uid, 
+        accountId: $accountId,
+        incomeDto: $incomeDto,}''');
     final accountRef = _firestoreInstance
         .collection('users')
         .doc(uid)

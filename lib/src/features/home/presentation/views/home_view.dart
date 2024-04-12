@@ -5,6 +5,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../../core/common_widgets/transactions_listview.dart';
 import '../../../../core/routing/app_routes.dart';
+import '../../../../core/utils/logger.dart';
 import '../../../../core/utils/utils.dart';
 import '../bloc/account_bloc.dart';
 import '../widgets/home_app_bar.dart';
@@ -16,6 +17,7 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    getLogger(HomeView).d('build');
     const double appBarHeight = 90;
     context.read<AccountBloc>().add(const AccountFetchEvent());
 

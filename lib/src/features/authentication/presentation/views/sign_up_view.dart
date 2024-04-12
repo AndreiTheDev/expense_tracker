@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../injection_container.dart';
+import '../../../../core/utils/logger.dart';
 import '../../../../core/utils/utils.dart';
 import '../blocs/user_bloc/user_bloc.dart';
 import '../cubits/sign_up_form/sign_up_form_cubit.dart';
@@ -14,6 +15,7 @@ class SignUpView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    getLogger(SignUpView).d('build');
     return BlocProvider(
       create: (context) => sl<SignUpFormCubit>(),
       child: Scaffold(

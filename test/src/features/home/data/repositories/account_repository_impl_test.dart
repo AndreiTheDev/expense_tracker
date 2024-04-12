@@ -81,6 +81,24 @@ void main() {
     verifyNoMoreInteractions(mockFirestoreDataSource);
   });
 
+  test('Delete transaction returns HomeFailure because user is not signed in',
+      () async {
+    when(mockFirebaseDataSource.getUid()).thenReturn(null);
+
+    final response = await sut.deleteTransaction(
+      accountId: 'test',
+      transactionEntity: transactionEntity,
+    );
+    expect(
+      response,
+      const Left(
+        HomeFailure(message: 'Unable to delete expense from database.'),
+      ),
+    );
+    verify(mockFirebaseDataSource.getUid()).called(1);
+    verifyNoMoreInteractions(mockFirebaseDataSource);
+  });
+
   test('Delete transaction returns HomeFailure from Firebase Exception',
       () async {
     when(mockFirebaseDataSource.getUid()).thenReturn('test');
@@ -164,7 +182,16 @@ void main() {
       ),
     ).thenAnswer(
       (realInvocation) async => Future(
-        () => [],
+        () => [
+          {
+            'id': transactionEntity.id,
+            'category': transactionEntity.category,
+            'amount': transactionEntity.amount,
+            'description': transactionEntity.description,
+            'date': Timestamp.fromDate(transactionEntity.date),
+            'relatedDoc': transactionEntity.relatedDoc,
+          }
+        ],
       ),
     );
 
@@ -173,14 +200,14 @@ void main() {
     );
     expect(
       response,
-      const Right(
+      Right(
         AccountDto(
           id: 'test',
           name: 'test',
           income: 100,
           expenses: 100,
           totalBalance: 0,
-          transactions: [],
+          transactions: [TransactionDto.fromEntity(transactionEntity)],
         ),
       ),
     );
@@ -199,6 +226,23 @@ void main() {
     ).called(1);
     verifyNoMoreInteractions(mockFirebaseDataSource);
     verifyNoMoreInteractions(mockFirestoreDataSource);
+  });
+
+  test('Fetch Account returns HomeFailure because user is not signed in',
+      () async {
+    when(mockFirebaseDataSource.getUid()).thenReturn(null);
+
+    final response = await sut.fetchAccount(
+      accountId: 'test',
+    );
+    expect(
+      response,
+      const Left(
+        HomeFailure(message: 'Unable to get the account from database.'),
+      ),
+    );
+    verify(mockFirebaseDataSource.getUid()).called(1);
+    verifyNoMoreInteractions(mockFirebaseDataSource);
   });
 
   test('Fetch Account returns HomeFailure from FirebaseException', () async {
@@ -277,6 +321,24 @@ void main() {
     ).called(1);
     verifyNoMoreInteractions(mockFirebaseDataSource);
     verifyNoMoreInteractions(mockFirestoreDataSource);
+  });
+
+  test('Add expense returns HomeFailure because user is not signed in',
+      () async {
+    when(mockFirebaseDataSource.getUid()).thenReturn(null);
+
+    final response = await sut.addExpense(
+      accountId: 'test',
+      expenseEntity: expenseEntity,
+    );
+    expect(
+      response,
+      const Left(
+        HomeFailure(message: 'Unable to get the account from database.'),
+      ),
+    );
+    verify(mockFirebaseDataSource.getUid()).called(1);
+    verifyNoMoreInteractions(mockFirebaseDataSource);
   });
 
   test('Add expense returns HomeFailure from Firebase Exception', () async {
@@ -363,6 +425,24 @@ void main() {
     verifyNoMoreInteractions(mockFirestoreDataSource);
   });
 
+  test('Add income returns HomeFailure because user is not signed in',
+      () async {
+    when(mockFirebaseDataSource.getUid()).thenReturn(null);
+
+    final response = await sut.addIncome(
+      accountId: 'test',
+      incomeEntity: incomeEntity,
+    );
+    expect(
+      response,
+      const Left(
+        HomeFailure(message: 'Unable to get the account from database.'),
+      ),
+    );
+    verify(mockFirebaseDataSource.getUid()).called(1);
+    verifyNoMoreInteractions(mockFirebaseDataSource);
+  });
+
   test('Add income returns HomeFailure from Firebase Exception', () async {
     when(mockFirebaseDataSource.getUid()).thenReturn('test');
     when(
@@ -447,6 +527,24 @@ void main() {
     verifyNoMoreInteractions(mockFirestoreDataSource);
   });
 
+  test('Delete expense returns HomeFailure because user is not signed in',
+      () async {
+    when(mockFirebaseDataSource.getUid()).thenReturn(null);
+
+    final response = await sut.deleteExpense(
+      accountId: 'test',
+      expenseEntity: expenseEntity,
+    );
+    expect(
+      response,
+      const Left(
+        HomeFailure(message: 'Unable to delete expense from database.'),
+      ),
+    );
+    verify(mockFirebaseDataSource.getUid()).called(1);
+    verifyNoMoreInteractions(mockFirebaseDataSource);
+  });
+
   test('Delete expense returns HomeFailure from Firebase Exception', () async {
     when(mockFirebaseDataSource.getUid()).thenReturn('test');
     when(
@@ -529,6 +627,24 @@ void main() {
     ).called(1);
     verifyNoMoreInteractions(mockFirebaseDataSource);
     verifyNoMoreInteractions(mockFirestoreDataSource);
+  });
+
+  test('Delete income returns HomeFailure because user is not signed in',
+      () async {
+    when(mockFirebaseDataSource.getUid()).thenReturn(null);
+
+    final response = await sut.deleteIncome(
+      accountId: 'test',
+      incomeEntity: incomeEntity,
+    );
+    expect(
+      response,
+      const Left(
+        HomeFailure(message: 'Unable to delete expense from database.'),
+      ),
+    );
+    verify(mockFirebaseDataSource.getUid()).called(1);
+    verifyNoMoreInteractions(mockFirebaseDataSource);
   });
 
   test('Delete income returns HomeFailure from Firebase Exception', () async {

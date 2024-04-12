@@ -6,9 +6,9 @@ void main() {
   late IncomesDetailsEntity sut;
 
   setUp(() {
-    sut = IncomesDetailsEntity(
-      incomesList: const [],
-      incomesChart: ChartEntity(),
+    sut = const IncomesDetailsEntity(
+      incomesList: [],
+      incomesChart: ChartEntity(monthlyList: [], maxMonthThreshold: 0),
     );
   });
 
@@ -17,7 +17,7 @@ void main() {
       sut.props,
       [
         const [],
-        ChartEntity(),
+        const ChartEntity(monthlyList: [], maxMonthThreshold: 0),
       ],
     );
   });

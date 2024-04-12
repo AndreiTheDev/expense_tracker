@@ -10,6 +10,7 @@ import '../../../../core/common_widgets/custom_appbar.dart';
 import '../../../../core/common_widgets/custom_appbar_button.dart';
 import '../../../../core/common_widgets/custom_switcher.dart';
 import '../../../../core/common_widgets/gradient_elevated_button.dart';
+import '../../../../core/utils/logger.dart';
 import '../../../../core/utils/utils.dart';
 import '../bloc/account_bloc.dart';
 import '../cubits/add_transaction/add_transaction_form_cubit.dart';
@@ -49,6 +50,7 @@ class _AddTransactionsViewState extends State<AddTransactionsView> {
 
   @override
   Widget build(BuildContext context) {
+    getLogger(AddTransactionsView).d('build');
     final bool isIos = Theme.of(context).platform == TargetPlatform.iOS;
     return BlocProvider<AddTransactionFormCubit>(
       create: (context) => sl(),
@@ -100,7 +102,8 @@ class _AddTransactionsViewState extends State<AddTransactionsView> {
                           fontSize: smallText + 4,
                           foreground: Paint()
                             ..shader = buttonsGradient.createShader(
-                                const Rect.fromLTWH(0, 0, 200, 70)),
+                              const Rect.fromLTWH(0, 0, 200, 70),
+                            ),
                         ),
                         textAlign: TextAlign.center,
                         keyboardType: TextInputType.number,
