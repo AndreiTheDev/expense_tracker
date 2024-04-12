@@ -8,6 +8,7 @@ import '../repositories/authentication_repository.dart';
 class SignOutUser {
   final AuthenticationRepository _repository;
   final Logger _logger = getLogger(SignOutUser);
+
   SignOutUser(this._repository);
 
   Future<Either<Failure, void>> call() async {
