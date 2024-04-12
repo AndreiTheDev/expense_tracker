@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:logger/logger.dart';
 
+import '../../../../core/utils/logger.dart';
 import '../dtos/chart.dart';
 import '../dtos/expense.dart';
 import '../dtos/income.dart';
@@ -41,6 +43,7 @@ abstract interface class ViewallFirestoreDataSource {
 
 class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
   final FirebaseFirestore _firestoreInstance;
+  final Logger _logger = getLogger(ViewallFirestoreDataSourceImpl);
 
   ViewallFirestoreDataSourceImpl(this._firestoreInstance);
 
@@ -50,6 +53,11 @@ class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
     String accountId,
     ExpenseDto expenseDto,
   ) async {
+    _logger.d('''
+deleteExpense - called - params:
+      {uid: $uid,
+      accountId: $accountId,
+      expenseDto: $expenseDto}''');
     final accountRef = _firestoreInstance
         .collection('users')
         .doc(uid)
@@ -81,6 +89,11 @@ class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
     String accountId,
     IncomeDto incomeDto,
   ) async {
+    _logger.d('''
+deleteIncome - called - params:
+      {uid: $uid,
+      accountId: $accountId,
+      incomeDto: $incomeDto}''');
     final accountRef = _firestoreInstance
         .collection('users')
         .doc(uid)
@@ -111,6 +124,10 @@ class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
     String uid,
     String accountId,
   ) async {
+    _logger.d('''
+fetchExpensesList - called - params:
+      {uid: $uid,
+      accountId: $accountId,}''');
     final snapshot = await _firestoreInstance
         .collection('users')
         .doc(uid)
@@ -131,6 +148,10 @@ class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
     String uid,
     String accountId,
   ) async {
+    _logger.d('''
+fetchIncomesList - called - params:
+      {uid: $uid,
+      accountId: $accountId,}''');
     final snapshot = await _firestoreInstance
         .collection('users')
         .doc(uid)
@@ -151,6 +172,10 @@ class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
     String uid,
     String accountId,
   ) async {
+    _logger.d('''
+fetchExpensesChart - called - params:
+      {uid: $uid,
+      accountId: $accountId,}''');
     final currentDate = DateTime.now();
     final startingDate = currentDate
         .subtract(Duration(days: 150 + currentDate.day - 1, hours: -1));
@@ -179,6 +204,10 @@ class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
     String uid,
     String accountId,
   ) async {
+    _logger.d('''
+fetchIncomesChart - called - params:
+      {uid: $uid,
+      accountId: $accountId,}''');
     final currentDate = DateTime.now();
     final startingDate = currentDate
         .subtract(Duration(days: 150 + currentDate.day - 1, hours: -1));
@@ -206,6 +235,7 @@ class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
     final DateTime startingDate,
     final List<MonthlyChartDataDto> monthlyChartDataList,
   ) {
+    _logger.i('_generateChartDto - called');
     double maxMonthBalance = 0;
     final monthlyList = List<MonthlyChartDataDto>.generate(6, (index) {
       final dateToBeAdded = startingDate.add(Duration(days: 31 * index));
@@ -230,6 +260,7 @@ class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
   List<MonthlyChartDataDto> _generateMonthlyChartDataDtosList(
     final List<QueryDocumentSnapshot<Map<String, dynamic>>> docList,
   ) {
+    _logger.i('_generateMonthlyChartDataDtosList - called');
     final monthlyChartDatalist = <MonthlyChartDataDto>[];
     for (final doc in docList) {
       monthlyChartDatalist.add(MonthlyChartDataDto.fromJson(doc.data()));
@@ -238,6 +269,7 @@ class ViewallFirestoreDataSourceImpl implements ViewallFirestoreDataSource {
   }
 
   double _calculateMaxMonthThreshold(final double maxMonthBalance) {
+    _logger.i('_calculateMaxMonthThreshold - called');
     int digits = 0;
     if (maxMonthBalance == 0) {
       return 1;

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../injection_container.dart';
 import '../../../../core/common_widgets/transactions_listview.dart';
+import '../../../../core/utils/logger.dart';
 import '../../../../core/utils/utils.dart';
 import '../blocs/viewall_bloc.dart';
 import '../cubit/viewall_view_cubit.dart';
@@ -16,6 +17,8 @@ class ViewallView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    getLogger(ViewallView).d('build');
+
     final isIos = Theme.of(context).platform == TargetPlatform.iOS;
     return MultiBlocProvider(
       providers: [
