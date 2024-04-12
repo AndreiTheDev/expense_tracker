@@ -15,7 +15,7 @@ class FetchAccount {
   Future<Either<Failure, AccountEntity>> call({
     required final String accountId,
   }) async {
-    _logger.d('called');
+    _logger.d('call');
     return _repository.fetchAccount(accountId: accountId);
   }
 }

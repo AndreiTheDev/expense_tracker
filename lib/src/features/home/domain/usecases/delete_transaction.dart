@@ -17,7 +17,7 @@ class DeleteTransaction {
     required final String accountId,
     required final TransactionEntity transactionEntity,
   }) async {
-    _logger.d('called');
+    _logger.d('call');
     final response = await _repository.deleteTransaction(
       accountId: accountId,
       transactionEntity: transactionEntity,

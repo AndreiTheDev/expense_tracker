@@ -17,7 +17,7 @@ class AddIncome {
     required final String accountId,
     required final IncomeEntity incomeEntity,
   }) async {
-    _logger.d('called');
+    _logger.d('call');
     final response = await _repository.addIncome(
       accountId: accountId,
       incomeEntity: incomeEntity,

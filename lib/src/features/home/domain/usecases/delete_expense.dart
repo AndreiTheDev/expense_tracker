@@ -17,7 +17,7 @@ class DeleteExpense {
     final String accountId,
     final ExpenseEntity expenseEntity,
   ) async {
-    _logger.d('called');
+    _logger.d('call');
     final response = await _repository.deleteExpense(
       accountId: accountId,
       expenseEntity: expenseEntity,

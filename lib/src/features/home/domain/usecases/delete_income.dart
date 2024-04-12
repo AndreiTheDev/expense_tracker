@@ -17,7 +17,7 @@ class DeleteIncome {
     final String accountId,
     final IncomeEntity incomeEntity,
   ) async {
-    _logger.d('called');
+    _logger.d('call');
     final response = await _repository.deleteIncome(
       accountId: accountId,
       incomeEntity: incomeEntity,

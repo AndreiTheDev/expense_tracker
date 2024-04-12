@@ -17,7 +17,7 @@ class AddExpense {
     required final String accountId,
     required final ExpenseEntity expenseEntity,
   }) async {
-    _logger.d('called');
+    _logger.d('call');
     final response = await _repository.addExpense(
       accountId: accountId,
       expenseEntity: expenseEntity,
