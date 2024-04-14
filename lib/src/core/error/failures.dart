@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 
 import 'failure_messages.dart';
 
-abstract class Failure extends Equatable {
+abstract base class Failure extends Equatable {
   final String message;
 
   const Failure({
@@ -14,7 +14,7 @@ abstract class Failure extends Equatable {
   List<Object?> get props => [message];
 }
 
-class AuthFailure extends Failure {
+final class AuthFailure extends Failure {
   const AuthFailure({required super.message});
 
   factory AuthFailure.fromFirebaseException(final String code) {
@@ -101,6 +101,76 @@ class AuthFailure extends Failure {
         return const AuthFailure(message: unauthenticatedMessage);
       default:
         return const AuthFailure(message: unknownErrorMessage);
+    }
+  }
+}
+
+final class HomeFailure extends Failure {
+  const HomeFailure({required super.message});
+
+  factory HomeFailure.fromFirestoreException(final String code) {
+    switch (code) {
+      case (noUserDataCode):
+        return const HomeFailure(message: noUserDataMessage);
+      case (invalidEmailCode):
+        return const HomeFailure(message: invalidEmailMessage);
+      case (userNotExistsCode):
+        return const HomeFailure(message: userNotExistsMessage);
+      case (emailExistsCode):
+        return const HomeFailure(message: emailExistsMessage);
+      case (internalErrorCode):
+        return const HomeFailure(message: internalErrorMessage);
+      case (invalidCredentialCode):
+        return const HomeFailure(message: invalidCredentialMessage);
+      case (invalidPasswordCode):
+        return const HomeFailure(message: invalidPasswordMessage);
+      case (userDisabledCode):
+        return const HomeFailure(message: userDisabledMessage);
+      case (userNotFoundCode):
+        return const HomeFailure(message: userNotFoundMessage);
+      case (wrongPasswordCode):
+        return const HomeFailure(message: wrongPasswordMessage);
+      case (userCancelCode):
+        return const HomeFailure(message: userCancelMessage);
+      case (usernameInUseCode):
+        return const HomeFailure(message: usernameInUseMessage);
+      default:
+        return const HomeFailure(message: unknownErrorMessage);
+    }
+  }
+}
+
+final class ViewallFailure extends Failure {
+  const ViewallFailure({required super.message});
+
+  factory ViewallFailure.fromFirestoreException(final String code) {
+    switch (code) {
+      case (noUserDataCode):
+        return const ViewallFailure(message: noUserDataMessage);
+      case (invalidEmailCode):
+        return const ViewallFailure(message: invalidEmailMessage);
+      case (userNotExistsCode):
+        return const ViewallFailure(message: userNotExistsMessage);
+      case (emailExistsCode):
+        return const ViewallFailure(message: emailExistsMessage);
+      case (internalErrorCode):
+        return const ViewallFailure(message: internalErrorMessage);
+      case (invalidCredentialCode):
+        return const ViewallFailure(message: invalidCredentialMessage);
+      case (invalidPasswordCode):
+        return const ViewallFailure(message: invalidPasswordMessage);
+      case (userDisabledCode):
+        return const ViewallFailure(message: userDisabledMessage);
+      case (userNotFoundCode):
+        return const ViewallFailure(message: userNotFoundMessage);
+      case (wrongPasswordCode):
+        return const ViewallFailure(message: wrongPasswordMessage);
+      case (userCancelCode):
+        return const ViewallFailure(message: userCancelMessage);
+      case (usernameInUseCode):
+        return const ViewallFailure(message: usernameInUseMessage);
+      default:
+        return const ViewallFailure(message: unknownErrorMessage);
     }
   }
 }
