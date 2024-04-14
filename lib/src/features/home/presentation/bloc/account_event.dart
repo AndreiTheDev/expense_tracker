@@ -51,12 +51,3 @@ class AccountDeleteTransactionEvent extends AccountEvent {
   @override
   List<Object> get props => [transactionEntity, accountId];
 }
-
-class AccountErrorEvent extends AccountEvent {
-  final String message;
-
-  const AccountErrorEvent({required this.message});
-
-  @override
-  List<Object> get props => [message];
-}

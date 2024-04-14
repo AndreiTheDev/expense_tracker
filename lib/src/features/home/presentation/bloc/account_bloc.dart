@@ -1,4 +1,3 @@
-import 'package:bloc_presentation/bloc_presentation.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,8 +13,7 @@ import '../../domain/usecases/fetch_account.dart';
 part 'account_event.dart';
 part 'account_state.dart';
 
-class AccountBloc extends Bloc<AccountEvent, AccountState>
-    with BlocPresentationMixin<AccountState, AccountEvent> {
+class AccountBloc extends Bloc<AccountEvent, AccountState> {
   final FetchAccount _fetchAccount;
   final AddIncome _addIncome;
   final AddExpense _addExpense;
@@ -46,8 +44,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState>
     );
     repsponse.fold(
       (failure) {
-        emitPresentation(AccountErrorEvent(message: failure.message));
-        emit(AccountError());
+        emit(AccountError(failure.message));
       },
       (entity) => emit(AccountLoaded(entity)),
     );
@@ -64,8 +61,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState>
     );
     repsponse.fold(
       (failure) {
-        emitPresentation(AccountErrorEvent(message: failure.message));
-        emit(AccountError());
+        emit(AccountError(failure.message));
       },
       (entity) => emit(AccountLoaded(entity)),
     );
@@ -82,8 +78,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState>
     );
     repsponse.fold(
       (failure) {
-        emitPresentation(AccountErrorEvent(message: failure.message));
-        emit(AccountError());
+        emit(AccountError(failure.message));
       },
       (entity) => emit(AccountLoaded(entity)),
     );
@@ -99,8 +94,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState>
     );
     repsponse.fold(
       (failure) {
-        emitPresentation(AccountErrorEvent(message: failure.message));
-        emit(AccountError());
+        emit(AccountError(failure.message));
       },
       (entity) => emit(AccountLoaded(entity)),
     );
