@@ -42,13 +42,17 @@ class ViewallRepositoryImpl implements ViewallRepository {
         return const Right(null);
       }
       _logger.e('deleteExpense - user is not signed in');
-      return const Left(HomeFailure(message: 'Unable to delete this expense.'));
+      return const Left(
+        ViewallFailure(
+          message: 'User is not authenticated, unable to excute the operation.',
+        ),
+      );
     } on FirebaseException catch (e) {
       _logger.e('deleteExpense - FirebaseException: ${e.code}');
-      return Left(HomeFailure(message: e.code));
+      return Left(ViewallFailure.fromFirestoreException(e.code));
     } on Exception {
       _logger.e('deleteExpense - an unknown error occured');
-      return const Left(HomeFailure(message: 'An unknown error occured.'));
+      return const Left(ViewallFailure(message: 'An unknown error occured.'));
     }
   }
 
@@ -69,13 +73,17 @@ class ViewallRepositoryImpl implements ViewallRepository {
         return const Right(null);
       }
       _logger.e('deleteIncome - user is not signed in');
-      return const Left(HomeFailure(message: 'Unable to delete this income.'));
+      return const Left(
+        ViewallFailure(
+          message: 'User is not authenticated, unable to excute the operation.',
+        ),
+      );
     } on FirebaseException catch (e) {
       _logger.e('deleteIncome - FirebaseException: ${e.code}');
-      return Left(HomeFailure(message: e.code));
+      return Left(ViewallFailure.fromFirestoreException(e.code));
     } on Exception {
       _logger.e('deleteIncome - an unknown error occured');
-      return const Left(HomeFailure(message: 'An unknown error occured.'));
+      return const Left(ViewallFailure(message: 'An unknown error occured.'));
     }
   }
 
@@ -96,13 +104,17 @@ class ViewallRepositoryImpl implements ViewallRepository {
         );
       }
       _logger.e('fetchExpensesDetails - user is not signed in');
-      return const Left(HomeFailure(message: 'Unable to fetch expenses.'));
+      return const Left(
+        ViewallFailure(
+          message: 'User is not authenticated, unable to excute the operation.',
+        ),
+      );
     } on FirebaseException catch (e) {
       _logger.e('fetchExpensesDetails - FirebaseException: ${e.code}');
-      return Left(HomeFailure(message: e.code));
+      return Left(ViewallFailure.fromFirestoreException(e.code));
     } on Exception {
       _logger.e('fetchExpensesDetails - an unknown error occured');
-      return const Left(HomeFailure(message: 'An unknown error occured.'));
+      return const Left(ViewallFailure(message: 'An unknown error occured.'));
     }
   }
 
@@ -123,13 +135,17 @@ class ViewallRepositoryImpl implements ViewallRepository {
         );
       }
       _logger.e('fetchIncomesDetails - user is not signed in');
-      return const Left(HomeFailure(message: 'Unable to fetch incomes.'));
+      return const Left(
+        ViewallFailure(
+          message: 'User is not authenticated, unable to excute the operation.',
+        ),
+      );
     } on FirebaseException catch (e) {
       _logger.e('fetchIncomesDetails - FirebaseException: ${e.code}');
-      return Left(HomeFailure(message: e.code));
+      return Left(ViewallFailure.fromFirestoreException(e.code));
     } on Exception {
       _logger.e('fetchIncomesDetails - an unknown error occured');
-      return const Left(HomeFailure(message: 'An unknown error occured.'));
+      return const Left(ViewallFailure(message: 'An unknown error occured.'));
     }
   }
 }
