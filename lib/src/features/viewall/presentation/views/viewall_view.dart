@@ -119,11 +119,37 @@ class ViewallView extends StatelessWidget {
                                     ],
                                   );
                                 default:
-                                  return const Padding(
-                                    padding: EdgeInsets.all(mediumSize),
-                                    child: Text(
-                                      'An unknown error occured. Please reload the page.',
-                                      textAlign: TextAlign.center,
+                                  return RefreshIndicator(
+                                    onRefresh: () => Future(
+                                      () => context.read<ViewallBloc>().add(
+                                            const ViewallFetchIncomesDetailsEvent(),
+                                          ),
+                                    ),
+                                    child: LayoutBuilder(
+                                      builder: (context, constraints) =>
+                                          SingleChildScrollView(
+                                        physics:
+                                            const AlwaysScrollableScrollPhysics(),
+                                        child: ConstrainedBox(
+                                          constraints: BoxConstraints(
+                                            minHeight: constraints.maxHeight,
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                blocState is ViewallError
+                                                    ? blocState.message
+                                                    : 'An unknown error occured.',
+                                              ),
+                                              const Text(
+                                                'Please slide down to refresh the page.',
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   );
                               }
@@ -203,11 +229,37 @@ class ViewallView extends StatelessWidget {
                                     ],
                                   );
                                 default:
-                                  return const Padding(
-                                    padding: EdgeInsets.all(mediumSize),
-                                    child: Text(
-                                      'An unknown error occured. Please reload the page.',
-                                      textAlign: TextAlign.center,
+                                  return RefreshIndicator(
+                                    onRefresh: () => Future(
+                                      () => context.read<ViewallBloc>().add(
+                                            const ViewallFetchExpensesDetailsEvent(),
+                                          ),
+                                    ),
+                                    child: LayoutBuilder(
+                                      builder: (context, constraints) =>
+                                          SingleChildScrollView(
+                                        physics:
+                                            const AlwaysScrollableScrollPhysics(),
+                                        child: ConstrainedBox(
+                                          constraints: BoxConstraints(
+                                            minHeight: constraints.maxHeight,
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                blocState is ViewallError
+                                                    ? blocState.message
+                                                    : 'An unknown error occured.',
+                                              ),
+                                              const Text(
+                                                'Please slide down to refresh the page.',
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   );
                               }
