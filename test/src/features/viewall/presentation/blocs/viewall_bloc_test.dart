@@ -268,6 +268,30 @@ void main() {
   );
 
   blocTest(
+    'Fetch Expenses Details return ViewallError state.',
+    build: () => viewallBloc,
+    setUp: () async {
+      provideDummy<Either<Failure, ExpensesDetailsEntity>>(
+        const Left(ViewallFailure(message: 'test')),
+      );
+      when(
+        mockFetchExpensesDetails.call(
+          accountId: 'default',
+        ),
+      ).thenAnswer(
+        (realInvocation) async => const Left(ViewallFailure(message: 'test')),
+      );
+    },
+    act: (bloc) => bloc.add(
+      const ViewallFetchExpensesDetailsEvent(),
+    ),
+    expect: () => [
+      ViewallLoading(),
+      const ViewallError('test'),
+    ],
+  );
+
+  blocTest(
     'Fetch Expenses Details return ViewallLoaded state from already loaded state',
     build: () => viewallBloc,
     setUp: () async {
@@ -383,6 +407,30 @@ void main() {
               const ChartEntity(monthlyList: [], maxMonthThreshold: 0),
         ),
       ),
+    ],
+  );
+
+  blocTest(
+    'Fetch Incomes Details return ViewallError state.',
+    build: () => viewallBloc,
+    setUp: () async {
+      provideDummy<Either<Failure, IncomesDetailsEntity>>(
+        const Left(ViewallFailure(message: 'test')),
+      );
+      when(
+        mockFetchIncomesDetails.call(
+          accountId: 'default',
+        ),
+      ).thenAnswer(
+        (realInvocation) async => const Left(ViewallFailure(message: 'test')),
+      );
+    },
+    act: (bloc) => bloc.add(
+      const ViewallFetchIncomesDetailsEvent(),
+    ),
+    expect: () => [
+      ViewallLoading(),
+      const ViewallError('test'),
     ],
   );
 

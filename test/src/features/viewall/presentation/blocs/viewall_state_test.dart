@@ -13,7 +13,7 @@ void main() {
   });
 
   test('ViewallError state props are equal', () {
-    final sut = ViewallError();
-    expect(sut.props, []);
+    const sut = ViewallError('test');
+    expect(sut.props, ['test']);
   });
 }
