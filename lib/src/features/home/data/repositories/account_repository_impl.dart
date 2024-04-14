@@ -45,11 +45,13 @@ deleteTransaction - called - params:
       }
       _logger.e('deleteTransaction - user is not authenticated');
       return const Left(
-        HomeFailure(message: 'Unable to delete expense from database.'),
+        HomeFailure(
+          message: 'User is not authenticated, unable to excute the operation.',
+        ),
       );
     } on FirebaseException catch (e) {
       _logger.e('deleteTransaction - FirebaseException: ${e.code}');
-      return Left(HomeFailure(message: e.code));
+      return Left(HomeFailure.fromFirestoreException(e.code));
     } on Exception {
       _logger.e('deleteTransaction - an unknown error occured');
       return const Left(HomeFailure(message: 'An unknown error occured.'));
@@ -89,11 +91,13 @@ fetchAccount - called - params:
       }
       _logger.e('fetchAccount - user is not authenticated');
       return const Left(
-        HomeFailure(message: 'Unable to get the account from database.'),
+        HomeFailure(
+          message: 'User is not authenticated, unable to excute the operation.',
+        ),
       );
     } on FirebaseException catch (e) {
       _logger.e('fetchAccount - FirebaseException: ${e.code}');
-      return Left(HomeFailure(message: e.code));
+      return Left(HomeFailure.fromFirestoreException(e.code));
     } on Exception {
       _logger.e('fetchAccount - an unknown error occured');
       return const Left(HomeFailure(message: 'An unknown error occured.'));
@@ -122,11 +126,13 @@ addExpense - called - params:
       }
       _logger.e('addExpense - user is not authenticated');
       return const Left(
-        HomeFailure(message: 'Unable to get the account from database.'),
+        HomeFailure(
+          message: 'User is not authenticated, unable to excute the operation.',
+        ),
       );
     } on FirebaseException catch (e) {
       _logger.e('addExpense - FirebaseException: ${e.code}');
-      return Left(HomeFailure(message: e.code));
+      return Left(HomeFailure.fromFirestoreException(e.code));
     } on Exception {
       _logger.e('addExpense - an unknown error occured');
       return const Left(HomeFailure(message: 'An unknown error occured.'));
@@ -155,11 +161,13 @@ addIncome - called - params:
       }
       _logger.e('addIncome - user is not authenticated');
       return const Left(
-        HomeFailure(message: 'Unable to get the account from database.'),
+        HomeFailure(
+          message: 'User is not authenticated, unable to excute the operation.',
+        ),
       );
     } on FirebaseException catch (e) {
       _logger.e('addIncome - FirebaseException: ${e.code}');
-      return Left(HomeFailure(message: e.code));
+      return Left(HomeFailure.fromFirestoreException(e.code));
     } on Exception {
       _logger.e('addIncome - an unknown error occured');
       return const Left(HomeFailure(message: 'An unknown error occured.'));
@@ -188,11 +196,13 @@ deleteExpense - called - params:
       }
       _logger.e('deleteExpense - user is not authenticated');
       return const Left(
-        HomeFailure(message: 'Unable to delete expense from database.'),
+        HomeFailure(
+          message: 'User is not authenticated, unable to excute the operation.',
+        ),
       );
     } on FirebaseException catch (e) {
       _logger.e('deleteExpense - FirebaseException: ${e.code}');
-      return Left(HomeFailure(message: e.code));
+      return Left(HomeFailure.fromFirestoreException(e.code));
     } on Exception {
       _logger.e('deleteExpense - an unknown error occured');
       return const Left(HomeFailure(message: 'An unknown error occured.'));
@@ -221,11 +231,13 @@ deleteIncome - called - params:
       }
       _logger.e('deleteIncome - user is not authenticated');
       return const Left(
-        HomeFailure(message: 'Unable to delete expense from database.'),
+        HomeFailure(
+          message: 'User is not authenticated, unable to excute the operation.',
+        ),
       );
     } on FirebaseException catch (e) {
       _logger.e('deleteIncome - FirebaseException: ${e.code}');
-      return Left(HomeFailure(message: e.code));
+      return Left(HomeFailure.fromFirestoreException(e.code));
     } on Exception {
       _logger.e('deleteIncome - an unknown error occured');
       return const Left(HomeFailure(message: 'An unknown error occured.'));
