@@ -93,7 +93,7 @@ void main() {
       );
     },
     act: (bloc) => bloc.add(const AccountFetchEvent()),
-    expect: () => [AccountLoading(), AccountError()],
+    expect: () => [AccountLoading(), const AccountError('test')],
   );
 
   blocTest(
@@ -123,7 +123,7 @@ void main() {
       );
     },
     act: (bloc) => bloc.add(AccountAddIncomeEvent(incomeEntity: incomeEntity)),
-    expect: () => [AccountLoading(), AccountError()],
+    expect: () => [AccountLoading(), const AccountError('test')],
   );
 
   blocTest(
@@ -156,7 +156,7 @@ void main() {
     act: (bloc) => bloc.add(
       AccountAddExpenseEvent(expenseEntity: expenseEntity),
     ),
-    expect: () => [AccountLoading(), AccountError()],
+    expect: () => [AccountLoading(), const AccountError('test')],
   );
 
   blocTest(
@@ -194,6 +194,6 @@ void main() {
     act: (bloc) => bloc.add(
       AccountDeleteTransactionEvent(transactionEntity: transactionEntity),
     ),
-    expect: () => [AccountError()],
+    expect: () => [const AccountError('test')],
   );
 }
