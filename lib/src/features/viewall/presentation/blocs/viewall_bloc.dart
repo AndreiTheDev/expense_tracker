@@ -81,7 +81,9 @@ class ViewallBloc extends Bloc<ViewallEvent, ViewallState> {
       final response = await _fetchExpensesDetails(
         accountId: event.accountId,
       );
-      response.fold((l) => null, (r) {
+      response.fold((l) {
+        emit(ViewallError(l.message));
+      }, (r) {
         if (initialState is ViewallLoaded) {
           emit(initialState.copyWith(expensesDetails: r));
         } else {
@@ -101,7 +103,9 @@ class ViewallBloc extends Bloc<ViewallEvent, ViewallState> {
       final response = await _fetchIncomesDetails(
         accountId: event.accountId,
       );
-      response.fold((l) => null, (r) {
+      response.fold((l) {
+        emit(ViewallError(l.message));
+      }, (r) {
         if (initialState is ViewallLoaded) {
           emit(initialState.copyWith(incomesDetails: r));
         } else {
