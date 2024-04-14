@@ -90,10 +90,26 @@ class HomeView extends StatelessWidget {
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height,
-                    child: const Center(
-                      child: Text(
-                        'An error occured, please refresh the page.',
-                      ),
+                    child: Column(
+                      children: [
+                        xlSeparator,
+                        const HomeAppBar(),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                state is AccountError
+                                    ? state.message
+                                    : 'An unknown error occured.',
+                              ),
+                              const Text(
+                                'Please slide down to refresh the page.',
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

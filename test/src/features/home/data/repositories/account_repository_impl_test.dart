@@ -92,7 +92,9 @@ void main() {
     expect(
       response,
       const Left(
-        HomeFailure(message: 'Unable to delete expense from database.'),
+        HomeFailure(
+          message: 'User is not authenticated, unable to excute the operation.',
+        ),
       ),
     );
     verify(mockFirebaseDataSource.getUid()).called(1);
@@ -114,7 +116,10 @@ void main() {
       accountId: 'test',
       transactionEntity: transactionEntity,
     );
-    expect(response, const Left(HomeFailure(message: 'test')));
+    expect(
+      response,
+      const Left(HomeFailure(message: 'An unknown error occured.')),
+    );
     verify(mockFirebaseDataSource.getUid()).called(1);
     verify(
       mockFirestoreDataSource.deleteTransaction(
@@ -238,7 +243,9 @@ void main() {
     expect(
       response,
       const Left(
-        HomeFailure(message: 'Unable to get the account from database.'),
+        HomeFailure(
+          message: 'User is not authenticated, unable to excute the operation.',
+        ),
       ),
     );
     verify(mockFirebaseDataSource.getUid()).called(1);
@@ -257,7 +264,10 @@ void main() {
     final response = await sut.fetchAccount(
       accountId: 'test',
     );
-    expect(response, const Left(HomeFailure(message: 'test')));
+    expect(
+      response,
+      const Left(HomeFailure(message: 'An unknown error occured.')),
+    );
     verify(mockFirebaseDataSource.getUid()).called(1);
     verify(
       mockFirestoreDataSource.fetchAccountDetails(
@@ -334,7 +344,9 @@ void main() {
     expect(
       response,
       const Left(
-        HomeFailure(message: 'Unable to get the account from database.'),
+        HomeFailure(
+          message: 'User is not authenticated, unable to excute the operation.',
+        ),
       ),
     );
     verify(mockFirebaseDataSource.getUid()).called(1);
@@ -355,7 +367,10 @@ void main() {
       accountId: 'test',
       expenseEntity: expenseEntity,
     );
-    expect(response, const Left(HomeFailure(message: 'test')));
+    expect(
+      response,
+      const Left(HomeFailure(message: 'An unknown error occured.')),
+    );
     verify(mockFirebaseDataSource.getUid()).called(1);
     verify(
       mockFirestoreDataSource.addExpense(
@@ -436,7 +451,9 @@ void main() {
     expect(
       response,
       const Left(
-        HomeFailure(message: 'Unable to get the account from database.'),
+        HomeFailure(
+          message: 'User is not authenticated, unable to excute the operation.',
+        ),
       ),
     );
     verify(mockFirebaseDataSource.getUid()).called(1);
@@ -457,7 +474,10 @@ void main() {
       accountId: 'test',
       incomeEntity: incomeEntity,
     );
-    expect(response, const Left(HomeFailure(message: 'test')));
+    expect(
+      response,
+      const Left(HomeFailure(message: 'An unknown error occured.')),
+    );
     verify(mockFirebaseDataSource.getUid()).called(1);
     verify(
       mockFirestoreDataSource.addIncome(
@@ -538,7 +558,9 @@ void main() {
     expect(
       response,
       const Left(
-        HomeFailure(message: 'Unable to delete expense from database.'),
+        HomeFailure(
+          message: 'User is not authenticated, unable to excute the operation.',
+        ),
       ),
     );
     verify(mockFirebaseDataSource.getUid()).called(1);
@@ -559,7 +581,10 @@ void main() {
       accountId: 'test',
       expenseEntity: expenseEntity,
     );
-    expect(response, const Left(HomeFailure(message: 'test')));
+    expect(
+      response,
+      const Left(HomeFailure(message: 'An unknown error occured.')),
+    );
     verify(mockFirebaseDataSource.getUid()).called(1);
     verify(
       mockFirestoreDataSource.deleteExpense(
@@ -640,7 +665,9 @@ void main() {
     expect(
       response,
       const Left(
-        HomeFailure(message: 'Unable to delete expense from database.'),
+        HomeFailure(
+          message: 'User is not authenticated, unable to excute the operation.',
+        ),
       ),
     );
     verify(mockFirebaseDataSource.getUid()).called(1);
@@ -661,7 +688,10 @@ void main() {
       accountId: 'test',
       incomeEntity: incomeEntity,
     );
-    expect(response, const Left(HomeFailure(message: 'test')));
+    expect(
+      response,
+      const Left(HomeFailure(message: 'An unknown error occured.')),
+    );
     verify(mockFirebaseDataSource.getUid()).called(1);
     verify(
       mockFirestoreDataSource.deleteIncome(

@@ -52,9 +52,4 @@ void main() {
     );
     expect(sut.props, [transactionEntity, 'test']);
   });
-
-  test('AccountErrorEvent props are equal', () {
-    const sut = AccountErrorEvent(message: 'test');
-    expect(sut.props, ['test']);
-  });
 }
