@@ -54,10 +54,13 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     final AccountAddIncomeEvent event,
     final Emitter<AccountState> emit,
   ) async {
+    final currentState = state;
+    final accountId =
+        currentState is AccountLoaded ? currentState.account.id : 'default';
     emit(AccountLoading());
     final repsponse = await _addIncome(
-      accountId: event.accountId,
       incomeEntity: event.incomeEntity,
+      accountId: accountId,
     );
     repsponse.fold(
       (failure) {
@@ -71,10 +74,13 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     final AccountAddExpenseEvent event,
     final Emitter<AccountState> emit,
   ) async {
+    final currentState = state;
+    final accountId =
+        currentState is AccountLoaded ? currentState.account.id : 'default';
     emit(AccountLoading());
     final repsponse = await _addExpense(
-      accountId: event.accountId,
       expenseEntity: event.expenseEntity,
+      accountId: accountId,
     );
     repsponse.fold(
       (failure) {
@@ -88,9 +94,12 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     final AccountDeleteTransactionEvent event,
     final Emitter<AccountState> emit,
   ) async {
+    final currentState = state;
+    final accountId =
+        currentState is AccountLoaded ? currentState.account.id : 'default';
     final repsponse = await _deleteTransaction(
-      accountId: event.accountId,
       transactionEntity: event.transactionEntity,
+      accountId: accountId,
     );
     repsponse.fold(
       (failure) {
