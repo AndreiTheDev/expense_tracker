@@ -31,25 +31,22 @@ void main() {
 
   test('AccountAddIncomeEvent props are equal', () {
     final sut = AccountAddIncomeEvent(
-      accountId: 'test',
       incomeEntity: incomeEntity,
     );
-    expect(sut.props, [incomeEntity, 'test']);
+    expect(sut.props, [incomeEntity]);
   });
 
   test('AccountAddExpenseEvent props are equal', () {
     final sut = AccountAddExpenseEvent(
-      accountId: 'test',
       expenseEntity: expenseEntity,
     );
-    expect(sut.props, [expenseEntity, 'test']);
+    expect(sut.props, [expenseEntity]);
   });
 
   test('AccountDeleteTransactionEvent props are equal', () {
     final sut = AccountDeleteTransactionEvent(
-      accountId: 'test',
       transactionEntity: transactionEntity,
     );
-    expect(sut.props, [transactionEntity, 'test']);
+    expect(sut.props, [transactionEntity]);
   });
 }

@@ -14,40 +14,34 @@ class AccountFetchEvent extends AccountEvent {
 }
 
 class AccountAddIncomeEvent extends AccountEvent {
-  final String accountId;
   final IncomeEntity incomeEntity;
 
   const AccountAddIncomeEvent({
     required this.incomeEntity,
-    this.accountId = 'default',
   });
 
   @override
-  List<Object> get props => [incomeEntity, accountId];
+  List<Object> get props => [incomeEntity];
 }
 
 class AccountAddExpenseEvent extends AccountEvent {
-  final String accountId;
   final ExpenseEntity expenseEntity;
 
   const AccountAddExpenseEvent({
     required this.expenseEntity,
-    this.accountId = 'default',
   });
 
   @override
-  List<Object> get props => [expenseEntity, accountId];
+  List<Object> get props => [expenseEntity];
 }
 
 class AccountDeleteTransactionEvent extends AccountEvent {
-  final String accountId;
   final TransactionEntity transactionEntity;
 
   const AccountDeleteTransactionEvent({
     required this.transactionEntity,
-    this.accountId = 'default',
   });
 
   @override
-  List<Object> get props => [transactionEntity, accountId];
+  List<Object> get props => [transactionEntity];
 }
