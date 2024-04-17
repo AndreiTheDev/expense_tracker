@@ -7,6 +7,6 @@ abstract interface class SwitchAccountRepository {
   Future<Either<Failure, List<AccountEntity>>> fetchAccountsList();
 
   Future<Either<Failure, void>> createNewAccount(
-    final AccountEntity accountEntity,
+    final String accountName,
   );
 }
