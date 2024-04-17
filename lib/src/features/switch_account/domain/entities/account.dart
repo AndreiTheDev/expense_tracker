@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:uuid/uuid.dart';
 
 class AccountEntity extends Equatable {
   final String id;
@@ -7,12 +6,12 @@ class AccountEntity extends Equatable {
   final String? owner;
   final double totalBalance;
 
-  AccountEntity({
+  const AccountEntity({
+    required this.id,
     required this.name,
     required this.totalBalance,
     this.owner,
-    String? id,
-  }) : id = id ?? const Uuid().v4();
+  });
 
   @override
   List<Object?> get props => [
