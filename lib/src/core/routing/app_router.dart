@@ -7,6 +7,7 @@ import '../../features/authentication/presentation/views/sign_in_view.dart';
 import '../../features/authentication/presentation/views/sign_up_view.dart';
 import '../../features/home/presentation/views/add_transactions_view.dart';
 import '../../features/home/presentation/views/home_view.dart';
+import '../../features/switch_account/presentation/views/all_accounts_view.dart';
 import '../../features/viewall/presentation/views/viewall_view.dart';
 import '../common_views/splash_view.dart';
 import 'app_routes.dart';
@@ -37,6 +38,13 @@ final appRouter = GoRouter(
           name: AppRoutes.viewall.name,
           pageBuilder: (context, state) => const NoTransitionPage(
             child: ViewallView(),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.allAccounts.path,
+          name: AppRoutes.allAccounts.name,
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: AllAccountsView(),
           ),
         ),
       ],
