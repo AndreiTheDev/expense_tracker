@@ -8,11 +8,13 @@ class AccountDto extends AccountEntity {
     required super.expenses,
     required super.totalBalance,
     required super.transactions,
+    required super.createdBy,
   });
 
   factory AccountDto.fromJson(final Map<String, dynamic> json) {
     return AccountDto(
       id: json['id'],
+      createdBy: json['createdBy'],
       name: json['name'],
       income: json['income'],
       expenses: json['expenses'],
@@ -24,6 +26,7 @@ class AccountDto extends AccountEntity {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'createdBy': createdBy,
       'name': name,
       'income': income,
       'expenses': expenses,
