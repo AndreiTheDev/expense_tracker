@@ -3,6 +3,7 @@ import 'package:logger/logger.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/utils/logger.dart';
+import '../entities/account.dart';
 import '../repository/switch_account_repository.dart';
 
 class CreateNewAccount {
@@ -12,9 +13,9 @@ class CreateNewAccount {
   CreateNewAccount(this._repository);
 
   Future<Either<Failure, void>> call({
-    required final String accountName,
+    required final AccountEntity account,
   }) {
     _logger.d('call');
-    return _repository.createNewAccount(accountName);
+    return _repository.createNewAccount(account);
   }
 }
