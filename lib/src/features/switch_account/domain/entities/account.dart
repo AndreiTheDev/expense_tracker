@@ -1,17 +1,37 @@
 import 'package:equatable/equatable.dart';
+import 'package:uuid/uuid.dart';
 
-class AccountEntity extends Equatable {
+import '../../../../core/interfaces/entities/account_interface.dart';
+import '../../../../core/interfaces/entities/transaction_interface.dart';
+
+class AccountEntity extends Equatable implements IAccountEntity {
+  @override
   final String id;
+  @override
+  final String createdBy;
+  @override
   final String name;
-  final String? owner;
+  @override
+  final String owner;
+  @override
+  final double expenses;
+  @override
+  final double income;
+  @override
   final double totalBalance;
+  @override
+  final List<ITransactionEntity> transactions;
 
-  const AccountEntity({
-    required this.id,
+  AccountEntity({
     required this.name,
-    required this.totalBalance,
-    this.owner,
-  });
+    required this.createdBy,
+    required this.owner,
+    this.totalBalance = 0,
+    this.expenses = 0,
+    this.income = 0,
+    this.transactions = const [],
+    String? id,
+  }) : id = id ?? const Uuid().v4();
 
   @override
   List<Object?> get props => [
@@ -19,5 +39,9 @@ class AccountEntity extends Equatable {
         name,
         totalBalance,
         owner,
+        createdBy,
+        expenses,
+        income,
+        transactions,
       ];
 }
