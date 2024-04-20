@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../../core/common_widgets/custom_appbar_button.dart';
+import '../../../../core/routing/app_routes.dart';
 import '../../../../core/utils/utils.dart';
 import '../../../authentication/presentation/blocs/user_bloc/user_bloc.dart';
 
@@ -50,7 +52,9 @@ class HomeAppBar extends StatelessWidget {
                 ),
                 const Expanded(child: SizedBox()),
                 CustomAppbarButton(
-                  onTap: () {},
+                  onTap: () async {
+                    await context.pushNamed(AppRoutes.allAccounts.name);
+                  },
                   icon: Icons.mode_standby,
                 ),
               ],
