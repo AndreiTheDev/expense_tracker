@@ -174,6 +174,7 @@ void main() {
         () => {
           'id': 'test',
           'name': 'test',
+          'createdBy': 'test',
           'income': 100.toDouble(),
           'expenses': 100.toDouble(),
           'totalBalance': 0.toDouble(),
@@ -209,6 +210,7 @@ void main() {
         AccountDto(
           id: 'test',
           name: 'test',
+          createdBy: 'test',
           income: 100,
           expenses: 100,
           totalBalance: 0,

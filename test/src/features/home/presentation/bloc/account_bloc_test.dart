@@ -50,6 +50,7 @@ void main() {
   const AccountEntity accountEntity = AccountEntity(
     id: 'test',
     name: 'test',
+    createdBy: 'test',
     income: 100,
     expenses: -100,
     totalBalance: 0,
