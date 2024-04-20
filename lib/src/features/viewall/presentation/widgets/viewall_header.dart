@@ -13,11 +13,13 @@ class ViewallHeader extends StatelessWidget {
   const ViewallHeader({
     required this.isIos,
     required this.isIncomesActive,
+    required this.accountId,
     super.key,
   });
 
   final bool isIos;
   final bool isIncomesActive;
+  final String accountId;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,9 @@ class ViewallHeader extends StatelessWidget {
             leftButton: CustomAppbarButton(
               icon: isIos ? Icons.arrow_back_ios_new : Icons.arrow_back,
               onTap: () {
-                context.read<AccountBloc>().add(const AccountFetchEvent());
+                context
+                    .read<AccountBloc>()
+                    .add(AccountFetchEvent(accountId: accountId));
                 context.pop();
               },
             ),
