@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:logger/logger.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/utils/logger.dart';
@@ -24,22 +23,18 @@ class SwitchAccountRepositoryImpl implements SwitchAccountRepository {
   );
 
   @override
-  Future<Either<Failure, void>> createNewAccount(String accountName) async {
+  Future<Either<Failure, void>> createNewAccount(
+    AccountEntity accountEntity,
+  ) async {
     _logger.d(
-      'createNewAccount - called - params: {accountName: $accountName}',
+      'createNewAccount - called - params: {accountName: $accountEntity}',
     );
     try {
       final user = _firebaseDataSource.getUser();
-      await _firestoreDataSource.createNewAccount(user.uid, {
-        'createdBy': user.uid,
-        'owner': user.displayName,
-        'expenses': 0,
-        'id': const Uuid().v4(),
-        'income': 0,
-        'name': accountName,
-        'totalBalance': 0,
-        'transactions': [],
-      });
+      await _firestoreDataSource.createNewAccount(
+        user.uid,
+        AccountDto.fromEntity(accountEntity).toJson(),
+      );
       return const Right(null);
     } on SwitchAccountFailure catch (e) {
       _logger.e('fetchAccountsList - SwitchAccountFailure: ${e.message}');
