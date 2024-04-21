@@ -41,7 +41,7 @@ class SwitchAccountRepositoryImpl implements SwitchAccountRepository {
       return Left(e);
     } on FirebaseException catch (e) {
       _logger.e('fetchAccountsList - FirebaseException: ${e.code}');
-      return Left(SwitchAccountFailure(message: e.code));
+      return Left(SwitchAccountFailure.fromFirestoreException(e.code));
     } on Exception {
       _logger.e('fetchAccountsList - an unknown error occured.');
       return const Left(
@@ -64,7 +64,7 @@ class SwitchAccountRepositoryImpl implements SwitchAccountRepository {
       return Left(e);
     } on FirebaseException catch (e) {
       _logger.e('fetchAccountsList - FirebaseException: ${e.code}');
-      return Left(SwitchAccountFailure(message: e.code));
+      return Left(SwitchAccountFailure.fromFirestoreException(e.code));
     } on Exception {
       _logger.e('fetchAccountsList - an unknown error occured.');
       return const Left(
