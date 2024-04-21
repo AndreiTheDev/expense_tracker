@@ -110,30 +110,36 @@ final class HomeFailure extends Failure {
 
   factory HomeFailure.fromFirestoreException(final String code) {
     switch (code) {
-      case (noUserDataCode):
-        return const HomeFailure(message: noUserDataMessage);
-      case (invalidEmailCode):
-        return const HomeFailure(message: invalidEmailMessage);
-      case (userNotExistsCode):
-        return const HomeFailure(message: userNotExistsMessage);
-      case (emailExistsCode):
-        return const HomeFailure(message: emailExistsMessage);
+      case (abortedCode):
+        return const HomeFailure(message: abortedMessage);
+      case (alreadyExistsCode):
+        return const HomeFailure(message: alreadyExistsMessage);
+      case (cancelledCode):
+        return const HomeFailure(message: cancelledMessage);
+      case (dataLossCode):
+        return const HomeFailure(message: dataLossMessage);
+      case (deadlineExceededCode):
+        return const HomeFailure(message: deadlineExceededMessage);
+      case (failedPreconditionCode):
+        return const HomeFailure(message: failedPreconditionMessage);
+      case (invalidArgumentCode):
+        return const HomeFailure(message: invalidArgumentMessage);
+      case (notFoundCode):
+        return const HomeFailure(message: notFoundMessage);
+      case (outOfRangeCode):
+        return const HomeFailure(message: outOfRangeMessage);
+      case (permissionDeniedCode):
+        return const HomeFailure(message: permissionDeniedMessage);
+      case (resourceExhaustedCode):
+        return const HomeFailure(message: resourceExhaustedMessage);
+      case (unauthenticatedCode):
+        return const HomeFailure(message: unauthenticatedMessage);
+      case (unavailableCode):
+        return const HomeFailure(message: unavailableMessage);
+      case (unimplementedCode):
+        return const HomeFailure(message: unimplementedMessage);
       case (internalErrorCode):
         return const HomeFailure(message: internalErrorMessage);
-      case (invalidCredentialCode):
-        return const HomeFailure(message: invalidCredentialMessage);
-      case (invalidPasswordCode):
-        return const HomeFailure(message: invalidPasswordMessage);
-      case (userDisabledCode):
-        return const HomeFailure(message: userDisabledMessage);
-      case (userNotFoundCode):
-        return const HomeFailure(message: userNotFoundMessage);
-      case (wrongPasswordCode):
-        return const HomeFailure(message: wrongPasswordMessage);
-      case (userCancelCode):
-        return const HomeFailure(message: userCancelMessage);
-      case (usernameInUseCode):
-        return const HomeFailure(message: usernameInUseMessage);
       default:
         return const HomeFailure(message: unknownErrorMessage);
     }
@@ -145,32 +151,79 @@ final class ViewallFailure extends Failure {
 
   factory ViewallFailure.fromFirestoreException(final String code) {
     switch (code) {
-      case (noUserDataCode):
-        return const ViewallFailure(message: noUserDataMessage);
-      case (invalidEmailCode):
-        return const ViewallFailure(message: invalidEmailMessage);
-      case (userNotExistsCode):
-        return const ViewallFailure(message: userNotExistsMessage);
-      case (emailExistsCode):
-        return const ViewallFailure(message: emailExistsMessage);
+      case (abortedCode):
+        return const ViewallFailure(message: abortedMessage);
+      case (alreadyExistsCode):
+        return const ViewallFailure(message: alreadyExistsMessage);
+      case (cancelledCode):
+        return const ViewallFailure(message: cancelledMessage);
+      case (dataLossCode):
+        return const ViewallFailure(message: dataLossMessage);
+      case (deadlineExceededCode):
+        return const ViewallFailure(message: deadlineExceededMessage);
+      case (failedPreconditionCode):
+        return const ViewallFailure(message: failedPreconditionMessage);
+      case (invalidArgumentCode):
+        return const ViewallFailure(message: invalidArgumentMessage);
+      case (notFoundCode):
+        return const ViewallFailure(message: notFoundMessage);
+      case (outOfRangeCode):
+        return const ViewallFailure(message: outOfRangeMessage);
+      case (permissionDeniedCode):
+        return const ViewallFailure(message: permissionDeniedMessage);
+      case (resourceExhaustedCode):
+        return const ViewallFailure(message: resourceExhaustedMessage);
+      case (unauthenticatedCode):
+        return const ViewallFailure(message: unauthenticatedMessage);
+      case (unavailableCode):
+        return const ViewallFailure(message: unavailableMessage);
+      case (unimplementedCode):
+        return const ViewallFailure(message: unimplementedMessage);
       case (internalErrorCode):
         return const ViewallFailure(message: internalErrorMessage);
-      case (invalidCredentialCode):
-        return const ViewallFailure(message: invalidCredentialMessage);
-      case (invalidPasswordCode):
-        return const ViewallFailure(message: invalidPasswordMessage);
-      case (userDisabledCode):
-        return const ViewallFailure(message: userDisabledMessage);
-      case (userNotFoundCode):
-        return const ViewallFailure(message: userNotFoundMessage);
-      case (wrongPasswordCode):
-        return const ViewallFailure(message: wrongPasswordMessage);
-      case (userCancelCode):
-        return const ViewallFailure(message: userCancelMessage);
-      case (usernameInUseCode):
-        return const ViewallFailure(message: usernameInUseMessage);
       default:
         return const ViewallFailure(message: unknownErrorMessage);
+    }
+  }
+}
+
+final class SwitchAccountFailure extends Failure {
+  const SwitchAccountFailure({required super.message});
+
+  factory SwitchAccountFailure.fromFirestoreException(final String code) {
+    switch (code) {
+      case (abortedCode):
+        return const SwitchAccountFailure(message: abortedMessage);
+      case (alreadyExistsCode):
+        return const SwitchAccountFailure(message: alreadyExistsMessage);
+      case (cancelledCode):
+        return const SwitchAccountFailure(message: cancelledMessage);
+      case (dataLossCode):
+        return const SwitchAccountFailure(message: dataLossMessage);
+      case (deadlineExceededCode):
+        return const SwitchAccountFailure(message: deadlineExceededMessage);
+      case (failedPreconditionCode):
+        return const SwitchAccountFailure(message: failedPreconditionMessage);
+      case (invalidArgumentCode):
+        return const SwitchAccountFailure(message: invalidArgumentMessage);
+      case (notFoundCode):
+        return const SwitchAccountFailure(message: notFoundMessage);
+      case (outOfRangeCode):
+        return const SwitchAccountFailure(message: outOfRangeMessage);
+      case (permissionDeniedCode):
+        return const SwitchAccountFailure(message: permissionDeniedMessage);
+      case (resourceExhaustedCode):
+        return const SwitchAccountFailure(message: resourceExhaustedMessage);
+      case (unauthenticatedCode):
+        return const SwitchAccountFailure(message: unauthenticatedMessage);
+      case (unavailableCode):
+        return const SwitchAccountFailure(message: unavailableMessage);
+      case (unimplementedCode):
+        return const SwitchAccountFailure(message: unimplementedMessage);
+      case (internalErrorCode):
+        return const SwitchAccountFailure(message: internalErrorMessage);
+      default:
+        return const SwitchAccountFailure(message: unknownErrorMessage);
     }
   }
 }
