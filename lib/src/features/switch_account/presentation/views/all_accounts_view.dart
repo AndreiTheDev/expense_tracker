@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../../../injection_container.dart';
@@ -53,10 +54,43 @@ class AllAccountsView extends StatelessWidget {
                             return AllAccountsListView(
                               accountsList: state.accountsList,
                             );
-                          case SwitchAccountError():
-                            return Text(state.message);
-                          default:
+                          case SwitchAccountLoading():
                             return const AllAccountsListViewLoading();
+                          default:
+                            return RefreshIndicator(
+                              onRefresh: () => Future(
+                                () => context
+                                    .read<SwitchAccountBloc>()
+                                    .add(SwitchAccountFetchAccountsEvent()),
+                              ),
+                              child: LayoutBuilder(
+                                builder: (context, constraints) =>
+                                    SingleChildScrollView(
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  child: ConstrainedBox(
+                                    constraints: BoxConstraints(
+                                      minHeight: constraints.maxHeight,
+                                      minWidth: constraints.maxWidth,
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          state is SwitchAccountError
+                                              ? state.message
+                                              : 'An unknown error occured.',
+                                        ),
+                                        const Text(
+                                          'Please slide down to refresh the page.',
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
                         }
                       },
                     ),
@@ -100,6 +134,8 @@ class AllAccountsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final amountFormatter = NumberFormat.compact(locale: 'en_US');
+
     return ListView.separated(
       padding: const EdgeInsets.only(top: smallSize),
       itemBuilder: (context, index) {
@@ -141,7 +177,7 @@ class AllAccountsListView extends StatelessWidget {
                     const Text('Balance:'),
                     smallSeparator,
                     Text(
-                      '\$${account.totalBalance.toStringAsFixed(0)}',
+                      '\$${amountFormatter.format(account.totalBalance)}',
                     ),
                   ],
                 ),
