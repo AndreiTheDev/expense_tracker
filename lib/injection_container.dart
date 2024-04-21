@@ -35,6 +35,14 @@ import 'src/features/home/domain/usecases/delete_transaction.dart';
 import 'src/features/home/domain/usecases/fetch_account.dart';
 import 'src/features/home/presentation/bloc/account_bloc.dart';
 import 'src/features/home/presentation/cubits/add_transaction/add_transaction_form_cubit.dart';
+import 'src/features/switch_account/data/datasources/switch_account_firebase_datasource.dart';
+import 'src/features/switch_account/data/datasources/switch_account_firestore_datasource.dart';
+import 'src/features/switch_account/data/repository/switch_account_repository_impl.dart';
+import 'src/features/switch_account/domain/repository/switch_account_repository.dart';
+import 'src/features/switch_account/domain/usecases/create_new_account.dart';
+import 'src/features/switch_account/domain/usecases/fetch_accounts_list.dart';
+import 'src/features/switch_account/presentation/bloc/switch_account_bloc.dart';
+import 'src/features/switch_account/presentation/cubit/add_account_form_cubit.dart';
 import 'src/features/viewall/data/datasources/viewall_firebase_datasource.dart';
 import 'src/features/viewall/data/datasources/viewall_firestore_datasource.dart';
 import 'src/features/viewall/data/repositories/viewall_repository_impl.dart';
@@ -77,6 +85,12 @@ Future<void> init() async {
         fetchIncomesDetails: sl(),
       ),
     )
+    ..registerFactory(
+      () => SwitchAccountBloc(
+        createNewAccount: sl(),
+        fetchAccountsList: sl(),
+      ),
+    )
 
     //Cubits
     ..registerFactory(() => ProfilePhotosUrlsCubit(profilePhotosUrls: sl()))
@@ -85,6 +99,7 @@ Future<void> init() async {
     ..registerFactory(SignUpFormCubit.new)
     ..registerFactory(AddTransactionFormCubit.new)
     ..registerFactory(ViewallViewCubit.new)
+    ..registerFactory(AddAccountFormCubit.new)
 
     //Use Cases
     ..registerLazySingleton(() => DeleteUser(sl()))
@@ -102,6 +117,8 @@ Future<void> init() async {
     ..registerLazySingleton(() => DeleteIncome(sl()))
     ..registerLazySingleton(() => FetchExpensesDetails(sl()))
     ..registerLazySingleton(() => FetchIncomesDetails(sl()))
+    ..registerLazySingleton(() => FetchAccountsList(sl()))
+    ..registerLazySingleton(() => CreateNewAccount(sl()))
 
     //Repositories
     ..registerLazySingleton<AuthenticationRepository>(
@@ -120,6 +137,9 @@ Future<void> init() async {
     )
     ..registerLazySingleton<ViewallRepository>(
       () => ViewallRepositoryImpl(sl(), sl()),
+    )
+    ..registerLazySingleton<SwitchAccountRepository>(
+      () => SwitchAccountRepositoryImpl(sl(), sl()),
     )
 
     //Data sources
@@ -146,6 +166,12 @@ Future<void> init() async {
     )
     ..registerLazySingleton<ViewallFirestoreDataSource>(
       () => ViewallFirestoreDataSourceImpl(sl()),
+    )
+    ..registerLazySingleton<SwitchAccountFirebaseDataSource>(
+      () => SwitchAccountFirebaseDataSourceImpl(sl()),
+    )
+    ..registerLazySingleton<SwitchAccountFirestoreDataSource>(
+      () => SwitchAccountFirestoreDataSourceImpl(sl()),
     )
 
     //Firebase instances

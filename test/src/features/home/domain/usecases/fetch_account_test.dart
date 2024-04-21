@@ -16,6 +16,7 @@ void main() {
   const AccountEntity entity = AccountEntity(
     id: 'test',
     name: 'test',
+    createdBy: 'test',
     income: 100,
     expenses: 100,
     totalBalance: 0,

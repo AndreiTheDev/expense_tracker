@@ -9,6 +9,7 @@ void main() {
     account = const AccountDto(
       id: 'testId',
       name: 'test',
+      createdBy: 'test',
       income: 100,
       expenses: 100,
       totalBalance: 0,
@@ -19,6 +20,7 @@ void main() {
   final json = {
     'id': 'testId',
     'name': 'test',
+    'createdBy': 'test',
     'income': 100.0,
     'expenses': 100.0,
     'totalBalance': 0.0,

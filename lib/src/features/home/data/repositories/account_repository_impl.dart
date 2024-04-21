@@ -77,6 +77,7 @@ fetchAccount - called - params:
         final num accountTotalBalance = accountDetails['totalBalance'];
         final accountEntity = AccountDto(
           id: accountDetails['id'],
+          createdBy: accountDetails['createdBy'],
           name: accountDetails['name'],
           income: accountIncome.toDouble(),
           expenses: accountExpenses.toDouble(),

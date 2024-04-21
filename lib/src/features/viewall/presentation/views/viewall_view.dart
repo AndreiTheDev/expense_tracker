@@ -7,6 +7,7 @@ import '../../../../../injection_container.dart';
 import '../../../../core/common_widgets/transactions_listview.dart';
 import '../../../../core/utils/logger.dart';
 import '../../../../core/utils/utils.dart';
+import '../../../home/presentation/bloc/account_bloc.dart';
 import '../blocs/viewall_bloc.dart';
 import '../cubit/viewall_view_cubit.dart';
 import '../widgets/viewall_chart.dart';
@@ -20,6 +21,9 @@ class ViewallView extends StatelessWidget {
     getLogger(ViewallView).d('build');
 
     final isIos = Theme.of(context).platform == TargetPlatform.iOS;
+    final accountState = context.read<AccountBloc>().state;
+    final accountId =
+        accountState is AccountLoaded ? accountState.account.id : 'default';
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -27,9 +31,7 @@ class ViewallView extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => sl<ViewallBloc>()
-            ..add(
-              const ViewallFetchIncomesDetailsEvent(),
-            ),
+            ..add(ViewallFetchIncomesDetailsEvent(accountId: accountId)),
         ),
       ],
       child: Builder(
@@ -38,14 +40,18 @@ class ViewallView extends StatelessWidget {
             body: BlocConsumer<ViewallViewCubit, ViewallViewState>(
               listener: (context, viewState) {
                 if (viewState is ViewallViewIncomes) {
-                  context
-                      .read<ViewallBloc>()
-                      .add(const ViewallFetchIncomesDetailsEvent());
+                  context.read<ViewallBloc>().add(
+                        ViewallFetchIncomesDetailsEvent(
+                          accountId: accountId,
+                        ),
+                      );
                 }
                 if (viewState is ViewallViewExpenses) {
-                  context
-                      .read<ViewallBloc>()
-                      .add(const ViewallFetchExpensesDetailsEvent());
+                  context.read<ViewallBloc>().add(
+                        ViewallFetchExpensesDetailsEvent(
+                          accountId: accountId,
+                        ),
+                      );
                 }
               },
               builder: (context, viewState) {
@@ -56,6 +62,7 @@ class ViewallView extends StatelessWidget {
                         ViewallHeader(
                           isIos: isIos,
                           isIncomesActive: true,
+                          accountId: accountId,
                         ),
                         mediumSeparator,
                         Expanded(
@@ -86,6 +93,7 @@ class ViewallView extends StatelessWidget {
                                                         ViewallDeleteIncomeEvent(
                                                           incomeEntity:
                                                               incomeEntity,
+                                                          accountId: accountId,
                                                         ),
                                                       );
                                                 },
@@ -94,10 +102,12 @@ class ViewallView extends StatelessWidget {
                                         )
                                       else
                                         const Padding(
-                                          padding:
-                                              EdgeInsets.only(top: smallSize),
-                                          child:
-                                              Text('There are no incomes yet.'),
+                                          padding: EdgeInsets.only(
+                                            top: smallSize,
+                                          ),
+                                          child: Text(
+                                            'There are no incomes yet.',
+                                          ),
                                         ),
                                     ],
                                   );
@@ -122,7 +132,9 @@ class ViewallView extends StatelessWidget {
                                   return RefreshIndicator(
                                     onRefresh: () => Future(
                                       () => context.read<ViewallBloc>().add(
-                                            const ViewallFetchIncomesDetailsEvent(),
+                                            ViewallFetchIncomesDetailsEvent(
+                                              accountId: accountId,
+                                            ),
                                           ),
                                     ),
                                     child: LayoutBuilder(
@@ -164,6 +176,7 @@ class ViewallView extends StatelessWidget {
                         ViewallHeader(
                           isIos: isIos,
                           isIncomesActive: false,
+                          accountId: accountId,
                         ),
                         mediumSeparator,
                         Expanded(
@@ -195,6 +208,7 @@ class ViewallView extends StatelessWidget {
                                                         ViewallDeleteExpenseEvent(
                                                           expenseEntity:
                                                               expenseEntity,
+                                                          accountId: accountId,
                                                         ),
                                                       );
                                                 },
@@ -203,8 +217,9 @@ class ViewallView extends StatelessWidget {
                                         )
                                       else
                                         const Padding(
-                                          padding:
-                                              EdgeInsets.only(top: smallSize),
+                                          padding: EdgeInsets.only(
+                                            top: smallSize,
+                                          ),
                                           child: Text(
                                             'There are no expenses yet.',
                                           ),
@@ -232,7 +247,9 @@ class ViewallView extends StatelessWidget {
                                   return RefreshIndicator(
                                     onRefresh: () => Future(
                                       () => context.read<ViewallBloc>().add(
-                                            const ViewallFetchExpensesDetailsEvent(),
+                                            ViewallFetchExpensesDetailsEvent(
+                                              accountId: accountId,
+                                            ),
                                           ),
                                     ),
                                     child: LayoutBuilder(
