@@ -10,7 +10,7 @@ final ThemeData lightTheme = ThemeData(
   textTheme: const TextTheme(
     bodyText2: TextStyle(
       color: textDark,
-      fontSize: 16,
+      fontSize: normalText,
     ),
   ).apply(
     displayColor: textDark,
