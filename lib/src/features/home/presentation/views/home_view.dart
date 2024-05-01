@@ -156,7 +156,7 @@ class TransactionsListHeader extends StatelessWidget {
           const Text(
             'Transactions',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: smallHeaderText,
               fontWeight: FontWeight.bold,
             ),
           ),
