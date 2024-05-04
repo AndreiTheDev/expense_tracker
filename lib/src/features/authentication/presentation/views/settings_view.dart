@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/common_widgets/custom_appbar.dart';
 import '../../../../core/common_widgets/custom_appbar_button.dart';
 import '../../../../core/utils/utils.dart';
 import '../blocs/user_bloc/user_bloc.dart';
 
-class SignOutView extends StatelessWidget {
-  const SignOutView({super.key});
+class SettingsView extends StatelessWidget {
+  const SettingsView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -54,13 +55,19 @@ class SignOutView extends StatelessWidget {
                     ),
                   ),
                   smallSeparator,
-                  SignOutListTile(
-                    text: 'User info',
-                    icon: Icons.info,
+                  SettingsListTile(
+                    text: 'Delete account',
+                    icon: Icons.delete,
                     onTap: () {},
                   ),
                   smallSeparator,
-                  SignOutListTile(
+                  SettingsListTile(
+                    text: 'Data Consent',
+                    icon: Icons.verified_user,
+                    onTap: () {},
+                  ),
+                  smallSeparator,
+                  SettingsListTile(
                     text: 'Sign Out',
                     icon: Icons.arrow_circle_right,
                     onTap: () {
@@ -83,12 +90,13 @@ class SignOutView extends StatelessWidget {
                     children: [
                       const Text('Author: '),
                       GestureDetector(
-                        // onTap: () async {
-                        //   final url = Uri.parse('https://flutter.dev');
-                        //   if (await canLaunchUrl(url)) {
-                        //     await launchUrl(url);
-                        //   }
-                        // },
+                        onTap: () async {
+                          final url =
+                              Uri.parse('https://github.com/AndreiTheDev');
+                          if (await canLaunchUrl(url)) {
+                            await launchUrl(url);
+                          }
+                        },
                         child: ShaderMask(
                           blendMode: BlendMode.srcIn,
                           shaderCallback: (bounds) =>
@@ -110,13 +118,21 @@ class SignOutView extends StatelessWidget {
                     children: [
                       const Text('Design: '),
                       GestureDetector(
+                        onTap: () async {
+                          final url = Uri.parse(
+                            'https://dribbble.com/shots/15560984-Daily-Expense-Tracker',
+                          );
+                          if (await canLaunchUrl(url)) {
+                            await launchUrl(url);
+                          }
+                        },
                         child: ShaderMask(
                           blendMode: BlendMode.srcIn,
                           shaderCallback: (bounds) =>
                               buttonsGradient.createShader(
                             Rect.fromLTRB(0, 0, bounds.width, bounds.height),
                           ),
-                          child: const Text('Teeest'),
+                          child: const Text('Dribble'),
                         ),
                       ),
                     ],
@@ -162,8 +178,8 @@ class SignOutView extends StatelessWidget {
   }
 }
 
-class SignOutListTile extends StatelessWidget {
-  const SignOutListTile({
+class SettingsListTile extends StatelessWidget {
+  const SettingsListTile({
     required this.text,
     required this.icon,
     required this.onTap,
