@@ -27,7 +27,7 @@ class HomeAppBar extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () async {
-                    await context.pushNamed(AppRoutes.signOut.name);
+                    await context.pushNamed(AppRoutes.settings.name);
                   },
                   child: CircleAvatar(
                     backgroundColor: Colors.grey[300],
