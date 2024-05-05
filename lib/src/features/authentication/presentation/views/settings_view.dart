@@ -58,7 +58,9 @@ class SettingsView extends StatelessWidget {
                   SettingsListTile(
                     text: 'Delete account',
                     icon: Icons.delete,
-                    onTap: () {},
+                    onTap: () {
+                      context.read<UserBloc>().add(UserDeleteUserEvent());
+                    },
                   ),
                   smallSeparator,
                   SettingsListTile(
