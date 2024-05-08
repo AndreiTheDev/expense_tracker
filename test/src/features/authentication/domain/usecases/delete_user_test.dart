@@ -20,14 +20,14 @@ void main() {
 
   test('Deletes the current user successfully', () async {
     provideDummy<Either<Failure, void>>(const Right(null));
-    when(mockAuthenticationRepository.deleteUser()).thenAnswer(
+    when(mockAuthenticationRepository.deleteUser('test')).thenAnswer(
       (realInvocation) async => const Right(null),
     );
 
-    final result = await sut();
+    final result = await sut('test');
 
     expect(result, const Right(null));
-    verify(mockAuthenticationRepository.deleteUser()).called(1);
+    verify(mockAuthenticationRepository.deleteUser('test')).called(1);
     verifyNoMoreInteractions(mockAuthenticationRepository);
   });
 
@@ -36,16 +36,16 @@ void main() {
       const Left(AuthFailure(message: 'test')),
     );
     when(
-      mockAuthenticationRepository.deleteUser(),
+      mockAuthenticationRepository.deleteUser('test'),
     ).thenAnswer(
       (realInvocation) async => const Left(AuthFailure(message: 'test')),
     );
 
-    final result = await sut();
+    final result = await sut('test');
 
     expect(result, const Left(AuthFailure(message: 'test')));
     verify(
-      mockAuthenticationRepository.deleteUser(),
+      mockAuthenticationRepository.deleteUser('test'),
     ).called(1);
     verifyNoMoreInteractions(mockAuthenticationRepository);
   });

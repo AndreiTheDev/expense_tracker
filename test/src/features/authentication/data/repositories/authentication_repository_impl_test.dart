@@ -62,15 +62,20 @@ void main() {
     });
 
     test('Delete user is successfull', () async {
+      when(mockFirebaseDataSource.reauthenticateUser('test'))
+          .thenAnswer((realInvocation) => Future(() => null));
       when(mockFirebaseDataSource.deleteUser())
           .thenAnswer((realInvocation) => Future(() => null));
 
-      expect(await sut.deleteUser(), isA<Right>());
+      expect(await sut.deleteUser('test'), isA<Right>());
+      verify(mockFirebaseDataSource.reauthenticateUser('test')).called(1);
       verify(mockFirebaseDataSource.deleteUser()).called(1);
       verifyNoMoreInteractions(mockFirebaseDataSource);
     });
 
     test('Delete user returns authfailure', () async {
+      when(mockFirebaseDataSource.reauthenticateUser('test'))
+          .thenAnswer((realInvocation) => Future(() => null));
       when(mockFirebaseDataSource.deleteUser()).thenThrow(
         AuthException(
           code: 'delete-failed',
@@ -78,7 +83,7 @@ void main() {
         ),
       );
 
-      final response = await sut.deleteUser();
+      final response = await sut.deleteUser('test');
 
       expect(
         response,
@@ -88,17 +93,20 @@ void main() {
           ),
         ),
       );
+      verify(mockFirebaseDataSource.reauthenticateUser('test')).called(1);
       verify(mockFirebaseDataSource.deleteUser()).called(1);
       verifyNoMoreInteractions(mockFirebaseDataSource);
     });
 
     test('Delete user returns authfailure from FirebaseAuthException',
         () async {
+      when(mockFirebaseDataSource.reauthenticateUser('test'))
+          .thenAnswer((realInvocation) => Future(() => null));
       when(mockFirebaseDataSource.deleteUser()).thenThrow(
         FirebaseAuthException(code: 'test'),
       );
 
-      final response = await sut.deleteUser();
+      final response = await sut.deleteUser('test');
 
       expect(
         response,
@@ -108,16 +116,19 @@ void main() {
           ),
         ),
       );
+      verify(mockFirebaseDataSource.reauthenticateUser('test')).called(1);
       verify(mockFirebaseDataSource.deleteUser()).called(1);
       verifyNoMoreInteractions(mockFirebaseDataSource);
     });
 
     test('Delete user returns unknownfailure', () async {
+      when(mockFirebaseDataSource.reauthenticateUser('test'))
+          .thenAnswer((realInvocation) => Future(() => null));
       when(mockFirebaseDataSource.deleteUser()).thenThrow(
         Exception(),
       );
 
-      final response = await sut.deleteUser();
+      final response = await sut.deleteUser('test');
 
       expect(
         response,
@@ -127,6 +138,7 @@ void main() {
           ),
         ),
       );
+      verify(mockFirebaseDataSource.reauthenticateUser('test')).called(1);
       verify(mockFirebaseDataSource.deleteUser()).called(1);
       verifyNoMoreInteractions(mockFirebaseDataSource);
     });

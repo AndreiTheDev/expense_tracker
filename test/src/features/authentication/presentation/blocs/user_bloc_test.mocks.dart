@@ -211,17 +211,18 @@ class MockRecoverPassword extends _i1.Mock implements _i12.RecoverPassword {
 /// See the documentation for Mockito's code generation for more information.
 class MockDeleteUser extends _i1.Mock implements _i13.DeleteUser {
   @override
-  _i3.Future<_i4.Either<_i5.Failure, void>> call() => (super.noSuchMethod(
+  _i3.Future<_i4.Either<_i5.Failure, void>> call(String? password) =>
+      (super.noSuchMethod(
         Invocation.method(
           #call,
-          [],
+          [password],
         ),
         returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
             _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
           this,
           Invocation.method(
             #call,
-            [],
+            [password],
           ),
         )),
         returnValueForMissingStub:
@@ -230,7 +231,7 @@ class MockDeleteUser extends _i1.Mock implements _i13.DeleteUser {
           this,
           Invocation.method(
             #call,
-            [],
+            [password],
           ),
         )),
       ) as _i3.Future<_i4.Either<_i5.Failure, void>>);

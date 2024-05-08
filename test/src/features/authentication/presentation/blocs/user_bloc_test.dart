@@ -254,31 +254,31 @@ void main() {
         provideDummy<Either<Failure, void>>(
           const Right(null),
         );
-        when(mockDeleteUser.call()).thenAnswer(
+        when(mockDeleteUser.call('test')).thenAnswer(
           (realInvocation) async => const Right(null),
         );
       },
       act: (bloc) => bloc.add(
-        UserDeleteUserEvent(),
+        const UserDeleteUserEvent(password: 'test'),
       ),
-      expect: () => [UserLoading(), UserUnauthenticated()],
+      expect: () => [UserUnauthenticated()],
     );
 
     blocTest(
-      'UserDeleteUserEvent updates states to UserError',
+      'UserDeleteUserEvent fails and does not update state',
       build: () => userBloc,
       setUp: () async {
         provideDummy<Either<Failure, void>>(
           const Left(AuthFailure(message: 'test')),
         );
-        when(mockDeleteUser.call()).thenAnswer(
+        when(mockDeleteUser.call('test')).thenAnswer(
           (realInvocation) async => const Left(AuthFailure(message: 'test')),
         );
       },
       act: (bloc) => bloc.add(
-        UserDeleteUserEvent(),
+        const UserDeleteUserEvent(password: 'test'),
       ),
-      expect: () => [UserLoading()],
+      expect: () => [],
     );
   });
 }

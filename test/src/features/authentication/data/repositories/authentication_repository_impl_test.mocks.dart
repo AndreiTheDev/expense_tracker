@@ -114,6 +114,16 @@ class MockAuthenticationFirebaseDataSourceImpl extends _i1.Mock
       ) as _i4.Future<void>);
 
   @override
+  _i4.Future<void> reauthenticateUser(String? password) => (super.noSuchMethod(
+        Invocation.method(
+          #reauthenticateUser,
+          [password],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
   _i4.Future<void> recoverPassword(String? email) => (super.noSuchMethod(
         Invocation.method(
           #recoverPassword,
