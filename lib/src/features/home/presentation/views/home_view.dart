@@ -28,7 +28,7 @@ class HomeView extends StatelessWidget {
             final currentAccount = state.account;
             return Column(
               children: [
-                xlSeparator,
+                largeSeparator,
                 const HomeAppBar(),
                 smallSeparator,
                 HomeCard(
