@@ -12,8 +12,8 @@ class DeleteUser {
 
   DeleteUser(this._repository);
 
-  Future<Either<Failure, void>> call() async {
+  Future<Either<Failure, void>> call(final String password) async {
     _logger.d('call');
-    return _repository.deleteUser();
+    return _repository.deleteUser(password);
   }
 }
