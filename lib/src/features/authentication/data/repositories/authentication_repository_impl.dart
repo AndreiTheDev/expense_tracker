@@ -30,9 +30,10 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   });
 
   @override
-  Future<Either<Failure, void>> deleteUser() async {
+  Future<Either<Failure, void>> deleteUser(final String password) async {
     _logger.d('deleteUser - called');
     try {
+      await firebaseDataSource.reauthenticateUser(password);
       await firebaseDataSource.deleteUser();
       _logger.i('deleteUser - success');
       return const Right(null);
