@@ -43,8 +43,12 @@ final class UserRecoverPasswordEvent extends UserEvent {
 }
 
 final class UserDeleteUserEvent extends UserEvent {
+  final String password;
+
+  const UserDeleteUserEvent({required this.password});
+
   @override
-  List<Object> get props => [];
+  List<Object> get props => [password];
 }
 
 final class UserErrorEvent extends UserEvent {
