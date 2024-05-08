@@ -9,6 +9,7 @@ abstract interface class AuthenticationFirebaseDataSource {
   Future<User> signUpUser(final String email, final String password);
   User? isSignedIn();
   Future<void> deleteUser();
+  Future<void> reauthenticateUser(final String password);
   Future<void> recoverPassword(final String email);
   Future<void> signOutUser();
 }
@@ -25,6 +26,25 @@ class AuthenticationFirebaseDataSourceImpl
     _logger.d('deleteUser - called');
     if (_authInstance.currentUser != null) {
       await _authInstance.currentUser!.delete();
+    } else {
+      throw AuthException(
+        code: 'delete-failed',
+        message: 'Unable to delete the current user.',
+      );
+    }
+  }
+
+  @override
+  Future<void> reauthenticateUser(final String password) async {
+    _logger.d('reauthenticateUser - called');
+    if (_authInstance.currentUser != null &&
+        _authInstance.currentUser!.email != null) {
+      final authCredential = EmailAuthProvider.credential(
+        email: _authInstance.currentUser!.email!,
+        password: password,
+      );
+      await _authInstance.currentUser!
+          .reauthenticateWithCredential(authCredential);
     } else {
       throw AuthException(
         code: 'delete-failed',
