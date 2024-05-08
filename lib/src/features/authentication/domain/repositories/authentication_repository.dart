@@ -16,7 +16,7 @@ abstract interface class AuthenticationRepository {
 
   Future<Either<Failure, void>> signOutUser();
 
-  Future<Either<Failure, void>> deleteUser();
+  Future<Either<Failure, void>> deleteUser(final String password);
 
   Future<Either<Failure, UserEntity?>> isSignedIn();
 
