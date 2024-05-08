@@ -5,6 +5,7 @@ enum AppRoutes {
   signup(name: 'signup', path: '/signup'),
   signupDetails(name: 'details', path: 'details'),
   recoverPassword(name: 'recoverpassword', path: '/recoverpassword'),
+  settings(name: 'signout', path: 'signout'),
   addTransactions(name: 'addtransactions', path: 'addtransactions'),
   viewall(name: 'viewall', path: 'viewall'),
   allAccounts(name: 'allAccounts', path: 'allAccounts');

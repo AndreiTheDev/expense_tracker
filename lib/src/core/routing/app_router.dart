@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../features/authentication/presentation/blocs/user_bloc/user_bloc.dart';
 import '../../features/authentication/presentation/views/recover_password_view.dart';
+import '../../features/authentication/presentation/views/settings_view.dart';
 import '../../features/authentication/presentation/views/sign_in_view.dart';
 import '../../features/authentication/presentation/views/sign_up_view.dart';
 import '../../features/home/presentation/views/add_transactions_view.dart';
@@ -46,6 +47,12 @@ final appRouter = GoRouter(
           pageBuilder: (context, state) => const NoTransitionPage(
             child: AllAccountsView(),
           ),
+        ),
+        GoRoute(
+          path: AppRoutes.settings.path,
+          name: AppRoutes.settings.name,
+          pageBuilder: (context, state) =>
+              const NoTransitionPage(child: SettingsView()),
         ),
       ],
     ),

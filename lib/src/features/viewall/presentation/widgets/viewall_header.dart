@@ -25,7 +25,7 @@ class ViewallHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        xlSeparator,
+        largeSeparator,
         Padding(
           padding: const EdgeInsets.only(
             left: mediumSize,

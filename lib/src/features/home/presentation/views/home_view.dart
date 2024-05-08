@@ -28,7 +28,7 @@ class HomeView extends StatelessWidget {
             final currentAccount = state.account;
             return Column(
               children: [
-                xlSeparator,
+                largeSeparator,
                 const HomeAppBar(),
                 smallSeparator,
                 HomeCard(
@@ -156,7 +156,7 @@ class TransactionsListHeader extends StatelessWidget {
           const Text(
             'Transactions',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: smallHeaderText,
               fontWeight: FontWeight.bold,
             ),
           ),

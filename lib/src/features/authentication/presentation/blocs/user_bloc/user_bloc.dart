@@ -97,7 +97,9 @@ class UserBloc extends Bloc<UserEvent, UserState>
   ) async {
     final response = await _signOutUser();
     response.fold(
-      (left) => emitPresentation(UserErrorEvent(message: left.message)),
+      (left) {
+        emitPresentation(UserErrorEvent(message: left.message));
+      },
       (right) => emit(UserUnauthenticated()),
     );
   }
@@ -121,10 +123,11 @@ class UserBloc extends Bloc<UserEvent, UserState>
     final UserDeleteUserEvent event,
     final Emitter<UserState> emit,
   ) async {
-    emit(UserLoading());
-    final response = await _deleteUser();
+    final response = await _deleteUser(event.password);
     response.fold(
-      (left) => emitPresentation(UserErrorEvent(message: left.message)),
+      (left) {
+        emitPresentation(UserErrorEvent(message: left.message));
+      },
       (right) => emit(UserUnauthenticated()),
     );
   }

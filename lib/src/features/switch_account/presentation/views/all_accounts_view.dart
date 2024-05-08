@@ -31,7 +31,7 @@ class AllAccountsView extends StatelessWidget {
               padding: const EdgeInsets.all(mediumSize),
               child: Column(
                 children: [
-                  xlSeparator,
+                  largeSeparator,
                   CustomAppbar(
                     leftButton: CustomAppbarButton(
                       onTap: context.pop,

@@ -62,7 +62,7 @@ class _AddTransactionsViewState extends State<AddTransactionsView> {
               padding: const EdgeInsets.all(mediumSize),
               child: Column(
                 children: [
-                  xlSeparator,
+                  largeSeparator,
                   CustomAppbar(
                     leftButton: CustomAppbarButton(
                       onTap: context.pop,

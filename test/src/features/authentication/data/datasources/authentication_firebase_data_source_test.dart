@@ -43,6 +43,30 @@ void main() {
       verifyNoMoreInteractions(mockUser);
     });
 
+    test('Reauthenticating user is successful', () async {
+      when(mockFirebaseAuth.currentUser).thenReturn(mockUser);
+      when(mockUser.email).thenReturn('test@gmail.com');
+      when(mockUser.reauthenticateWithCredential(any))
+          .thenAnswer((realInvocation) => Future.value(MockUserCredential()));
+
+      await sut.reauthenticateUser('test');
+
+      verify(mockUser.reauthenticateWithCredential(any)).called(1);
+    });
+
+    test('Reauthenticating user fails', () async {
+      when(mockFirebaseAuth.currentUser).thenReturn(null);
+
+      expect(
+        () => sut.reauthenticateUser('test'),
+        throwsA(
+          isA<AuthException>(),
+        ),
+      );
+
+      verifyNoMoreInteractions(mockUser);
+    });
+
     test('Recover password is sent successful', () async {
       when(mockFirebaseAuth.sendPasswordResetEmail(email: 'test@email.com'))
           .thenAnswer((realInvocation) => Future(() => null));

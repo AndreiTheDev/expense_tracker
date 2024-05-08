@@ -21,6 +21,7 @@ import 'src/features/authentication/domain/usecases/sign_in_user.dart';
 import 'src/features/authentication/domain/usecases/sign_out_user.dart';
 import 'src/features/authentication/domain/usecases/sign_up_user.dart';
 import 'src/features/authentication/presentation/blocs/user_bloc/user_bloc.dart';
+import 'src/features/authentication/presentation/cubits/delete_account_form/delete_account_form_cubit.dart';
 import 'src/features/authentication/presentation/cubits/profile_photos_urls/profile_photos_urls_cubit.dart';
 import 'src/features/authentication/presentation/cubits/recover_password_form/recover_password_form_cubit.dart';
 import 'src/features/authentication/presentation/cubits/sign_in_form/sign_in_form_cubit.dart';
@@ -97,6 +98,7 @@ Future<void> init() async {
     ..registerFactory(SignInFormCubit.new)
     ..registerFactory(RecoverPasswordFormCubit.new)
     ..registerFactory(SignUpFormCubit.new)
+    ..registerFactory(DeleteAccountFormCubit.new)
     ..registerFactory(AddTransactionFormCubit.new)
     ..registerFactory(ViewallViewCubit.new)
     ..registerFactory(AddAccountFormCubit.new)

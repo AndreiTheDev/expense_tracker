@@ -18,30 +18,19 @@ class GradientElevatedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      overlayColor: const MaterialStatePropertyAll(Color(0x33cccccc)),
-      customBorder: RoundedRectangleBorder(
+    return Ink(
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(borderRadius),
+        gradient: gradient,
       ),
-      child: Ink(
-        padding: const EdgeInsets.symmetric(
-          vertical: xsSize,
-        ),
-        decoration: BoxDecoration(
+      child: InkWell(
+        onTap: onTap,
+        overlayColor: const MaterialStatePropertyAll(Color(0x33cccccc)),
+        customBorder: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
-          boxShadow: const [
-            BoxShadow(
-              color: Color(0xffcccccc),
-              offset: Offset(0, 5),
-              blurRadius: 10,
-              spreadRadius: 2,
-            ),
-          ],
-          gradient: gradient,
         ),
-        width: double.maxFinite,
-        child: ConstrainedBox(
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: xsSize),
           constraints: const BoxConstraints(
             minHeight: mediumSize,
           ),

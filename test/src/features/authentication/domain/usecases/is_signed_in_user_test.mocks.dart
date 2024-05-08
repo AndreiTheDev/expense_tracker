@@ -126,17 +126,18 @@ class MockAuthenticationRepository extends _i1.Mock
       ) as _i3.Future<_i4.Either<_i5.Failure, void>>);
 
   @override
-  _i3.Future<_i4.Either<_i5.Failure, void>> deleteUser() => (super.noSuchMethod(
+  _i3.Future<_i4.Either<_i5.Failure, void>> deleteUser(String? password) =>
+      (super.noSuchMethod(
         Invocation.method(
           #deleteUser,
-          [],
+          [password],
         ),
         returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
             _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
           this,
           Invocation.method(
             #deleteUser,
-            [],
+            [password],
           ),
         )),
         returnValueForMissingStub:
@@ -145,7 +146,7 @@ class MockAuthenticationRepository extends _i1.Mock
           this,
           Invocation.method(
             #deleteUser,
-            [],
+            [password],
           ),
         )),
       ) as _i3.Future<_i4.Either<_i5.Failure, void>>);

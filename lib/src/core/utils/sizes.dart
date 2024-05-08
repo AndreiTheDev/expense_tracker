@@ -9,6 +9,8 @@ const double xxlSize = 64;
 const double iconSize = 24;
 
 const double smallText = 14;
+const double normalText = 16;
+const double smallHeaderText = 18;
 const double mediumText = 24;
 const double largeText = 36;
 const double xlText = 48;

@@ -25,10 +25,15 @@ class HomeAppBar extends StatelessWidget {
             ),
             child: Row(
               children: [
-                CircleAvatar(
-                  backgroundColor: Colors.grey[300],
-                  backgroundImage: NetworkImage(
-                    user.photoUrl,
+                GestureDetector(
+                  onTap: () async {
+                    await context.pushNamed(AppRoutes.settings.name);
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: Colors.grey[300],
+                    backgroundImage: NetworkImage(
+                      user.photoUrl,
+                    ),
                   ),
                 ),
                 smallSeparator,

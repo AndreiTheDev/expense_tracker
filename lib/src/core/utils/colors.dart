@@ -7,6 +7,7 @@ const Color textLight = Color(0xfff9f9f9);
 const Color textDark = Color(0xff354366);
 const Color iconButtonsColor = Color(0xffa1b2c8);
 const Color errorColor = Color(0xffe40e0e);
+const Color successColor = Color(0xff28a745);
 final LinearGradient backgroundGradient = LinearGradient(
   begin: Alignment.topLeft,
   end: Alignment.bottomRight,

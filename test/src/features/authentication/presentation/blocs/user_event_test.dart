@@ -42,9 +42,9 @@ void main() {
   });
 
   test('UserDeleteUserEvent props are equal', () {
-    final sut = UserDeleteUserEvent();
+    const sut = UserDeleteUserEvent(password: 'test');
 
-    expect(sut.props, []);
+    expect(sut.props, ['test']);
   });
 
   test('UserErrorEvent props are equal', () {
